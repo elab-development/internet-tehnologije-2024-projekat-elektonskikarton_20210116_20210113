@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('preduzeces', function (Blueprint $table) {
 
-            $table->string('registarskiBroj')->primary();
+            $table->integer('registarskiBroj')->primary();
             $table->string('naziv');
-            $table->string('sifraDelatnosti');
+            $table->integer('sifraDelatnosti');
 
             $table->timestamps();
         });

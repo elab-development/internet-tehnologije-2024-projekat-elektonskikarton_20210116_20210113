@@ -17,7 +17,9 @@ class TerapijaFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'naziv'=>fake()->sentence(5),
+            'opis'=>fake()->paragraph(3),
+            'trajanje'=>fake()->numberBetween(1,60)
         ];
     }
 }

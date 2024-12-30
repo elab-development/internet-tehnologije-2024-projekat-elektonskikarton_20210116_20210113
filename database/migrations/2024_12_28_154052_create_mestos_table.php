@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('mestos', function (Blueprint $table) {
-
-            $table->string('postanskiBroj')->primary();
+            
+            $table->integer('postanskiBroj')->primary();
             $table->string('naziv');
 
             $table->timestamps();

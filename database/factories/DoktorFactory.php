@@ -17,7 +17,10 @@ class DoktorFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'email'=>fake()->email(),
+            'password'=>fake()->password(),
+            'imePrezime'=>fake()->name(),
+            'specijalizacija'=>fake()->sentence(1)
         ];
     }
 }

@@ -14,7 +14,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('zaposlenjes', function (Blueprint $table) {
-            $table->unsignedBigInteger('redniBroj');
+            $table->unsignedBigInteger('redniBroj', true);
 
             $table->foreignIdFor(Preduzece::class)->constrained();
             $table->foreignIdFor(Karton::class)->constrained();

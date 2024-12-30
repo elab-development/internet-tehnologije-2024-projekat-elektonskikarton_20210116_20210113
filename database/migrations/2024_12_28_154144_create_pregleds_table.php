@@ -17,7 +17,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pregleds', function (Blueprint $table) {
-            $table->unsignedBigInteger('redniBroj');
+            $table->unsignedBigInteger('redniBroj', true);
             $table->date('datum');
             $table->primary('redniBroj', 'datum');
 

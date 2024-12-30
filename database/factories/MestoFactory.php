@@ -17,7 +17,8 @@ class MestoFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'postanskiBroj'=>fake()->unique()->numberBetween(10000,99999),
+            'naziv'=>fake()->sentence(2)
         ];
     }
 }
