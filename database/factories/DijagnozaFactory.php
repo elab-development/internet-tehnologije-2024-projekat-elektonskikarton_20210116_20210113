@@ -17,7 +17,7 @@ class DijagnozaFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'naziv' => fake()->sentence(3)
         ];
     }
 }
