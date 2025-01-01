@@ -16,7 +16,7 @@ return new class extends Migration
 
             $table->string('naziv');
             $table->text('opis');
-            $table->int('trajanje');
+            $table->integer('trajanje');
 
             $table->timestamps();
         });

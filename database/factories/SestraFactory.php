@@ -17,7 +17,7 @@ class SestraFactory extends Factory
     public function definition(): array
     {
         return [
-            'username'=>fake()->userName(),
+            'email'=>fake()->userName(),
             'password'=>fake()->password(),
             'imePrezime'=>fake()->name()
         ];

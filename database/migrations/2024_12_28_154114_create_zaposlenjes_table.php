@@ -15,8 +15,9 @@ return new class extends Migration
     {
         Schema::create('zaposlenjes', function (Blueprint $table) {
             $table->unsignedBigInteger('redniBroj', true);
+            $table->integer('preduzece_registarskiBroj');
+            $table->foreign('preduzece_registarskiBroj')->references('registarskiBroj')->on('preduzeces');
 
-            $table->foreignIdFor(Preduzece::class)->constrained();
             $table->foreignIdFor(Karton::class)->constrained();
             $table->primary(['redniBroj','karton_id']);
             $table->string('posao');

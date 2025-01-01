@@ -17,9 +17,9 @@ class PreduzeceFactory extends Factory
     public function definition(): array
     {
         return [
-            'registarskiBroj'=>fake()->unique()->numberBetween(10000000-99999999),
+            'registarskiBroj'=>fake()->unique()->numberBetween(10000,99999),
             'naziv'=>fake()->sentence(3),
-            'sifraDelatnosti'=>fake()->numberBetween(100-999)
+            'sifraDelatnosti'=>fake()->numberBetween(100,999)
         ];
     }
 }

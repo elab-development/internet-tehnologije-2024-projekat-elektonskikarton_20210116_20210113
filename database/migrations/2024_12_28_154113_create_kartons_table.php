@@ -17,9 +17,12 @@ return new class extends Migration
             $table->id();
 
             $table->string('brojKnjizice')->unique();
-            $table->text('napomena');
+            $table->text('napomene');
             $table->foreignIdFor(Ustanova::class)->constrained();
-            $table->foreignIdFor(Pacijent::class)->constrained();
+            $table->string('pacijent_jmbg');
+
+            $table->foreign('pacijent_jmbg')->references('jmbg')->on('pacijents');
+
 
             $table->timestamps();
         });

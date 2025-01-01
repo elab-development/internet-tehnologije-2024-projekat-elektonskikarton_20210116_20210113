@@ -16,8 +16,9 @@ return new class extends Migration
             $table->id();
 
             $table->string('naziv');
-            $table->string('ulica');
-            $table->foreignIdFor(Mesto::class)->constrained();
+            $table->string('ulicaBroj');
+            $table->integer('mesto_postanskiBroj');
+            $table->foreign('mesto_postanskiBroj')->references('postanskiBroj')->on('mestos');
 
             $table->timestamps();
         });

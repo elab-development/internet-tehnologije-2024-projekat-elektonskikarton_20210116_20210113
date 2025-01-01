@@ -25,7 +25,9 @@ return new class extends Migration
             $table->string('telefon');
             $table->enum('pol',['muski','zenski']);
             $table->enum('bracniStatus',['u braku','nije u braku']);
-            $table->foreignIdFor(Mesto::class)->constrained();
+            $table->integer('mesto_postanskiBroj');
+            $table->foreign('mesto_postanskiBroj')->references('postanskiBroj')->on('mestos');
+
 
             $table->timestamps();
         });
