@@ -17,7 +17,7 @@ class Ustanova extends Model
 
     public function mesto(): BelongsTo
     {
-        return $this->belongsTo(Mesto::class);
+        return $this->belongsTo(Mesto::class,'mesto_postanskiBroj','postanskiBroj');
     }
     public function kartons():HasMany
     {

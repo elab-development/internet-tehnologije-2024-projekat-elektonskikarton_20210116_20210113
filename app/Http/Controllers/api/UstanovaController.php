@@ -27,7 +27,14 @@ class UstanovaController extends Controller
      */
     public function store(Request $request)
     {
-        
+
+        $ustanova = Ustanova::create($request->validate([
+            'naziv' => 'required|string',
+            'ulicaBroj' => 'required|string',
+            'mesto_postanskiBroj' => 'required|integer|exists:mestos,postanskiBroj'
+        ]));
+
+        return new UstanovaResource($ustanova);
     }
 
     /**
@@ -35,7 +42,8 @@ class UstanovaController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $ustanova = Ustanova::findOrFail($id);
+        return new UstanovaResource($this->loadRelationships($ustanova));
     }
 
     /**
@@ -43,7 +51,14 @@ class UstanovaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $ustanova = Ustanova::findOrFail($id);
+        $ustanova->update($request->validate([
+            'naziv' => 'required|string',
+            'ulicaBroj' => 'required|string',
+            'mesto_postanskiBroj' => 'required|integer|exists:mestos,postanskiBroj'
+        ]));
+
+        return new UstanovaResource($this->loadRelationships($ustanova));
     }
 
     /**
@@ -51,6 +66,9 @@ class UstanovaController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $ustanova = Ustanova::findOrFail($id);
+        $ustanova->delete();
+
+        return response()->json("Deleted successfully");
     }
 }
