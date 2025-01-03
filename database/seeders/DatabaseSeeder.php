@@ -32,13 +32,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Doktor::factory(3)->create();
+        User::factory(10)->create();
+
+        $this->call(DoktorSeeder::class);
+        $this->call(SestraSeeder::class);
         Dijagnoza::factory(5)->create();
         Terapija::factory(5)->create();
-        Sestra::factory(2)->create();
         Mesto::factory(4)->create();
-        Preduzece::factory(6)->create();
 
+        $this->call(PreduzeceSeeder::class);
         $this->call(UstanovaSeeder::class);
         $this->call(PacijentSeeder::class);
         $this->call(KartonSeeder::class);
@@ -46,9 +48,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ZaposlenjeSeeder::class);
 
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+
+
     }
 }

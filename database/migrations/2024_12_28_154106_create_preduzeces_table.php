@@ -16,6 +16,8 @@ return new class extends Migration
             $table->integer('registarskiBroj')->primary();
             $table->string('naziv');
             $table->integer('sifraDelatnosti');
+            $table->integer('mesto_postanskiBroj');
+            $table->foreign('mesto_postanskiBroj')->references('postanskiBroj')->on('mestos');
 
             $table->timestamps();
         });

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use App\Models\Mesto;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
@@ -16,9 +17,8 @@ return new class extends Migration
 
             $table->string('jmbg')->primary();
 
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->string('imePrezime');
+            $table->foreignIdFor(User::class);
+
             $table->string('imePrezimeNZZ');
             $table->date('datumRodjenja');
             $table->string('ulicaBroj');

@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
+use App\Models\User;
 use App\Models\Mesto;
 use App\Models\Pacijent;
+use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class PacijentSeeder extends Seeder
 {
@@ -15,13 +16,13 @@ class PacijentSeeder extends Seeder
     public function run(): void
     {
         $mesta=Mesto::all();
-        for ($i = 0; $i < 5; $i++) {
+        $users = User::where('role','pacijent')->get();
+
+        forEach($users as $user){
             $mesto = $mesta->random();
             Pacijent::create([
+                'user_id' => $user->id,
                 'jmbg' => fake()->regexify('[0-9]{13}'),
-                'email' => fake()->email(),
-                'password' => fake()->password(),
-                'imePrezime' => fake()->name(),
                 'imePrezimeNZZ' => fake()->name(),
                 'datumRodjenja' => fake()->date(),
                 'ulicaBroj' => (fake()->sentence(3)) . fake()->numberBetween(1, 78),
@@ -31,5 +32,6 @@ class PacijentSeeder extends Seeder
                 'mesto_postanskiBroj' => $mesto->postanskiBroj
             ]);
         }
+
     }
 }
