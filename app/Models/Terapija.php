@@ -10,6 +10,8 @@ class Terapija extends Model
 {
     /** @use HasFactory<\Database\Factories\TerapijaFactory> */
     use HasFactory;
+    protected $guarded = [];
+
 
     public function pregleds(): HasMany{
         return $this->hasMany(Pregled::class);

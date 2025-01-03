@@ -11,6 +11,8 @@ class Preduzece extends Model
 {
     /** @use HasFactory<\Database\Factories\PreduzeceFactory> */
     use HasFactory;
+    protected $guarded = [];
+
 
     public function zaposlenjes(): HasMany{
         return $this->hasMany(Zaposlenje::class);

@@ -10,6 +10,8 @@ class Pregled extends Model
 {
     /** @use HasFactory<\Database\Factories\PregledFactory> */
     use HasFactory;
+    protected $guarded = [];
+
 
     public function karton(): BelongsTo{
         return $this->belongsTo(Karton::class);

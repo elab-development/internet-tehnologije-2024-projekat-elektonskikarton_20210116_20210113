@@ -10,6 +10,8 @@ class Doktor extends Model
 {
     /** @use HasFactory<\Database\Factories\DoktorFactory> */
     use HasFactory;
+    protected $guarded = [];
+
 
     public function pregleds(): HasMany{
         return $this->hasMany(Pregled::class);

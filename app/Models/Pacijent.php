@@ -11,6 +11,8 @@ class Pacijent extends Model
 {
     /** @use HasFactory<\Database\Factories\PacijentFactory> */
     use HasFactory;
+    protected $guarded = [];
+
 
     public function mesto(): BelongsTo{
         return $this->belongsTo(Mesto::class);

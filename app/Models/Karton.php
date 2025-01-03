@@ -11,6 +11,8 @@ class Karton extends Model
 {
     /** @use HasFactory<\Database\Factories\KartonFactory> */
     use HasFactory;
+    protected $guarded = [];
+
 
     public function pregleds(): HasMany{
         return $this->hasMany(Pregled::class);

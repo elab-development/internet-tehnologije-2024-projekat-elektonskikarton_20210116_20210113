@@ -11,8 +11,10 @@ class Dijagnoza extends Model
 {
     /** @use HasFactory<\Database\Factories\DijagnozaFactory> */
     use HasFactory;
+    protected $guarded = [];
 
-    public function pregleds(): HasMany{
+    public function pregleds(): HasMany
+    {
         return $this->hasMany(Pregled::class);
     }
 }

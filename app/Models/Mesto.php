@@ -10,6 +10,8 @@ class Mesto extends Model
 {
     /** @use HasFactory<\Database\Factories\MestoFactory> */
     use HasFactory;
+    protected $guarded = [];
+
 
     public function zaposlenjes(): HasMany{
         return $this->hasMany(Zaposlenje::class);
