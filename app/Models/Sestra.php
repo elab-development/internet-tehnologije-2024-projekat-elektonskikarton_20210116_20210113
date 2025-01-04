@@ -13,6 +13,6 @@ class Sestra extends Model
     protected $guarded = [];
 
     public function pregleds(): HasMany{
-        return $this->hasMany(Pregled::class);
+        return $this->hasMany(Pregled::class,'sestra_id','id');
     }
 }

@@ -8,9 +8,12 @@ use App\Models\Sestra;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Resource\SestraResource;
+use App\Trait\CanLoadRelationships;
 
 class SestraController extends Controller
 {
+    use CanLoadRelationships;
+    private array $relations = ['user'];
     /**
      * Display a listing of the resource.
      */
@@ -40,8 +43,8 @@ class SestraController extends Controller
         'role' => 'sestra', // Postavljanje role
     ]);
 
-  
-    
+
+
     $sestra = Sestra::create([
         'user_id' => $user->id
     ]);
@@ -100,7 +103,7 @@ class SestraController extends Controller
      */
     public function destroy(string $id)
     {
-        
+
         $sestra = Sestra::findOrFail($id);
         $user = User::findOrFail($sestra->user_id);
         $sestra->delete();

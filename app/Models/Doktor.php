@@ -14,6 +14,6 @@ class Doktor extends Model
 
 
     public function pregleds(): HasMany{
-        return $this->hasMany(Pregled::class);
+        return $this->hasMany(Pregled::class,'doktor_id','id');
     }
 }

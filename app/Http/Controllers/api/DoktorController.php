@@ -8,9 +8,11 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Resource\DoktorResource;
 use App\Http\Resources\Resource\DijagnozaResource;
+use App\Trait\CanLoadRelationships;
 
 class DoktorController extends Controller
 {
+    use CanLoadRelationships;
     private $relations = ['user'];
     /**
      * Display a listing of the resource.

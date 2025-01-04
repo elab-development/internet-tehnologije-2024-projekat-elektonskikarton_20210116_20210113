@@ -15,7 +15,7 @@ class Karton extends Model
 
 
     public function pregleds(): HasMany{
-        return $this->hasMany(Pregled::class);
+        return $this->hasMany(Pregled::class,'karton_id','id');
     }
     public function ustanova(): BelongsTo{
         return $this->belongsTo(Ustanova::class);

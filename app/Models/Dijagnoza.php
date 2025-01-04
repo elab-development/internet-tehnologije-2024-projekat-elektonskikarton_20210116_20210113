@@ -15,6 +15,6 @@ class Dijagnoza extends Model
 
     public function pregleds(): HasMany
     {
-        return $this->hasMany(Pregled::class);
+        return $this->hasMany(Pregled::class,'dijagnoza_id','id');
     }
 }
