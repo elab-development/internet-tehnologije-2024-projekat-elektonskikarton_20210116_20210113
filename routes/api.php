@@ -7,6 +7,7 @@ use App\Http\Controllers\api\SestraController;
 use App\Http\Controllers\api\TerapijaController;
 use App\Http\Controllers\api\UstanovaController;
 use App\Http\Controllers\api\DijagnozaController;
+use App\Http\Controllers\api\MestoController;
 use App\Http\Controllers\api\PreduzeceController;
 use App\Http\Controllers\api\ZaposlenjeController;
 
@@ -21,4 +22,6 @@ Route::apiResource('sestre', SestraController::class);
 Route::apiResource('ustanove', UstanovaController::class);
 Route::apiResource('zaposlenja', ZaposlenjeController::class);
 Route::apiResource('preduzeca', PreduzeceController::class);
+Route::apiResource('mesta', MestoController::class);
+
 

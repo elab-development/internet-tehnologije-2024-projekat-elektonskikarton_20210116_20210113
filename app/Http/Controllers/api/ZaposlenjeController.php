@@ -27,8 +27,8 @@ class ZaposlenjeController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'preduzece_registarskiBroj' => 'required|exists:preduzece,registarskiBroj',
-            'karton_id' => 'required|exists:karton, id',
+            'preduzece_registarskiBroj' => 'required|exists:preduzeces,registarskiBroj',
+            'karton_id' => 'required|exists:kartons, id',
             'posao' => 'string|required'
         ]);
 
@@ -52,8 +52,8 @@ class ZaposlenjeController extends Controller
     {
         $zaposlenje = Zaposlenje::where('redniBroj', $id)->firstOrFail();
         $validatedData = $request->validate([
-            'preduzece_registarskiBroj' => 'required|exists:preduzece,registarskiBroj',
-            'karton_id' => 'required|exists:karton, id',
+            'preduzece_registarskiBroj' => 'required|exists:preduzeces,registarskiBroj',
+            'karton_id' => 'required|exists:kartons, id',
             'posao' => 'string|required'
         ]);
 

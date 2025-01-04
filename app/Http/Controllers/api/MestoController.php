@@ -2,17 +2,23 @@
 
 namespace App\Http\Controllers\api;
 
-use App\Http\Controllers\Controller;
+use App\Models\Mesto;
 use Illuminate\Http\Request;
+use App\Trait\CanLoadRelationships;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\Resource\MestoResource;
 
 class MestoController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    use CanLoadRelationships;
+    private array $relations=['ustanova'];
     public function index()
     {
-        //
+        $query=$this->loadRelationships(Mesto::query());
+        return MestoResource::collection($query->latest()->paginate());
     }
 
     /**
@@ -20,7 +26,12 @@ class MestoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData=$request->validate([
+            'postanskiBroj'=>'required|integer|unique|min:10000|max:99999',
+            'naziv'=>'required|string'
+        ]);
+        $mesto=Mesto::create($validatedData);
+        return new MestoResource($this->loadRelationships($mesto));
     }
 
     /**
@@ -28,7 +39,8 @@ class MestoController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $mesto=Mesto::where('postanskiBroj',$id)->firstOrFail();
+        return new MestoResource($this->loadRelationships($mesto));
     }
 
     /**
@@ -36,7 +48,13 @@ class MestoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $mesto=Mesto::where('postanskiBroj',$id)->firstOrFail();
+        $validatedData=$request->validate([
+            'postanskiBroj'=>'required|integer|min:10000|max:99999|unique:mestos,postanskiBroj,'.$mesto->postanskiBroj,
+            'naziv'=>'required|string'
+        ]);
+        $mesto->update($validatedData);
+        return new MestoResource($this->loadRelationships($mesto));
     }
 
     /**
@@ -44,6 +62,8 @@ class MestoController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $mesto=Mesto::where('postanskiBroj',$id)->firstOrFail();
+        $mesto->delete();
+        return response()->json('Mesto uspesno obrisano');
     }
 }

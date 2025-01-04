@@ -31,7 +31,7 @@ class PreduzeceController extends Controller
             'registarskiBroj' => 'required|integer|min:10000|max:99999|unique',
             'naziv' => 'required|string|max:255',
             'sifraDelatnosti' => 'required|integer|min:1|max:70',
-            'mesto_postanskiBroj' => 'required|exists: mesto,postanskiBroj'
+            'mesto_postanskiBroj' => 'required|exists: mestos,postanskiBroj'
         ]);
 
         $preduzece = Preduzece::create($validatedData);
@@ -55,10 +55,10 @@ class PreduzeceController extends Controller
     {
         $preduzece = Preduzece::where('registarskiBroj', $id)->firstOrFail();
         $validatedData = $request->validate([
-            'registarskiBroj' => 'required|integer|min:10000|max:99999|unique: preduzece, registarskiBroj,'.$preduzece->registarskiBroj,
+            'registarskiBroj' => 'required|integer|min:10000|max:99999|unique: preduzeces, registarskiBroj,'.$preduzece->registarskiBroj,
             'naziv' => 'required|string|max:255',
             'sifraDelatnosti' => 'required|integer|min:1|max:70',
-            'mesto_postanskiBroj' => 'required|exists: mesto,postanskiBroj'
+            'mesto_postanskiBroj' => 'required|exists: mestos,postanskiBroj'
         ]);
 
         $preduzece->update($validatedData);
