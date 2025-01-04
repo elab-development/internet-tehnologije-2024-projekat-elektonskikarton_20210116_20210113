@@ -25,6 +25,6 @@ class Mesto extends Model
     }
 
     public function preduzeces(): HasMany{
-        return $this->hasMany(Preduzece::class);
+        return $this->hasMany(Preduzece::class, 'preduzece_registarskiBroj','registarskiBroj');
     }
 }

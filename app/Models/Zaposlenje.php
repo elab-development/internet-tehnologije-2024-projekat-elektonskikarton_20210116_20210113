@@ -16,7 +16,7 @@ class Zaposlenje extends Model
 
     public function preduzece(): BelongsTo
     {
-        return $this->belongsTo(Preduzece::class);
+        return $this->belongsTo(Preduzece::class,'preduzece_registarskiBroj','registarskiBroj');
     }
 
     public function karton(): BelongsTo

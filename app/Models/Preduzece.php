@@ -19,6 +19,6 @@ class Preduzece extends Model
     }
 
     public function mesto(): BelongsTo{
-        return $this->belongsTo(Mesto::class);
+        return $this->belongsTo(Mesto::class, 'mesto_postanskiBroj','postanskiBroj');
     }
 }
