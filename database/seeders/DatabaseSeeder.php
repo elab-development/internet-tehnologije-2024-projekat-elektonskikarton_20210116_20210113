@@ -32,7 +32,24 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(10)->create();
+        for($i = 0; $i < 3; $i++){
+            User::factory()->create([
+                'role' => 'doktor'
+            ]);
+        }
+        for($i = 0; $i < 3; $i++){
+            User::factory()->create([
+                'role' => 'sestra'
+            ]);
+        }
+        for($i = 0; $i < 5; $i++){
+            User::factory()->create([
+                'role' => 'pacijent'
+            ]);
+        }
+        User::factory()->create([
+            'role' => 'admin'
+        ]);
 
         $this->call(DoktorSeeder::class);
         $this->call(SestraSeeder::class);

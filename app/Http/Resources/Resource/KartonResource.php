@@ -19,8 +19,9 @@ class KartonResource extends JsonResource
             'brojKnjizice' => $this->brojKnjizice,
             'napomene' => $this->napomene,
             'pacijent_jmbg' => $this->pacijent_jmbg,
+            'pregledi' => PregledResource::collection($this->whenLoaded('pregleds')),
             'ustanova' => new UstanovaResource($this->whenLoaded('ustanova')),
-            'zaposlenje' => Zaposlenje::collection($this->whenLoadded('zaposlenjes'))
+            'zaposlenje' => ZaposlenjeResource::collection($this->whenLoaded('zaposlenjes'))
         ];
     }
 }

@@ -19,9 +19,8 @@ class KartonSeeder extends Seeder
 
         $ustanove = Ustanova::all();
         $pacijenti = Pacijent::all();
-        for ($i = 0; $i < 5; $i++) {
+        forEach($pacijenti as $pacijent) {
             $ustanova = $ustanove->random();
-            $pacijent = $pacijenti->random();
 
             Karton::create([
                 'brojKnjizice' => fake()->regexify('[0-9]{10}'),
@@ -29,6 +28,7 @@ class KartonSeeder extends Seeder
                 'ustanova_id' => $ustanova->id,
                 'pacijent_jmbg' => $pacijent->jmbg
             ]);
+
         }
     }
 }

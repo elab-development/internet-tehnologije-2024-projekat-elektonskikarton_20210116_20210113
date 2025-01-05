@@ -4,9 +4,10 @@ namespace App\Http\Controllers\api;
 
 use App\Models\Karton;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Http\Resources\Resource\KartonResource;
 use App\Trait\CanLoadRelationships;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
+use App\Http\Resources\Resource\KartonResource;
 
 class KartonController extends Controller
 {
@@ -14,9 +15,10 @@ class KartonController extends Controller
      * Display a listing of the resource.
      */
     use CanLoadRelationships;
-    private array $relations = ['pregled'];
+    private array $relations = ['pregleds','ustanova','zaposlenjes'];
     public function index()
     {
+        Gate::authorize('viewAny',Karton::class);
         $query = $this->loadRelationships(Karton::query());
         return KartonResource::collection($query->latest()->paginate());
     }
@@ -26,11 +28,12 @@ class KartonController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('create',Karton::class);
         $validatedData = $request->validate([
-            'brojKnjizice' => 'required|string|unique',
+            'brojKnjizice' => 'required|string|unique:kartons',
             'napomene' => 'string|max:255',
-            'ustanova_id' => 'required|integer|exist:ustanovas,id',
-            'pacijent_jmbg' => 'required|string|exist:pacijents,jmbg'
+            'ustanova_id' => 'required|integer|exists:ustanovas,id',
+            'pacijent_jmbg' => 'required|string|exists:pacijents,jmbg'
         ]);
         $karton = Karton::create($validatedData);
         return new KartonResource($this->loadRelationships($karton));
@@ -42,6 +45,7 @@ class KartonController extends Controller
     public function show(string $id)
     {
         $karton = Karton::findOrFail($id);
+        Gate::authorize('view',$karton);
         return new KartonResource($this->loadRelationships($karton));
     }
 
@@ -51,11 +55,10 @@ class KartonController extends Controller
     public function update(Request $request, string $id)
     {
         $karton = Karton::findOrFail($id);
+        Gate::authorize('update',$karton);
         $validatedData = $request->validate([
-            'brojKnjizice' => 'required|string|unique:kartons, brojKnjizice, ' . $karton->id,
             'napomene' => 'string|max:255',
-            'ustanova_id' => 'required|integer|exist:ustanovas,id',
-            'pacijent_jmbg' => 'required|string|exist:pacijents,jmbg'
+            'ustanova_id' => 'required|integer|exists:ustanovas,id'
         ]);
         $karton->update($validatedData);
         return new KartonResource($this->loadRelationships($karton));
@@ -67,6 +70,7 @@ class KartonController extends Controller
     public function destroy(string $id)
     {
         $karton = Karton::findOrFail($id);
+        Gate::authorize('delete',$karton);
         $karton->delete();
         return response()->json('Karton uspesno obrisan');
     }

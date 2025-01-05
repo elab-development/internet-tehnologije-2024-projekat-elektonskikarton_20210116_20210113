@@ -15,9 +15,9 @@ class User extends Authenticatable
     use HasApiTokens;
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
+
+
     protected $guarded = [];
-
-
     public function doktor(): BelongsTo{
         return $this->belongsTo(Doktor::class);
     }
@@ -31,11 +31,7 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+
 
     /**
      * The attributes that should be hidden for serialization.

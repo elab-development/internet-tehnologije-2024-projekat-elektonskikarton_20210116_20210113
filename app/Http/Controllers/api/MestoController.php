@@ -6,6 +6,7 @@ use App\Models\Mesto;
 use Illuminate\Http\Request;
 use App\Trait\CanLoadRelationships;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Resources\Resource\MestoResource;
 
 class MestoController extends Controller
@@ -17,6 +18,7 @@ class MestoController extends Controller
     private array $relations=['ustanova'];
     public function index()
     {
+        Gate::authorize('viewAny',Mesto::class);
         $query=$this->loadRelationships(Mesto::query());
         return MestoResource::collection($query->latest()->paginate());
     }
@@ -26,6 +28,7 @@ class MestoController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('create',Mesto::class);
         $validatedData=$request->validate([
             'postanskiBroj'=>'required|integer|unique|min:10000|max:99999',
             'naziv'=>'required|string'
@@ -40,6 +43,7 @@ class MestoController extends Controller
     public function show(string $id)
     {
         $mesto=Mesto::where('postanskiBroj',$id)->firstOrFail();
+        Gate::authorize('view',$mesto);
         return new MestoResource($this->loadRelationships($mesto));
     }
 
@@ -49,6 +53,7 @@ class MestoController extends Controller
     public function update(Request $request, string $id)
     {
         $mesto=Mesto::where('postanskiBroj',$id)->firstOrFail();
+        Gate::authorize('update',$mesto);
         $validatedData=$request->validate([
             'postanskiBroj'=>'required|integer|min:10000|max:99999|unique:mestos,postanskiBroj,'.$mesto->postanskiBroj,
             'naziv'=>'required|string'
@@ -63,6 +68,7 @@ class MestoController extends Controller
     public function destroy(string $id)
     {
         $mesto=Mesto::where('postanskiBroj',$id)->firstOrFail();
+        Gate::authorize('delete',$mesto);
         $mesto->delete();
         return response()->json('Mesto uspesno obrisano');
     }

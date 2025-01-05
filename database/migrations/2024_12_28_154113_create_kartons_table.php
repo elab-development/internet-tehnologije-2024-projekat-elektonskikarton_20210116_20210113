@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('kartons', function (Blueprint $table) {
             $table->id();
-            $table->string('brojKnjizice')->unique();
+            $table->string('brojKnjizice')->unique('kartons');
             $table->text('napomene');
             $table->foreignIdFor(Ustanova::class)->constrained();
             $table->string('pacijent_jmbg');

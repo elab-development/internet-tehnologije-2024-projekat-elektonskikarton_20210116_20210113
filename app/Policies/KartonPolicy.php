@@ -2,8 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\Karton;
 use App\Models\User;
+use App\Models\Karton;
+use App\Models\Pacijent;
 use Illuminate\Auth\Access\Response;
 
 class KartonPolicy
@@ -13,7 +14,7 @@ class KartonPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->role === 'sestra';
     }
 
     /**
@@ -21,7 +22,9 @@ class KartonPolicy
      */
     public function view(User $user, Karton $karton): bool
     {
-        return false;
+        $pacijent_jmbg = $karton->pacijent_jmbg;
+        $pacijent = Pacijent::where('jmbg',$pacijent_jmbg)->firstOrFail();
+        return $user->role === 'doktor' || ($user->role === 'pacijent' && $user->id === $pacijent->user_id);
     }
 
     /**
@@ -29,15 +32,15 @@ class KartonPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->role === 'sestra';
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Karton $karton): bool
+    public function update(User $user): bool
     {
-        return false;
+        return $user->role === 'sestra';
     }
 
     /**

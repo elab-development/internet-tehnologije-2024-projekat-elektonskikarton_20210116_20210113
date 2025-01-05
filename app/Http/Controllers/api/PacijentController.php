@@ -7,6 +7,7 @@ use App\Models\Pacijent;
 use Illuminate\Http\Request;
 use App\Trait\CanLoadRelationships;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Resources\Resource\PacijentResource;
 
 class PacijentController extends Controller
@@ -15,10 +16,11 @@ class PacijentController extends Controller
      * Display a listing of the resource.
      */
     use CanLoadRelationships;
-    private array $relations = ['user','karton', 'karton.pregled', 'karton.zaposlenje'];
+    private array $relations = ['user','karton', 'karton.pregled', 'karton.zaposlenje','mesto'];
 
     public function index()
     {
+        Gate::authorize('viewAny',Pacijent::class);
         $query = $this->loadRelationships(Pacijent::query());
         return PacijentResource::collection($query->latest()->paginate());
     }
@@ -28,20 +30,19 @@ class PacijentController extends Controller
      */
     public function store(Request $request)
     {
-
+        Gate::authorize('create', Pacijent::class);
         $validatedUser = $request->validate([
             'name' => 'required|string|max:20',
             'email' => 'required|email|unique:users',
-            'password' => 'required|string|min:8',
+            'password' => 'required|string|min:8'
         ]);
 
         // Kreiranje User-a
-        $user = User::create($validatedUser);
-
+        $user = User::create([...$validatedUser,'role'=>'pacijent']);
+        dd($user->role);
         // Validacija za Doktora
         $validatedPacijent = $request->validate([
-            'jmbg' => 'required|unique|string',
-            'user_id' => $user->id,
+            'jmbg' => 'required|string|unique:pacijents,jmbg',
             'imePrezimeNZZ' => 'string|max:100',
             'datumRodjenja' => 'required|date',
             'ulicaBroj' => 'required|string',
@@ -51,7 +52,7 @@ class PacijentController extends Controller
             'mesto_postanskiBroj' => 'required|integer|exists:mestos,postanskiBroj'
         ]);
 
-        $pacijent = Pacijent::create($validatedPacijent);
+        $pacijent = Pacijent::create([...$validatedPacijent,'user_id'=>$user->id]);
         return new PacijentResource($this->loadRelationships($pacijent));
     }
 
@@ -61,6 +62,7 @@ class PacijentController extends Controller
     public function show(string $id)
     {
         $pacijent = Pacijent::where('jmbg', $id)->firstOrFail();
+        Gate::authorize('view', $pacijent);
         return new PacijentResource($this->loadRelationships($pacijent));
     }
 
@@ -70,29 +72,21 @@ class PacijentController extends Controller
     public function update(Request $request, string $id)
     {
         $pacijent = Pacijent::where('jmbg', $id)->firstOrFail();
-        $validatedUser = $request->validate([
-            'name' => 'required|string|max:20',
-            'email' => 'required|email|unique:users, email,'.$pacijent->user_id,
-            'password' => 'required|string|min:8',
-        ]);
 
-        // Kreiranje User-a
-        $user = User::create($validatedUser);
+        Gate::authorize('update', $pacijent);
+
 
         // Validacija za Doktora
         $validatedPacijent = $request->validate([
-            'jmbg' => 'required|unique|string',
-            'user_id' => $user->id,
             'imePrezimeNZZ' => 'string|max:100',
-            'datumRodjenja' => 'required|date',
             'ulicaBroj' => 'required|string',
             'telefon' => 'required|string',
-            'pol' => 'required|in:muski,zenski',
             'bracniStatus' => 'required|in:u braku, nije u braku',
             'mesto_postanskiBroj' => 'required|integer|exists:mestos,postanskiBroj'
         ]);
 
-        $pacijent::update($validatedPacijent);
+        $pacijent->update($validatedPacijent);
+
         return new PacijentResource($this->loadRelationships($pacijent));
     }
 
@@ -102,6 +96,7 @@ class PacijentController extends Controller
     public function destroy(string $id)
     {
         $pacijent = Pacijent::where('jmbg', $id)->firstOrFail();
+        Gate::auhtorize('delete', $pacijent);
         $pacijent->delete();
 
         return response()->json('Uspesno obrisan pacijent');

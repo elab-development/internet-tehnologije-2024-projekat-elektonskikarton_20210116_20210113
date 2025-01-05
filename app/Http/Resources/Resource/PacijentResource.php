@@ -23,6 +23,7 @@ class PacijentResource extends JsonResource
             'telefon' => $this->telefon,
             'pol' => $this->pol,
             'bracniStatus' => $this->bracniStatus,
+            'mesto_postanskiBroj' => $this->mesto_postanskiBroj,
             'mesto' => new MestoResource($this->whenLoaded('mesto')),
             'karton' => new KartonResource($this->whenLoaded('karton'))
         ];

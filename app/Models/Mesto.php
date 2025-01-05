@@ -12,6 +12,11 @@ class Mesto extends Model
     use HasFactory;
     protected $guarded = [];
 
+    protected $primaryKey = 'postanskiBroj';
+    public $incrementing = false;
+    protected $keyType = 'integer'; // Ako koristiš brojeve za 'postanskiBroj'
+
+
 
     public function zaposlenjes(): HasMany{
         return $this->hasMany(Zaposlenje::class);

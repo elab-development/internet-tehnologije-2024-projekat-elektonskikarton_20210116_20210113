@@ -11,6 +11,11 @@ class Pacijent extends Model
 {
     /** @use HasFactory<\Database\Factories\PacijentFactory> */
     use HasFactory;
+
+    protected $primaryKey = "jmbg";
+    public $incrementing = false;
+    protected $keyType = "string";
+
     protected $guarded = [];
 
 

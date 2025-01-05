@@ -19,9 +19,9 @@ class PacijentPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Pacijent $pacijent): bool
+    public function view(User $user,Pacijent $pacijent): bool
     {
-        return false;
+        return ($user->role === 'pacijent' && $user->id === $pacijent->user_id);
     }
 
     /**
@@ -29,7 +29,7 @@ class PacijentPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->role === 'sestra';
     }
 
     /**
@@ -37,13 +37,13 @@ class PacijentPolicy
      */
     public function update(User $user, Pacijent $pacijent): bool
     {
-        return false;
+        return ($user->role === 'pacijent' && $user->id === $pacijent->user_id);
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Pacijent $pacijent): bool
+    public function delete(User $user): bool
     {
         return false;
     }
