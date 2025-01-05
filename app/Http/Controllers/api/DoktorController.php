@@ -5,10 +5,11 @@ namespace App\Http\Controllers\api;
 use App\Models\User;
 use App\Models\Doktor;
 use Illuminate\Http\Request;
+use App\Trait\CanLoadRelationships;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Resources\Resource\DoktorResource;
 use App\Http\Resources\Resource\DijagnozaResource;
-use App\Trait\CanLoadRelationships;
 
 class DoktorController extends Controller
 {
@@ -19,6 +20,7 @@ class DoktorController extends Controller
      */
     public function index()
     {
+        Gate::authorize('viewAny', Doktor::class);
         $doktori = Doktor::query();
         return DijagnozaResource::collection($doktori->latest()->paginate());
     }
@@ -28,6 +30,8 @@ class DoktorController extends Controller
      */
     public function store(Request $request)
 {
+    Gate::authorize('create', Doktor::class);
+
     // Validacija za User
     $validatedUser = $request->validate([
         'name' => 'required|string|max:20',
@@ -80,6 +84,7 @@ class DoktorController extends Controller
     // Pronađi doktora i povezanog korisnika
     $doktor = Doktor::findOrFail($id);
     $user = User::findOrFail($doktor->user_id);
+    Gate::authorize('update', $doktor);
 
     // Validacija za User-a
     $validatedUser = $request->validate([
@@ -120,6 +125,8 @@ class DoktorController extends Controller
     public function destroy(string $id)
     {
         $doktor = Doktor::findOrFail($id);
+        Gate::authorize('delete', $doktor);
+
         $user = User::findOrFail($doktor->user_id);
         $doktor->delete();
         $user->delete();

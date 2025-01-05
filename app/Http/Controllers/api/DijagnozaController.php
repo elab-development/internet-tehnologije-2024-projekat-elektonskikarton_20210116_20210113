@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Models\Dijagnoza;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Resources\Resource\DijagnozaResource;
 
 class DijagnozaController extends Controller
@@ -14,6 +15,7 @@ class DijagnozaController extends Controller
      */
     public function index()
     {
+        Gate::authorize('viewAny', Dijagnoza::class);
         $query = Dijagnoza::query();
         return DijagnozaResource::collection($query->latest()->paginate());
     }
@@ -23,6 +25,7 @@ class DijagnozaController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('create', Dijagnoza::class);
         $dijagnoza = Dijagnoza::create(
             $request->validate([
                 'naziv' => 'required|string|max:255'
@@ -37,6 +40,7 @@ class DijagnozaController extends Controller
      */
     public function show(string $id)
     {
+  
         $dijagnoza = Dijagnoza::findOrFail($id);
         return new DijagnozaResource($dijagnoza);
     }
@@ -47,6 +51,8 @@ class DijagnozaController extends Controller
     public function update(Request $request, string $id)
     {
         $dijagnoza = Dijagnoza::findOrFail($id);
+        Gate::authorize('update', $dijagnoza);
+
         $dijagnoza->update(
             $request->validate(
                 [
@@ -63,7 +69,11 @@ class DijagnozaController extends Controller
      */
     public function destroy(string $id)
     {
+       
+
         $dijagnoza = Dijagnoza::findOrFail($id);
+        Gate::authorize('delete', $dijagnoza);
+
         $dijagnoza->delete();
         return response()->json('Successfully deleted');
     }
