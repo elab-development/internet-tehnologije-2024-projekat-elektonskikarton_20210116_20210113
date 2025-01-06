@@ -3,6 +3,8 @@
 namespace App\Policies;
 
 use App\Models\User;
+use App\Models\Karton;
+use App\Models\Pacijent;
 use App\Models\Zaposlenje;
 use Illuminate\Auth\Access\Response;
 
@@ -13,7 +15,7 @@ class ZaposlenjePolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->role === 'sestra';
     }
 
     /**
@@ -21,7 +23,9 @@ class ZaposlenjePolicy
      */
     public function view(User $user, Zaposlenje $zaposlenje): bool
     {
-        return false;
+        $karton = Karton::findOrFail($zaposlenje->karton_id);
+        $pacijent = Pacijent::findOrFail($karton->pacijent_jmbg);
+        return $user->role === 'sestra' || ($user->role === 'pacijent' && $user->id === $pacijent->user_id);
     }
 
     /**
@@ -29,7 +33,7 @@ class ZaposlenjePolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->role === 'sestra';
     }
 
     /**
@@ -37,7 +41,7 @@ class ZaposlenjePolicy
      */
     public function update(User $user, Zaposlenje $zaposlenje): bool
     {
-        return false;
+        return $user->role === 'sestra';
     }
 
     /**
@@ -45,7 +49,7 @@ class ZaposlenjePolicy
      */
     public function delete(User $user, Zaposlenje $zaposlenje): bool
     {
-        return false;
+        return $user->role === 'admin';
     }
 
     /**

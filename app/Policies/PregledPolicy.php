@@ -2,8 +2,10 @@
 
 namespace App\Policies;
 
-use App\Models\Pregled;
+use App\Models\Karton;
 use App\Models\User;
+use App\Models\Pregled;
+use App\Models\Pacijent;
 use Illuminate\Auth\Access\Response;
 
 class PregledPolicy
@@ -24,12 +26,17 @@ class PregledPolicy
         return false;
     }
 
+    public function viewForAnyPatient(User $user, Karton $karton){
+
+
+    }
+
     /**
      * Determine whether the user can create models.
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->role === 'sestra';
     }
 
     /**
