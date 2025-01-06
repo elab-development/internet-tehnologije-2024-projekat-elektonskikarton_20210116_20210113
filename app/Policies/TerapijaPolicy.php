@@ -13,7 +13,7 @@ class TerapijaPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->role !== 'pacijent';
     }
 
     /**
@@ -21,7 +21,7 @@ class TerapijaPolicy
      */
     public function view(User $user, Terapija $terapija): bool
     {
-        return false;
+        return $user->role !== 'pacijent';
     }
 
     /**
@@ -29,7 +29,7 @@ class TerapijaPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->role === 'admin';
     }
 
     /**
@@ -37,7 +37,7 @@ class TerapijaPolicy
      */
     public function update(User $user, Terapija $terapija): bool
     {
-        return false;
+        return $user->role === 'admin' || $user->role === 'doktor';
     }
 
     /**
@@ -45,7 +45,7 @@ class TerapijaPolicy
      */
     public function delete(User $user, Terapija $terapija): bool
     {
-        return false;
+        return $user->role === 'admin';
     }
 
     /**

@@ -13,7 +13,7 @@ class PreduzecePolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->role==='admin' || $user->role==='sestra';
     }
 
     /**
@@ -21,7 +21,7 @@ class PreduzecePolicy
      */
     public function view(User $user, Preduzece $preduzece): bool
     {
-        return false;
+        return $user->role==='admin' || $user->role==='sestra';
     }
 
     /**
@@ -29,7 +29,7 @@ class PreduzecePolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->role==='admin';
     }
 
     /**
@@ -37,7 +37,7 @@ class PreduzecePolicy
      */
     public function update(User $user, Preduzece $preduzece): bool
     {
-        return false;
+        return $user->role==='admin';
     }
 
     /**
@@ -45,7 +45,7 @@ class PreduzecePolicy
      */
     public function delete(User $user, Preduzece $preduzece): bool
     {
-        return false;
+        return $user->role==='admin';
     }
 
     /**

@@ -13,7 +13,7 @@ class SestraPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->role==='admin';
     }
 
     /**
@@ -21,7 +21,7 @@ class SestraPolicy
      */
     public function view(User $user, Sestra $sestra): bool
     {
-        return false;
+        return $user->role==='admin';
     }
 
     /**
@@ -29,7 +29,7 @@ class SestraPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->role==='admin';
     }
 
     /**
@@ -37,7 +37,7 @@ class SestraPolicy
      */
     public function update(User $user, Sestra $sestra): bool
     {
-        return false;
+        return $user->role==='sestra';
     }
 
     /**
@@ -45,7 +45,7 @@ class SestraPolicy
      */
     public function delete(User $user, Sestra $sestra): bool
     {
-        return false;
+        return $user->role==='admin';
     }
 
     /**

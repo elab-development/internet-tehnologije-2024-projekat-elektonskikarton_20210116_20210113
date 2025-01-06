@@ -13,6 +13,9 @@ class Preduzece extends Model
     use HasFactory;
     protected $guarded = [];
 
+    protected $primaryKey = 'registarskiBroj';
+    public $incrementing = false;
+    protected $keyType = 'integer'; // Ako koristiš brojeve za 'postanskiBroj'
 
     public function zaposlenjes(): HasMany{
         return $this->hasMany(Zaposlenje::class);

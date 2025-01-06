@@ -6,6 +6,7 @@ use App\Models\Ustanova;
 use Illuminate\Http\Request;
 use App\Trait\CanLoadRelationships;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Resources\Resource\UstanovaResource;
 
 class UstanovaController extends Controller
@@ -14,11 +15,12 @@ class UstanovaController extends Controller
      * Display a listing of the resource.
      */
     use CanLoadRelationships;
-    private array $relations=['mesto'];
+    private array $relations = ['mesto'];
 
     public function index()
     {
-        $query=$this->loadRelationships(Ustanova::query());
+        Gate::authorize('viewAny', Ustanova::class);
+        $query = $this->loadRelationships(Ustanova::query());
         return UstanovaResource::collection($query->latest()->paginate());
     }
 
@@ -27,6 +29,7 @@ class UstanovaController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('create', Ustanova::class);
 
         $ustanova = Ustanova::create($request->validate([
             'naziv' => 'required|string',
@@ -43,6 +46,8 @@ class UstanovaController extends Controller
     public function show(string $id)
     {
         $ustanova = Ustanova::findOrFail($id);
+        Gate::authorize('view', $ustanova);
+
         return new UstanovaResource($this->loadRelationships($ustanova));
     }
 
@@ -52,6 +57,7 @@ class UstanovaController extends Controller
     public function update(Request $request, string $id)
     {
         $ustanova = Ustanova::findOrFail($id);
+        Gate::authorize('update', $ustanova);
         $ustanova->update($request->validate([
             'naziv' => 'required|string',
             'ulicaBroj' => 'required|string',
@@ -67,6 +73,8 @@ class UstanovaController extends Controller
     public function destroy(string $id)
     {
         $ustanova = Ustanova::findOrFail($id);
+        Gate::authorize('delete', $ustanova);
+
         $ustanova->delete();
 
         return response()->json("Deleted successfully");

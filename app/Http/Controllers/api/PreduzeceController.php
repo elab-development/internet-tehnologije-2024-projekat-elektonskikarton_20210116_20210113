@@ -6,6 +6,7 @@ use App\Models\Preduzece;
 use Illuminate\Http\Request;
 use App\Trait\CanLoadRelationships;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Resources\Resource\PreduzeceResource;
 
 class PreduzeceController extends Controller
@@ -18,6 +19,7 @@ class PreduzeceController extends Controller
      */
     public function index()
     {
+        Gate::authorize('viewAny', Preduzece::class);
         $query = $this->loadRelationships(Preduzece::query());
         return PreduzeceResource::collection($query->latest()->paginate());
     }
@@ -27,16 +29,18 @@ class PreduzeceController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('create', Preduzece::class);
+
         $validatedData = $request->validate([
-            'registarskiBroj' => 'required|integer|min:10000|max:99999|unique',
+            'registarskiBroj' => 'required|integer|min:10000|max:99999|unique:preduzeces,registarskiBroj',
             'naziv' => 'required|string|max:255',
             'sifraDelatnosti' => 'required|integer|min:1|max:70',
-            'mesto_postanskiBroj' => 'required|exists: mestos,postanskiBroj'
+            'mesto_postanskiBroj' => 'required|exists:mestos,postanskiBroj'
         ]);
 
         $preduzece = Preduzece::create($validatedData);
-        return new PreduzeceResource($this->loadRelationships($preduzece));
 
+        return new PreduzeceResource($this->loadRelationships($preduzece));
     }
 
     /**
@@ -45,6 +49,7 @@ class PreduzeceController extends Controller
     public function show(string $id)
     {
         $preduzece = Preduzece::where('registarskiBroj', $id)->firstOrFail();
+        Gate::authorize('view', $preduzece);
         return new PreduzeceResource($this->loadRelationships($preduzece));
     }
 
@@ -54,14 +59,17 @@ class PreduzeceController extends Controller
     public function update(Request $request, string $id)
     {
         $preduzece = Preduzece::where('registarskiBroj', $id)->firstOrFail();
+        Gate::authorize('update', $preduzece);
+
         $validatedData = $request->validate([
-            'registarskiBroj' => 'required|integer|min:10000|max:99999|unique: preduzeces, registarskiBroj,'.$preduzece->registarskiBroj,
+            'registarskiBroj' => 'required|integer|min:10000|max:99999|unique:preduzeces,registarskiBroj,' . $preduzece->registarskiBroj.',registarskiBroj',
             'naziv' => 'required|string|max:255',
             'sifraDelatnosti' => 'required|integer|min:1|max:70',
-            'mesto_postanskiBroj' => 'required|exists: mestos,postanskiBroj'
+            'mesto_postanskiBroj' => 'required|exists:mestos,postanskiBroj'
         ]);
 
         $preduzece->update($validatedData);
+
         return new PreduzeceResource($this->loadRelationships($preduzece));
     }
 
@@ -71,8 +79,10 @@ class PreduzeceController extends Controller
     public function destroy(string $id)
     {
         $preduzece = Preduzece::where('registarskiBroj', $id)->firstOrFail();
-        $preduzece->delete();
+        Gate::authorize('delete', $preduzece);
 
-        return response()->json('Uspesno obrisano preduze');
+        $preduzece->delete();
+        
+        return response()->json('Uspesno obrisano preduzece');
     }
 }

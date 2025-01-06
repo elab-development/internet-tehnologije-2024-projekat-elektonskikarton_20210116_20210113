@@ -13,7 +13,7 @@ class UstanovaPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class UstanovaPolicy
      */
     public function view(User $user, Ustanova $ustanova): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -29,7 +29,7 @@ class UstanovaPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->role==='admin';
     }
 
     /**
@@ -37,7 +37,7 @@ class UstanovaPolicy
      */
     public function update(User $user, Ustanova $ustanova): bool
     {
-        return false;
+        return $user->role==='admin';
     }
 
     /**
@@ -45,7 +45,7 @@ class UstanovaPolicy
      */
     public function delete(User $user, Ustanova $ustanova): bool
     {
-        return false;
+        return $user->role==='admin';
     }
 
     /**
