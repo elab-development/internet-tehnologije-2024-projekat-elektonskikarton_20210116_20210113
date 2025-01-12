@@ -27,8 +27,8 @@ class PregledPolicy
     }
 
     public function viewForAnyPatient(User $user, Karton $karton){
-
-
+        $pacijent = Pacijent::where('user_id', $user->id)->firstOrFail();
+        return $user->role === 'doktor' || ($user->role === 'pacijent' && $pacijent->jmbg === $karton->pacijent_jmbg);
     }
 
     /**
@@ -36,7 +36,7 @@ class PregledPolicy
      */
     public function create(User $user): bool
     {
-        return $user->role === 'sestra';
+        return $user->role === 'doktor';
     }
 
     /**
