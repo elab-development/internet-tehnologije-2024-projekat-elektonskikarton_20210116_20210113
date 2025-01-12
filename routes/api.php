@@ -30,8 +30,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('preduzeca', PreduzeceController::class);
     Route::apiResource('mesta', MestoController::class);
     Route::apiResource('pacijenti', PacijentController::class);
-    Route::apiResource('pregledi', PregledController::class);
     Route::apiResource('kartoni', KartonController::class);
+    Route::apiResource('pregledi', PregledController::class);
+    Route::get('pregledi/{karton_id}',[PregledController::class,'indexForKarton']);
+    Route::get('pregledi/{karton_id}/{rb}',[PregledController::class,'showForKarton']);
+
 });
 
 

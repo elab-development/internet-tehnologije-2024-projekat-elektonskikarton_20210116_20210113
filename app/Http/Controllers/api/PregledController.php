@@ -2,22 +2,26 @@
 
 namespace App\Http\Controllers\api;
 
+use App\Models\Karton;
 use App\Models\Pregled;
 use Illuminate\Http\Request;
 use App\Trait\CanLoadRelationships;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Resources\Resource\PregledResource;
 
 class PregledController extends Controller
 {
     use CanLoadRelationships;
-    private array $relations = ['doktor','sestra','terapija','dijagnoza'];
+    private array $relations = ['doktor','sestra','terapija','dijagnoza','karton'];
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function indexForKarton(int $karton_id)
     {
-        $query = $this->loadRelationships(Pregled::query());
+        $karton = Karton::findOrFail($karton_id);
+        Gate::authorize('viewForAnyPatient', $karton);
+        $query = $this->loadRelationships(Pregled::where('karton_id', $karton_id));
         return PregledResource::collection($query->latest()->paginate());
     }
 
@@ -26,6 +30,7 @@ class PregledController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('create', Pregled::class);
         $validatedData = $request->validate([
             'datum' => 'required|date',
             'doktor_id' => 'required|exists:doktors, id',
@@ -43,10 +48,12 @@ class PregledController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function showForKarton(int $karton_id, int $rb)
     {
-        $pregled = Pregled::where('redniBroj',$id)->firstOrFail();
-        return new PregledResource($this->loadRelationships($pregled));
+        $karton = Karton::findOrFail($karton_id);
+        Gate::authorize('viewForAnyPatient', $karton);
+        $query = $this->loadRelationships(Pregled::where('karton_id', $karton->id)->where('redniBroj', $rb));
+        return new PregledResource($query->firstOrFail());
     }
 
     /**
@@ -74,6 +81,7 @@ class PregledController extends Controller
     public function destroy(string $id)
     {
         $pregled = Pregled::where('redniBroj',$id)->firstOrFail();
+        Gate::authorize('delete', $pregled);
         $pregled->delete();
     }
 }

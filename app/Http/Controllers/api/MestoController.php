@@ -30,7 +30,7 @@ class MestoController extends Controller
     {
         Gate::authorize('create', Mesto::class);
         $validatedData = $request->validate([
-            'postanskiBroj' => 'required|integer|unique|min:10000|max:99999',
+            'postanskiBroj' => 'required|integer|unique:mestos,postanskiBroj|min:10000|max:99999',
             'naziv' => 'required|string'
         ]);
         $mesto = Mesto::create($validatedData);

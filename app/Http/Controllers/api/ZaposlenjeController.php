@@ -4,9 +4,10 @@ namespace App\Http\Controllers\api;
 
 use App\Models\Zaposlenje;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Http\Resources\Resource\ZaposlenjeResource;
 use App\Trait\CanLoadRelationships;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
+use App\Http\Resources\Resource\ZaposlenjeResource;
 
 class ZaposlenjeController extends Controller
 {
@@ -17,6 +18,7 @@ class ZaposlenjeController extends Controller
      */
     public function index()
     {
+        Gate::authorize('viewAny',Zaposlenje::class);
         $query = $this->loadRelationships(Zaposlenje::query());
         return ZaposlenjeResource::collection($query->latest()->paginate());
     }
@@ -26,6 +28,7 @@ class ZaposlenjeController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('create', Zaposlenje::class);
         $validatedData = $request->validate([
             'preduzece_registarskiBroj' => 'required|exists:preduzeces,registarskiBroj',
             'karton_id' => 'required|exists:kartons, id',
@@ -42,6 +45,7 @@ class ZaposlenjeController extends Controller
     public function show(string $id)
     {
         $zaposlenje = Zaposlenje::where('redniBroj', $id)->firstOrFail();
+        Gate::authorize('view', $zaposlenje);
         return new ZaposlenjeResource($this->loadRelationships($zaposlenje));
     }
 
@@ -51,6 +55,7 @@ class ZaposlenjeController extends Controller
     public function update(Request $request, string $id)
     {
         $zaposlenje = Zaposlenje::where('redniBroj', $id)->firstOrFail();
+        Gate::authorize('update', $zaposlenje);
         $validatedData = $request->validate([
             'preduzece_registarskiBroj' => 'required|exists:preduzeces,registarskiBroj',
             'karton_id' => 'required|exists:kartons, id',
@@ -69,6 +74,7 @@ class ZaposlenjeController extends Controller
     public function destroy(string $id)
     {
         $zaposlenje = Zaposlenje::where('redniBroj', $id)->firstOrFail();
+        Gate::authorize('delete', $zaposlenje);
         $zaposlenje->delete();
 
         return response()->json('Uspesno obrisano zaposlenje');
