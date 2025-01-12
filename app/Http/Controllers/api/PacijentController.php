@@ -39,7 +39,7 @@ class PacijentController extends Controller
 
         // Kreiranje User-a
         $user = User::create([...$validatedUser,'role'=>'pacijent']);
-        dd($user->role);
+       // dd($user->role);
         // Validacija za Doktora
         $validatedPacijent = $request->validate([
             'jmbg' => 'required|string|unique:pacijents,jmbg',

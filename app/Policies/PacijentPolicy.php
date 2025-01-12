@@ -29,7 +29,7 @@ class PacijentPolicy
      */
     public function create(User $user): bool
     {
-        return $user->role === 'sestra';
+        return false;
     }
 
     /**
