@@ -13,11 +13,12 @@ class TerapijaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         Gate::authorize('viewAny',Terapija::class);
-
-        $query = Terapija::query();
+        $naziv=$request->input('naziv');
+        $query = Terapija::query()->when($naziv,fn($query, $naziv)=>$query->withNaziv($naziv));
+        
         return TerapijaResource::collection($query->latest()->paginate());
     }
 

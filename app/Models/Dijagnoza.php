@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Pregled;
+use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Dijagnoza extends Model
@@ -17,4 +19,12 @@ class Dijagnoza extends Model
     {
         return $this->hasMany(Pregled::class,'dijagnoza_id','id');
     }
+
+    
+    public function scopeWithNaziv(Builder $query, string $naziv):Builder|QueryBuilder
+    {
+        return $query->where('naziv','like','%'.$naziv.'%');
+    }
+    
+
 }

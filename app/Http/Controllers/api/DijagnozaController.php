@@ -13,10 +13,11 @@ class DijagnozaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         Gate::authorize('viewAny', Dijagnoza::class);
-        $query = Dijagnoza::query();
+        $naziv=$request->input('naziv');
+        $query = Dijagnoza::query()->when($naziv,fn($query, $naziv)=>$query->withNaziv($naziv));
         return DijagnozaResource::collection($query->latest()->paginate());
     }
 

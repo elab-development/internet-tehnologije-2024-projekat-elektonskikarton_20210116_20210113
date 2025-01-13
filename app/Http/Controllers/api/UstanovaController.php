@@ -17,10 +17,17 @@ class UstanovaController extends Controller
     use CanLoadRelationships;
     private array $relations = ['mesto'];
 
-    public function index()
+    public function index(Request $request)
     {
         Gate::authorize('viewAny', Ustanova::class);
-        $query = $this->loadRelationships(Ustanova::query());
+        $naziv=$request->input('naziv');
+        $posBroj=$request->input('postanskiBroj');
+
+        $ustanove=Ustanova::query()
+        ->when($naziv, fn($query, $naziv)=> $query->withNaziv($naziv))
+        ->when($posBroj, fn($query, $posBroj)=> $query->withMesto($posBroj));
+
+        $query = $this->loadRelationships($ustanove);
         return UstanovaResource::collection($query->latest()->paginate());
     }
 
