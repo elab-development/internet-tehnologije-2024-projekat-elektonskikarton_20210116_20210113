@@ -16,10 +16,17 @@ class MestoController extends Controller
      */
     use CanLoadRelationships;
     private array $relations = ['ustanova'];
-    public function index()
+    public function index(Request $request)
     {
         Gate::authorize('viewAny', Mesto::class);
-        $query = $this->loadRelationships(Mesto::query());
+        $naziv=$request->input('naziv');
+        $posBr=$request->input('postanskiBroj');
+
+        $mesta=Mesto::query()
+        ->when($naziv, fn($query, $naziv)=>$query->withNaziv($naziv))
+        ->when($posBr, fn($query, $posBr)=>$query->withPostanskiBroj($posBr));
+
+        $query = $this->loadRelationships($mesta);
         return MestoResource::collection($query->latest()->paginate());
     }
 

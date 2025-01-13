@@ -15,11 +15,16 @@ class KartonController extends Controller
      * Display a listing of the resource.
      */
     use CanLoadRelationships;
-    private array $relations = ['pregleds','ustanova','zaposlenjes'];
-    public function index()
+    private array $relations = ['pregleds', 'ustanova', 'zaposlenjes'];
+    public function index(Request $request)
     {
-        Gate::authorize('viewAny',Karton::class);
-        $query = $this->loadRelationships(Karton::query());
+        Gate::authorize('viewAny', Karton::class);
+        $bk = $request->input('brojKnjizice');
+
+        $kartoni = Karton::query()
+            ->when($bk, fn($query, $bk) => $query->withBrojKnjizice($bk));
+
+        $query = $this->loadRelationships($kartoni);
         return KartonResource::collection($query->latest()->paginate());
     }
 
@@ -28,7 +33,7 @@ class KartonController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize('create',Karton::class);
+        Gate::authorize('create', Karton::class);
         $validatedData = $request->validate([
             'brojKnjizice' => 'required|string|unique:kartons',
             'napomene' => 'string|max:255',
@@ -45,7 +50,7 @@ class KartonController extends Controller
     public function show(string $id)
     {
         $karton = Karton::findOrFail($id);
-        Gate::authorize('view',$karton);
+        Gate::authorize('view', $karton);
         return new KartonResource($this->loadRelationships($karton));
     }
 
@@ -55,7 +60,7 @@ class KartonController extends Controller
     public function update(Request $request, string $id)
     {
         $karton = Karton::findOrFail($id);
-        Gate::authorize('update',$karton);
+        Gate::authorize('update', $karton);
         $validatedData = $request->validate([
             'napomene' => 'string|max:255',
             'ustanova_id' => 'required|integer|exists:ustanovas,id'
@@ -70,7 +75,7 @@ class KartonController extends Controller
     public function destroy(string $id)
     {
         $karton = Karton::findOrFail($id);
-        Gate::authorize('delete',$karton);
+        Gate::authorize('delete', $karton);
         $karton->delete();
         return response()->json('Karton uspesno obrisan');
     }

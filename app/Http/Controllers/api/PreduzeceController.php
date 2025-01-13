@@ -17,10 +17,20 @@ class PreduzeceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         Gate::authorize('viewAny', Preduzece::class);
-        $query = $this->loadRelationships(Preduzece::query());
+        $regBroj = $request->input('registarskiBroj');
+        $naziv = $request->input('naziv');
+        $sifDel = $request->input('sifraDelatnosti');
+        
+        $preduzece = Preduzece::query()
+            ->when($regBroj, fn($query, $regBroj) => $query->withRegistarskiBroj($regBroj))
+            ->when($naziv, fn($query, $naziv) => $query->withNaziv($naziv))
+            ->when($sifDel, fn($query, $sifDel) => $query->withSifraDelatnosti($sifDel));
+
+
+        $query = $this->loadRelationships($preduzece);
         return PreduzeceResource::collection($query->latest()->paginate());
     }
 
@@ -62,7 +72,7 @@ class PreduzeceController extends Controller
         Gate::authorize('update', $preduzece);
 
         $validatedData = $request->validate([
-            'registarskiBroj' => 'required|integer|min:10000|max:99999|unique:preduzeces,registarskiBroj,' . $preduzece->registarskiBroj.',registarskiBroj',
+            'registarskiBroj' => 'required|integer|min:10000|max:99999|unique:preduzeces,registarskiBroj,' . $preduzece->registarskiBroj . ',registarskiBroj',
             'naziv' => 'required|string|max:255',
             'sifraDelatnosti' => 'required|integer|min:1|max:70',
             'mesto_postanskiBroj' => 'required|exists:mestos,postanskiBroj'
@@ -82,7 +92,7 @@ class PreduzeceController extends Controller
         Gate::authorize('delete', $preduzece);
 
         $preduzece->delete();
-        
+
         return response()->json('Uspesno obrisano preduzece');
     }
 }
