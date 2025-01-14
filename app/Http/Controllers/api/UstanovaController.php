@@ -19,16 +19,19 @@ class UstanovaController extends Controller
 
     public function index(Request $request)
     {
-        Gate::authorize('viewAny', Ustanova::class);
-        $naziv=$request->input('naziv');
-        $posBroj=$request->input('postanskiBroj');
+        if (Gate::allows('viewAny', Ustanova::class)) {
+            $naziv = $request->input('naziv');
+            $posBroj = $request->input('postanskiBroj');
 
-        $ustanove=Ustanova::query()
-        ->when($naziv, fn($query, $naziv)=> $query->withNaziv($naziv))
-        ->when($posBroj, fn($query, $posBroj)=> $query->withMesto($posBroj));
+            $ustanove = Ustanova::query()
+                ->when($naziv, fn($query, $naziv) => $query->withNaziv($naziv))
+                ->when($posBroj, fn($query, $posBroj) => $query->withMesto($posBroj));
 
-        $query = $this->loadRelationships($ustanove);
-        return UstanovaResource::collection($query->latest()->paginate());
+            $query = $this->loadRelationships($ustanove);
+            return UstanovaResource::collection($query->latest()->paginate());
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za pregled ustanova.'], 403);
+        }
     }
 
     /**
@@ -36,15 +39,18 @@ class UstanovaController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize('create', Ustanova::class);
+        if (Gate::allows('create', Ustanova::class)) {
 
-        $ustanova = Ustanova::create($request->validate([
-            'naziv' => 'required|string',
-            'ulicaBroj' => 'required|string',
-            'mesto_postanskiBroj' => 'required|integer|exists:mestos,postanskiBroj'
-        ]));
+            $ustanova = Ustanova::create($request->validate([
+                'naziv' => 'required|string',
+                'ulicaBroj' => 'required|string',
+                'mesto_postanskiBroj' => 'required|integer|exists:mestos,postanskiBroj'
+            ]));
 
-        return new UstanovaResource($ustanova);
+            return new UstanovaResource($ustanova);
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za kreiranje ustanova.'], 403);
+        }
     }
 
     /**
@@ -53,9 +59,11 @@ class UstanovaController extends Controller
     public function show(string $id)
     {
         $ustanova = Ustanova::findOrFail($id);
-        Gate::authorize('view', $ustanova);
-
-        return new UstanovaResource($this->loadRelationships($ustanova));
+        if (Gate::allows('view', $ustanova)) {
+            return new UstanovaResource($this->loadRelationships($ustanova));
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za pregled ustanove.'], 403);
+        }
     }
 
     /**
@@ -64,14 +72,17 @@ class UstanovaController extends Controller
     public function update(Request $request, string $id)
     {
         $ustanova = Ustanova::findOrFail($id);
-        Gate::authorize('update', $ustanova);
-        $ustanova->update($request->validate([
-            'naziv' => 'required|string',
-            'ulicaBroj' => 'required|string',
-            'mesto_postanskiBroj' => 'required|integer|exists:mestos,postanskiBroj'
-        ]));
+        if (Gate::allows('update', $ustanova)) {
+            $ustanova->update($request->validate([
+                'naziv' => 'required|string',
+                'ulicaBroj' => 'required|string',
+                'mesto_postanskiBroj' => 'required|integer|exists:mestos,postanskiBroj'
+            ]));
 
-        return new UstanovaResource($this->loadRelationships($ustanova));
+            return new UstanovaResource($this->loadRelationships($ustanova));
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za azuriranje ustanova.'], 403);
+        }
     }
 
     /**
@@ -80,10 +91,13 @@ class UstanovaController extends Controller
     public function destroy(string $id)
     {
         $ustanova = Ustanova::findOrFail($id);
-        Gate::authorize('delete', $ustanova);
+        if (Gate::authorize('delete', $ustanova)) {
 
-        $ustanova->delete();
+            $ustanova->delete();
 
-        return response()->json("Deleted successfully");
+            return response()->json("Uspesno obrisano");
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za brisanje ustanova.'], 403);
+        }
     }
 }

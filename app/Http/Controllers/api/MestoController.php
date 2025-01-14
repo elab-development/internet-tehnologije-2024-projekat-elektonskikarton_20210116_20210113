@@ -18,16 +18,19 @@ class MestoController extends Controller
     private array $relations = ['ustanova'];
     public function index(Request $request)
     {
-        Gate::authorize('viewAny', Mesto::class);
-        $naziv=$request->input('naziv');
-        $posBr=$request->input('postanskiBroj');
+        if (Gate::allows('viewAny', Mesto::class)) {
+            $naziv = $request->input('naziv');
+            $posBr = $request->input('postanskiBroj');
 
-        $mesta=Mesto::query()
-        ->when($naziv, fn($query, $naziv)=>$query->withNaziv($naziv))
-        ->when($posBr, fn($query, $posBr)=>$query->withPostanskiBroj($posBr));
+            $mesta = Mesto::query()
+                ->when($naziv, fn($query, $naziv) => $query->withNaziv($naziv))
+                ->when($posBr, fn($query, $posBr) => $query->withPostanskiBroj($posBr));
 
-        $query = $this->loadRelationships($mesta);
-        return MestoResource::collection($query->latest()->paginate());
+            $query = $this->loadRelationships($mesta);
+            return MestoResource::collection($query->latest()->paginate());
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za pregled mesta.'], 403);
+        }
     }
 
     /**
@@ -35,13 +38,16 @@ class MestoController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize('create', Mesto::class);
-        $validatedData = $request->validate([
-            'postanskiBroj' => 'required|integer|unique:mestos,postanskiBroj|min:10000|max:99999',
-            'naziv' => 'required|string'
-        ]);
-        $mesto = Mesto::create($validatedData);
-        return new MestoResource($this->loadRelationships($mesto));
+        if (Gate::allows('create', Mesto::class)) {
+            $validatedData = $request->validate([
+                'postanskiBroj' => 'required|integer|unique:mestos,postanskiBroj|min:10000|max:99999',
+                'naziv' => 'required|string'
+            ]);
+            $mesto = Mesto::create($validatedData);
+            return new MestoResource($this->loadRelationships($mesto));
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za kreiranje mesta.'], 403);
+        }
     }
 
     /**
@@ -50,8 +56,11 @@ class MestoController extends Controller
     public function show(string $id)
     {
         $mesto = Mesto::where('postanskiBroj', $id)->firstOrFail();
-        Gate::authorize('view', $mesto);
-        return new MestoResource($this->loadRelationships($mesto));
+        if (Gate::allows('view', $mesto)) {
+            return new MestoResource($this->loadRelationships($mesto));
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za pregled mesta.'], 403);
+        }
     }
 
     /**
@@ -60,13 +69,16 @@ class MestoController extends Controller
     public function update(Request $request, string $id)
     {
         $mesto = Mesto::where('postanskiBroj', $id)->firstOrFail();
-        Gate::authorize('update', $mesto);
-        $validatedData = $request->validate([
-            'postanskiBroj' => 'required|integer|min:10000|max:99999|unique:mestos,postanskiBroj,' . $mesto->postanskiBroj,
-            'naziv' => 'required|string'
-        ]);
-        $mesto->update($validatedData);
-        return new MestoResource($this->loadRelationships($mesto));
+        if (Gate::allows('update', $mesto)) {
+            $validatedData = $request->validate([
+                'postanskiBroj' => 'required|integer|min:10000|max:99999|unique:mestos,postanskiBroj,' . $mesto->postanskiBroj,
+                'naziv' => 'required|string'
+            ]);
+            $mesto->update($validatedData);
+            return new MestoResource($this->loadRelationships($mesto));
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za azuriranje mesta.'], 403);
+        }
     }
 
     /**
@@ -75,8 +87,11 @@ class MestoController extends Controller
     public function destroy(string $id)
     {
         $mesto = Mesto::where('postanskiBroj', $id)->firstOrFail();
-        Gate::authorize('delete', $mesto);
-        $mesto->delete();
-        return response()->json('Mesto uspesno obrisano');
+        if (Gate::allows('delete', $mesto)) {
+            $mesto->delete();
+            return response()->json('Mesto uspesno obrisano');
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za brisanje mesta.'], 403);
+        }
     }
 }

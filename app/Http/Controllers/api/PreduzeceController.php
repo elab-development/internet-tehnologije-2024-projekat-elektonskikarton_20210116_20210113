@@ -19,19 +19,22 @@ class PreduzeceController extends Controller
      */
     public function index(Request $request)
     {
-        Gate::authorize('viewAny', Preduzece::class);
-        $regBroj = $request->input('registarskiBroj');
-        $naziv = $request->input('naziv');
-        $sifDel = $request->input('sifraDelatnosti');
-        
-        $preduzece = Preduzece::query()
-            ->when($regBroj, fn($query, $regBroj) => $query->withRegistarskiBroj($regBroj))
-            ->when($naziv, fn($query, $naziv) => $query->withNaziv($naziv))
-            ->when($sifDel, fn($query, $sifDel) => $query->withSifraDelatnosti($sifDel));
+        if (Gate::allows('viewAny', Preduzece::class)) {
+            $regBroj = $request->input('registarskiBroj');
+            $naziv = $request->input('naziv');
+            $sifDel = $request->input('sifraDelatnosti');
+
+            $preduzece = Preduzece::query()
+                ->when($regBroj, fn($query, $regBroj) => $query->withRegistarskiBroj($regBroj))
+                ->when($naziv, fn($query, $naziv) => $query->withNaziv($naziv))
+                ->when($sifDel, fn($query, $sifDel) => $query->withSifraDelatnosti($sifDel));
 
 
-        $query = $this->loadRelationships($preduzece);
-        return PreduzeceResource::collection($query->latest()->paginate());
+            $query = $this->loadRelationships($preduzece);
+            return PreduzeceResource::collection($query->latest()->paginate());
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za pregled preduzeca.'], 403);
+        }
     }
 
     /**
@@ -39,18 +42,21 @@ class PreduzeceController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize('create', Preduzece::class);
+        if (Gate::allows('create', Preduzece::class)) {
 
-        $validatedData = $request->validate([
-            'registarskiBroj' => 'required|integer|min:10000|max:99999|unique:preduzeces,registarskiBroj',
-            'naziv' => 'required|string|max:255',
-            'sifraDelatnosti' => 'required|integer|min:1|max:70',
-            'mesto_postanskiBroj' => 'required|exists:mestos,postanskiBroj'
-        ]);
+            $validatedData = $request->validate([
+                'registarskiBroj' => 'required|integer|min:10000|max:99999|unique:preduzeces,registarskiBroj',
+                'naziv' => 'required|string|max:255',
+                'sifraDelatnosti' => 'required|integer|min:1|max:70',
+                'mesto_postanskiBroj' => 'required|exists:mestos,postanskiBroj'
+            ]);
 
-        $preduzece = Preduzece::create($validatedData);
+            $preduzece = Preduzece::create($validatedData);
 
-        return new PreduzeceResource($this->loadRelationships($preduzece));
+            return new PreduzeceResource($this->loadRelationships($preduzece));
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za kreiranje preduzeca.'], 403);
+        }
     }
 
     /**
@@ -59,8 +65,11 @@ class PreduzeceController extends Controller
     public function show(string $id)
     {
         $preduzece = Preduzece::where('registarskiBroj', $id)->firstOrFail();
-        Gate::authorize('view', $preduzece);
-        return new PreduzeceResource($this->loadRelationships($preduzece));
+        if (Gate::allows('view', $preduzece)) {
+            return new PreduzeceResource($this->loadRelationships($preduzece));
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za pregled preduzeca.'], 403);
+        }
     }
 
     /**
@@ -69,18 +78,21 @@ class PreduzeceController extends Controller
     public function update(Request $request, string $id)
     {
         $preduzece = Preduzece::where('registarskiBroj', $id)->firstOrFail();
-        Gate::authorize('update', $preduzece);
+        if (Gate::allows('update', $preduzece)) {
 
-        $validatedData = $request->validate([
-            'registarskiBroj' => 'required|integer|min:10000|max:99999|unique:preduzeces,registarskiBroj,' . $preduzece->registarskiBroj . ',registarskiBroj',
-            'naziv' => 'required|string|max:255',
-            'sifraDelatnosti' => 'required|integer|min:1|max:70',
-            'mesto_postanskiBroj' => 'required|exists:mestos,postanskiBroj'
-        ]);
+            $validatedData = $request->validate([
+                'registarskiBroj' => 'required|integer|min:10000|max:99999|unique:preduzeces,registarskiBroj,' . $preduzece->registarskiBroj . ',registarskiBroj',
+                'naziv' => 'required|string|max:255',
+                'sifraDelatnosti' => 'required|integer|min:1|max:70',
+                'mesto_postanskiBroj' => 'required|exists:mestos,postanskiBroj'
+            ]);
 
-        $preduzece->update($validatedData);
+            $preduzece->update($validatedData);
 
-        return new PreduzeceResource($this->loadRelationships($preduzece));
+            return new PreduzeceResource($this->loadRelationships($preduzece));
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za azuriranje preduzeca.'], 403);
+        }
     }
 
     /**
@@ -89,10 +101,13 @@ class PreduzeceController extends Controller
     public function destroy(string $id)
     {
         $preduzece = Preduzece::where('registarskiBroj', $id)->firstOrFail();
-        Gate::authorize('delete', $preduzece);
+        if (Gate::allows('delete', $preduzece)) {
 
-        $preduzece->delete();
+            $preduzece->delete();
 
-        return response()->json('Uspesno obrisano preduzece');
+            return response()->json('Uspesno obrisano preduzece');
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za brisanje preduzeca.'], 403);
+        }
     }
 }

@@ -18,14 +18,17 @@ class KartonController extends Controller
     private array $relations = ['pregleds', 'ustanova', 'zaposlenjes'];
     public function index(Request $request)
     {
-        Gate::authorize('viewAny', Karton::class);
-        $bk = $request->input('brojKnjizice');
+        if (Gate::allows('viewAny', Karton::class)) {
+            $bk = $request->input('brojKnjizice');
 
-        $kartoni = Karton::query()
-            ->when($bk, fn($query, $bk) => $query->withBrojKnjizice($bk));
+            $kartoni = Karton::query()
+                ->when($bk, fn($query, $bk) => $query->withBrojKnjizice($bk));
 
-        $query = $this->loadRelationships($kartoni);
-        return KartonResource::collection($query->latest()->paginate());
+            $query = $this->loadRelationships($kartoni);
+            return KartonResource::collection($query->latest()->paginate());
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za pregled kartona.'], 403);
+        }
     }
 
     /**
@@ -33,15 +36,18 @@ class KartonController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize('create', Karton::class);
-        $validatedData = $request->validate([
-            'brojKnjizice' => 'required|string|unique:kartons',
-            'napomene' => 'string|max:255',
-            'ustanova_id' => 'required|integer|exists:ustanovas,id',
-            'pacijent_jmbg' => 'required|string|exists:pacijents,jmbg'
-        ]);
-        $karton = Karton::create($validatedData);
-        return new KartonResource($this->loadRelationships($karton));
+        if (Gate::authorize('create', Karton::class)) {
+            $validatedData = $request->validate([
+                'brojKnjizice' => 'required|string|unique:kartons',
+                'napomene' => 'string|max:255',
+                'ustanova_id' => 'required|integer|exists:ustanovas,id',
+                'pacijent_jmbg' => 'required|string|exists:pacijents,jmbg'
+            ]);
+            $karton = Karton::create($validatedData);
+            return new KartonResource($this->loadRelationships($karton));
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za kreiranje kartona.'], 403);
+        }
     }
 
     /**
@@ -50,8 +56,11 @@ class KartonController extends Controller
     public function show(string $id)
     {
         $karton = Karton::findOrFail($id);
-        Gate::authorize('view', $karton);
-        return new KartonResource($this->loadRelationships($karton));
+        if (Gate::allows('view', $karton)) {
+            return new KartonResource($this->loadRelationships($karton));
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za pregled kartona.'], 403);
+        }
     }
 
     /**
@@ -60,13 +69,16 @@ class KartonController extends Controller
     public function update(Request $request, string $id)
     {
         $karton = Karton::findOrFail($id);
-        Gate::authorize('update', $karton);
-        $validatedData = $request->validate([
-            'napomene' => 'string|max:255',
-            'ustanova_id' => 'required|integer|exists:ustanovas,id'
-        ]);
-        $karton->update($validatedData);
-        return new KartonResource($this->loadRelationships($karton));
+        if (Gate::allows('update', $karton)) {
+            $validatedData = $request->validate([
+                'napomene' => 'string|max:255',
+                'ustanova_id' => 'required|integer|exists:ustanovas,id'
+            ]);
+            $karton->update($validatedData);
+            return new KartonResource($this->loadRelationships($karton));
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za azuriranje kartona.'], 403);
+        }
     }
 
     /**
@@ -75,8 +87,11 @@ class KartonController extends Controller
     public function destroy(string $id)
     {
         $karton = Karton::findOrFail($id);
-        Gate::authorize('delete', $karton);
-        $karton->delete();
-        return response()->json('Karton uspesno obrisan');
+        if (Gate::allows('delete', $karton)) {
+            $karton->delete();
+            return response()->json('Karton uspesno obrisan');
+        }else{
+            return response()->json(['message' => 'Pristup odbijen za brisanje kartona.'], 403);
+        }
     }
 }

@@ -21,8 +21,11 @@ class SestraController extends Controller
     public function index()
     {
         $sestre = Sestra::query();
-        Gate::authorize('viewAny', Sestra::class);
-        return SestraResource::collection($sestre->latest()->paginate());
+        if (Gate::allows('viewAny', Sestra::class)) {
+            return SestraResource::collection($sestre->latest()->paginate());
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za pregled sestara.'], 403);
+        }
     }
 
     /**
@@ -30,35 +33,34 @@ class SestraController extends Controller
      */
     public function store(Request $request)
     {
-        // Validacija za User
-        Gate::authorize('create', Sestra::class);
 
-        $validatedUser = $request->validate([
-            'name' => 'required|string|max:20',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|string|min:8',
-        ]);
+        if (Gate::allows('create', Sestra::class)) {
 
-        // Kreiranje User-a
-        $user = User::create([
-            'name' => $validatedUser['name'],
-            'email' => $validatedUser['email'],
-            'password' => bcrypt($validatedUser['password']), // Šifriranje lozinke
-            'role' => 'sestra', // Postavljanje role
-        ]);
+            $validatedUser = $request->validate([
+                'name' => 'required|string|max:20',
+                'email' => 'required|email|unique:users',
+                'password' => 'required|string|min:8',
+            ]);
 
+            $user = User::create([
+                'name' => $validatedUser['name'],
+                'email' => $validatedUser['email'],
+                'password' => bcrypt($validatedUser['password']), // Šifriranje lozinke
+                'role' => 'sestra', // Postavljanje role
+            ]);
 
+            $sestra = Sestra::create([
+                'user_id' => $user->id
+            ]);
 
-        $sestra = Sestra::create([
-            'user_id' => $user->id
-        ]);
-
-        // Povratni odgovor
-        return response()->json([
-            'message' => 'Sestra je uspešno kreirana.',
-            'user' => $user,
-            'sestra' => $sestra,
-        ], 201);
+            return response()->json([
+                'message' => 'Sestra je uspešno kreirana.',
+                'user' => $user,
+                'sestra' => $sestra,
+            ], 201);
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za kreiranje sestara.'], 403);
+        }
     }
 
     /**
@@ -67,8 +69,11 @@ class SestraController extends Controller
     public function show(string $id)
     {
         $sestra = Sestra::findOrFail($id);
-        Gate::authorize('view', $sestra);
-        return new SestraResource($sestra);
+        if (Gate::allows('view', $sestra)) {
+            return new SestraResource($sestra);
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za pregled sestara.'], 403);
+        }
     }
 
     /**
@@ -76,33 +81,34 @@ class SestraController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        // Pronađi doktora i povezanog korisnika
+
         $sestra = Sestra::findOrFail($id);
         $user = User::findOrFail($sestra->user_id);
-        Gate::authorize('update', $sestra);
+        if (Gate::allows('update', $sestra)) {
+
+            $validatedUser = $request->validate([
+                'name' => 'required|string|max:20',
+                'email' => 'required|email|unique:users,email,' . $user->id,
+                'password' => 'nullable|string|min:8',
+            ]);
 
 
-        // Validacija za User-a
-        $validatedUser = $request->validate([
-            'name' => 'required|string|max:20',
-            'email' => 'required|email|unique:users,email,' . $user->id, // Ignoriši trenutni korisnik
-            'password' => 'nullable|string|min:8', // Lozinka nije obavezna prilikom ažuriranja
-        ]);
-
-        // Ažuriranje User-a
-        $user->update([
-            'name' => $validatedUser['name'],
-            'email' => $validatedUser['email'],
-            'password' => $validatedUser['password'] ? bcrypt($validatedUser['password']) : $user->password, // Ako nema nove lozinke, zadrži staru
-        ]);
+            $user->update([
+                'name' => $validatedUser['name'],
+                'email' => $validatedUser['email'],
+                'password' => $validatedUser['password'] ? bcrypt($validatedUser['password']) : $user->password,
+            ]);
 
 
-        // Povratni odgovor
-        return response()->json([
-            'message' => 'Sestra je uspešno ažurirana.',
-            'user' => $user,
-            'sestra' => $sestra,
-        ], 200);
+
+            return response()->json([
+                'message' => 'Sestra je uspešno ažurirana.',
+                'user' => $user,
+                'sestra' => $sestra,
+            ], 200);
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za azuriranje sestre.'], 403);
+        }
     }
 
     /**
@@ -110,13 +116,15 @@ class SestraController extends Controller
      */
     public function destroy(string $id)
     {
-
         $sestra = Sestra::findOrFail($id);
-        Gate::authorize('delete', $sestra);
-        $user = User::findOrFail($sestra->user_id);
-        $sestra->delete();
-        $user->delete();
+        if (Gate::allows('delete', $sestra)) {
+            $user = User::findOrFail($sestra->user_id);
+            $sestra->delete();
+            $user->delete();
 
-        return response()->json('Sestra je uspesno obrisana');
+            return response()->json('Sestra je uspesno obrisana');
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za brisanje sestara.'], 403);
+        }
     }
 }

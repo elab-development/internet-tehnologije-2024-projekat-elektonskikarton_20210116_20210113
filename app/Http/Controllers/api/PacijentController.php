@@ -16,13 +16,16 @@ class PacijentController extends Controller
      * Display a listing of the resource.
      */
     use CanLoadRelationships;
-    private array $relations = ['user','karton', 'karton.pregled', 'karton.zaposlenje','mesto'];
+    private array $relations = ['user', 'karton', 'karton.pregled', 'karton.zaposlenje', 'mesto'];
 
     public function index()
     {
-        Gate::authorize('viewAny',Pacijent::class);
-        $query = $this->loadRelationships(Pacijent::query());
-        return PacijentResource::collection($query->latest()->paginate());
+        if (Gate::allows('viewAny', Pacijent::class)) {
+            $query = $this->loadRelationships(Pacijent::query());
+            return PacijentResource::collection($query->latest()->paginate());
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za pregled pacijenta.'], 403);
+        }
     }
 
     /**
@@ -62,8 +65,11 @@ class PacijentController extends Controller
     public function show(string $id)
     {
         $pacijent = Pacijent::where('jmbg', $id)->firstOrFail();
-        Gate::authorize('view', $pacijent);
-        return new PacijentResource($this->loadRelationships($pacijent));
+        if (Gate::allows('view', $pacijent)) {
+            return new PacijentResource($this->loadRelationships($pacijent));
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za pregled pacijenta.'], 403);
+        }
     }
 
     /**
@@ -73,21 +79,22 @@ class PacijentController extends Controller
     {
         $pacijent = Pacijent::where('jmbg', $id)->firstOrFail();
 
-        Gate::authorize('update', $pacijent);
+        if (Gate::authorize('update', $pacijent)) {
 
+            $validatedPacijent = $request->validate([
+                'imePrezimeNZZ' => 'string|max:100',
+                'ulicaBroj' => 'required|string',
+                'telefon' => 'required|string',
+                'bracniStatus' => 'required|in:u braku, nije u braku',
+                'mesto_postanskiBroj' => 'required|integer|exists:mestos,postanskiBroj'
+            ]);
 
-        // Validacija za Doktora
-        $validatedPacijent = $request->validate([
-            'imePrezimeNZZ' => 'string|max:100',
-            'ulicaBroj' => 'required|string',
-            'telefon' => 'required|string',
-            'bracniStatus' => 'required|in:u braku, nije u braku',
-            'mesto_postanskiBroj' => 'required|integer|exists:mestos,postanskiBroj'
-        ]);
+            $pacijent->update($validatedPacijent);
 
-        $pacijent->update($validatedPacijent);
-
-        return new PacijentResource($this->loadRelationships($pacijent));
+            return new PacijentResource($this->loadRelationships($pacijent));
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za azuriranje pacijenta.'], 403);
+        }
     }
 
     /**
@@ -96,9 +103,11 @@ class PacijentController extends Controller
     public function destroy(string $id)
     {
         $pacijent = Pacijent::where('jmbg', $id)->firstOrFail();
-        Gate::auhtorize('delete', $pacijent);
-        $pacijent->delete();
-
-        return response()->json('Uspesno obrisan pacijent');
+        if (Gate::allows('delete', $pacijent)) {
+            $pacijent->delete();
+            return response()->json('Uspesno obrisan pacijent');
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za brisanje pacijenta.'], 403);
+        }
     }
 }

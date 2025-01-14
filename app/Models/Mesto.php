@@ -21,7 +21,7 @@ class Mesto extends Model
 
     protected $primaryKey = 'postanskiBroj';
     public $incrementing = false;
-    protected $keyType = 'integer'; // Ako koristiš brojeve za 'postanskiBroj'
+    protected $keyType = 'integer'; 
 
 
 

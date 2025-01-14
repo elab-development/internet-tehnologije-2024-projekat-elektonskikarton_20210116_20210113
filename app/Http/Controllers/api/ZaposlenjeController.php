@@ -18,9 +18,12 @@ class ZaposlenjeController extends Controller
      */
     public function index()
     {
-        Gate::authorize('viewAny',Zaposlenje::class);
-        $query = $this->loadRelationships(Zaposlenje::query());
-        return ZaposlenjeResource::collection($query->latest()->paginate());
+        if (Gate::allows('viewAny', Zaposlenje::class)) {
+            $query = $this->loadRelationships(Zaposlenje::query());
+            return ZaposlenjeResource::collection($query->latest()->paginate());
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za pregled zaposlenja.'], 403);
+        }
     }
 
     /**
@@ -28,15 +31,18 @@ class ZaposlenjeController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize('create', Zaposlenje::class);
-        $validatedData = $request->validate([
-            'preduzece_registarskiBroj' => 'required|exists:preduzeces,registarskiBroj',
-            'karton_id' => 'required|exists:kartons, id',
-            'posao' => 'string|required'
-        ]);
+        if (Gate::allows('create', Zaposlenje::class)) {
+            $validatedData = $request->validate([
+                'preduzece_registarskiBroj' => 'required|exists:preduzeces,registarskiBroj',
+                'karton_id' => 'required|exists:kartons, id',
+                'posao' => 'string|required'
+            ]);
 
-        $zaposlenje = Zaposlenje::create($validatedData);
-        return new ZaposlenjeResource($this->loadRelationships($zaposlenje));
+            $zaposlenje = Zaposlenje::create($validatedData);
+            return new ZaposlenjeResource($this->loadRelationships($zaposlenje));
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za kreiranje zaposlenja.'], 403);
+        }
     }
 
     /**
@@ -45,8 +51,11 @@ class ZaposlenjeController extends Controller
     public function show(string $id)
     {
         $zaposlenje = Zaposlenje::where('redniBroj', $id)->firstOrFail();
-        Gate::authorize('view', $zaposlenje);
-        return new ZaposlenjeResource($this->loadRelationships($zaposlenje));
+        if (Gate::allows('view', $zaposlenje)) {
+            return new ZaposlenjeResource($this->loadRelationships($zaposlenje));
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za pregled zaposlenja.'], 403);
+        }
     }
 
     /**
@@ -55,17 +64,20 @@ class ZaposlenjeController extends Controller
     public function update(Request $request, string $id)
     {
         $zaposlenje = Zaposlenje::where('redniBroj', $id)->firstOrFail();
-        Gate::authorize('update', $zaposlenje);
-        $validatedData = $request->validate([
-            'preduzece_registarskiBroj' => 'required|exists:preduzeces,registarskiBroj',
-            'karton_id' => 'required|exists:kartons, id',
-            'posao' => 'string|required'
-        ]);
+        if (Gate::allows('update', $zaposlenje)) {
+            $validatedData = $request->validate([
+                'preduzece_registarskiBroj' => 'required|exists:preduzeces,registarskiBroj',
+                'karton_id' => 'required|exists:kartons, id',
+                'posao' => 'string|required'
+            ]);
 
-        $zaposlenje->update($validatedData);
-        return new ZaposlenjeResource($this->loadRelationships($zaposlenje));
+            $zaposlenje->update($validatedData);
+            return new ZaposlenjeResource($this->loadRelationships($zaposlenje));
 
-        return response()->json('Uspesno azurirano zaposlenje');
+            return response()->json('Uspesno azurirano zaposlenje');
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za azuriranje zaposlenja.'], 403);
+        }
     }
 
     /**
@@ -74,9 +86,12 @@ class ZaposlenjeController extends Controller
     public function destroy(string $id)
     {
         $zaposlenje = Zaposlenje::where('redniBroj', $id)->firstOrFail();
-        Gate::authorize('delete', $zaposlenje);
-        $zaposlenje->delete();
+        if (Gate::allows('delete', $zaposlenje)) {
+            $zaposlenje->delete();
 
-        return response()->json('Uspesno obrisano zaposlenje');
+            return response()->json('Uspesno obrisano zaposlenje');
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za brisanje zaposlenja.'], 403);
+        }
     }
 }
