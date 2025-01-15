@@ -71,7 +71,6 @@ class MestoController extends Controller
         $mesto = Mesto::where('postanskiBroj', $id)->firstOrFail();
         if (Gate::allows('update', $mesto)) {
             $validatedData = $request->validate([
-                'postanskiBroj' => 'required|integer|min:10000|max:99999|unique:mestos,postanskiBroj,' . $mesto->postanskiBroj,
                 'naziv' => 'required|string'
             ]);
             $mesto->update($validatedData);

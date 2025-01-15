@@ -45,8 +45,8 @@ class SestraController extends Controller
             $user = User::create([
                 'name' => $validatedUser['name'],
                 'email' => $validatedUser['email'],
-                'password' => bcrypt($validatedUser['password']), // Šifriranje lozinke
-                'role' => 'sestra', // Postavljanje role
+                'password' => bcrypt($validatedUser['password']), 
+                'role' => 'sestra', 
             ]);
 
             $sestra = Sestra::create([

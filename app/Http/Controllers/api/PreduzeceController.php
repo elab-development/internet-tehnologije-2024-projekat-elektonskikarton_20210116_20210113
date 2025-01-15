@@ -81,7 +81,6 @@ class PreduzeceController extends Controller
         if (Gate::allows('update', $preduzece)) {
 
             $validatedData = $request->validate([
-                'registarskiBroj' => 'required|integer|min:10000|max:99999|unique:preduzeces,registarskiBroj,' . $preduzece->registarskiBroj . ',registarskiBroj',
                 'naziv' => 'required|string|max:255',
                 'sifraDelatnosti' => 'required|integer|min:1|max:70',
                 'mesto_postanskiBroj' => 'required|exists:mestos,postanskiBroj'

@@ -41,11 +41,14 @@ class UstanovaController extends Controller
     {
         if (Gate::allows('create', Ustanova::class)) {
 
-            $ustanova = Ustanova::create($request->validate([
+            $validatedData = $request->validate([
                 'naziv' => 'required|string',
                 'ulicaBroj' => 'required|string',
-                'mesto_postanskiBroj' => 'required|integer|exists:mestos,postanskiBroj'
-            ]));
+                'mesto_postanskiBroj' => 'required|integer|exists:mestos,postanskiBroj',
+            ]);
+           
+            
+            $ustanova = Ustanova::create($validatedData);
 
             return new UstanovaResource($ustanova);
         } else {
@@ -73,11 +76,15 @@ class UstanovaController extends Controller
     {
         $ustanova = Ustanova::findOrFail($id);
         if (Gate::allows('update', $ustanova)) {
-            $ustanova->update($request->validate([
+
+            $validatedData = $request->validate([
                 'naziv' => 'required|string',
                 'ulicaBroj' => 'required|string',
-                'mesto_postanskiBroj' => 'required|integer|exists:mestos,postanskiBroj'
-            ]));
+                'mesto_postanskiBroj' => 'required|integer|exists:mestos,postanskiBroj',
+            ]);
+         
+
+            $ustanova->update($validatedData);
 
             return new UstanovaResource($this->loadRelationships($ustanova));
         } else {

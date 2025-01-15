@@ -18,9 +18,7 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required'
         ]);
-
         $user = \App\Models\User::where('email', $request->email)->first();
-
         if (!$user) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.']
@@ -32,9 +30,7 @@ class AuthController extends Controller
                 'email' => ['The provided credentials are incorrect.']
             ]);
         }
-
         $token = $user->createToken('api-token')->plainTextToken;
-
         return response()->json([
             'token' => $token
         ]);
@@ -43,7 +39,6 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $request->user()->tokens()->delete();
-
         return response()->json([
             'message' => 'Logged out successfully'
         ]);
@@ -56,11 +51,7 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|string|min:8'
         ]);
-
-        // Kreiranje User-a
         $user = User::create([...$validatedUser,'role'=>'pacijent']);
-       // dd($user->role);
-        // Validacija za Doktora
         $validatedPacijent = $request->validate([
             'jmbg' => 'required|string|unique:pacijents,jmbg',
             'imePrezimeNZZ' => 'string|max:100',
@@ -71,7 +62,6 @@ class AuthController extends Controller
             'bracniStatus' => 'required|in:u braku, nije u braku',
             'mesto_postanskiBroj' => 'required|integer|exists:mestos,postanskiBroj'
         ]);
-
         $pacijent = Pacijent::create([...$validatedPacijent,'user_id'=>$user->id]);
         return new PacijentResource($pacijent);
     } 

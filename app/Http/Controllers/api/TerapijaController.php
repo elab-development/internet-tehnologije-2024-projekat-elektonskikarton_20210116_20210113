@@ -34,7 +34,9 @@ class TerapijaController extends Controller
 
             $terapija = Terapija::create(
                 $request->validate([
-                    'naziv' => 'required|string|max:255'
+                    'naziv' => 'required|string|max:255',
+                    'opis' => 'required|string|max:255',
+                    'trajanje' => 'required|integer|min:1'
                 ])
             );
 

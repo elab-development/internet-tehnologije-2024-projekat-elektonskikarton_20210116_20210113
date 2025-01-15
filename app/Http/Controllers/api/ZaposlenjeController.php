@@ -34,7 +34,7 @@ class ZaposlenjeController extends Controller
         if (Gate::allows('create', Zaposlenje::class)) {
             $validatedData = $request->validate([
                 'preduzece_registarskiBroj' => 'required|exists:preduzeces,registarskiBroj',
-                'karton_id' => 'required|exists:kartons, id',
+                'karton_id' => 'required|exists:kartons,id',
                 'posao' => 'string|required'
             ]);
 
@@ -61,17 +61,22 @@ class ZaposlenjeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, int $redniBroj, int $karton_id)
     {
-        $zaposlenje = Zaposlenje::where('redniBroj', $id)->firstOrFail();
+
+        $zaposlenje = Zaposlenje::where('redniBroj', $redniBroj)
+            ->where('karton_id', $karton_id)
+            ->firstOrFail();
+      
+
         if (Gate::allows('update', $zaposlenje)) {
             $validatedData = $request->validate([
                 'preduzece_registarskiBroj' => 'required|exists:preduzeces,registarskiBroj',
-                'karton_id' => 'required|exists:kartons, id',
                 'posao' => 'string|required'
             ]);
-
+         
             $zaposlenje->update($validatedData);
+             
             return new ZaposlenjeResource($this->loadRelationships($zaposlenje));
 
             return response()->json('Uspesno azurirano zaposlenje');

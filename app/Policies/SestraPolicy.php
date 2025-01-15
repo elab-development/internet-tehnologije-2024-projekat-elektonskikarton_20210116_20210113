@@ -37,7 +37,7 @@ class SestraPolicy
      */
     public function update(User $user, Sestra $sestra): bool
     {
-        return $user->role==='sestra';
+        return $user->role==='sestra' || $user->role==='admin';
     }
 
     /**
