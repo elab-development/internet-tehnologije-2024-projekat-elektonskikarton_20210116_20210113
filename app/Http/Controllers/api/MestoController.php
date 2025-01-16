@@ -15,7 +15,7 @@ class MestoController extends Controller
      * Display a listing of the resource.
      */
     use CanLoadRelationships;
-    private array $relations = ['ustanova'];
+    private array $relations = ['ustanovas'];
     public function index(Request $request)
     {
         if (Gate::allows('viewAny', Mesto::class)) {

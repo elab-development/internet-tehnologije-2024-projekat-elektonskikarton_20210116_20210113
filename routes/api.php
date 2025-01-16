@@ -23,8 +23,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('terapije', TerapijaController::class);
     Route::apiResource('sestre', SestraController::class);
     Route::apiResource('ustanove', UstanovaController::class);
-    Route::put('/zaposlenja/{redniBroj}/{karton_id}', [ZaposlenjeController::class, 'update']);
-   // Route::apiResource('zaposlenja', ZaposlenjeController::class);
+    //Route::put('/zaposlenja/{redniBroj}/{karton_id}', [ZaposlenjeController::class, 'update']);
+    Route::apiResource('zaposlenja', ZaposlenjeController::class);
 
     Route::apiResource('preduzeca', PreduzeceController::class);
     Route::apiResource('mesta', MestoController::class);
