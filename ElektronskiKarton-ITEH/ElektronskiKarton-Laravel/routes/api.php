@@ -37,6 +37,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 });
 
+Route::get('/ustanoveCount', [UstanovaController::class, 'getUstanoveCount']);
+Route::get('/doktorCount',[DoktorController::class, 'getDoktorCount']);
+Route::get('/pacijentCount',[PacijentController::class, 'getPacijentCount']);
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);

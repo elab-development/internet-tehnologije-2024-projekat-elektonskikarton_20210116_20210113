@@ -19,7 +19,7 @@ class UstanovaController extends Controller
 
     public function index()
     {
-        Gate::authorize('viewAny', Ustanova::class);
+
         $query = $this->loadRelationships(Ustanova::query());
         return UstanovaResource::collection($query->latest()->paginate());
     }
@@ -78,5 +78,10 @@ class UstanovaController extends Controller
         $ustanova->delete();
 
         return response()->json("Deleted successfully");
+    }
+
+    public function getUstanoveCount(){
+        $ustanoveCount = Ustanova::count();
+        return response()->json(['ustanove_count' => $ustanoveCount]);
     }
 }

@@ -101,4 +101,9 @@ class PacijentController extends Controller
 
         return response()->json('Uspesno obrisan pacijent');
     }
+
+    public function getPacijentCount(){
+        $pacijentCount = Pacijent::count();
+        return response()->json(['pacijent_count' => $pacijentCount]);
+    }
 }

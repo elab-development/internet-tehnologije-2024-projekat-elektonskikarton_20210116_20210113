@@ -1,0 +1,173 @@
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    --deep-blue: #22577a;
+    --sea-blue: #38a3a5;
+    --aqua-marine: #57cc99;
+    --green: #80ed99;
+    --light-green: #c7f9cc;
+
+    --title-font: "Poppins", sans-serif;
+    --text-font: "Roboto", sans-serif;
+}
+.title{
+    font-family: var(--title-font);
+}
+
+.text{
+    font-family: var(--text-font);
+}
+
+.footerSection{
+    color: white;
+    background-color: var(--deep-blue);
+}
+
+.social{
+    color: white;
+    transition: transform 250ms;
+    display: inline-block;
+}
+
+.social:hover{
+    transform: translateY(-2px);
+}
+
+.copyrightSection{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.8rem;
+    font-family: var(--text-font);
+    background-color: var(--sea-blue);
+    color: white;
+}
+
+.topFixedBanner {
+    position: relative; 
+    background-image: url("../images/doctor.jpg");
+    min-height: 400px;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.topBannerOverlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    min-height: 400px;
+    width: 100%;
+    background: rgb(0, 0, 0, 0.7);
+}
+
+.topBannerText{
+    padding: 100px 0px 0 50px;
+    color: var(--light-green);
+}
+
+.navBackground {
+    -webkit-transition: background-color 400ms linear;
+    -moz-transition: background-color 400ms linear;
+    -o-transition: background-color 400ms linear;
+    transition: background-color 400ms linear;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.navBackgroundScroll {
+    -webkit-transition: background-color 400ms linear;
+    -moz-transition: background-color 400ms linear;
+    -o-transition: background-color 400ms linear;
+    transition: background-color 400ms linear;
+    background-color: var(--light-green) !important;
+}
+
+.navItem{
+    color: white !important;
+    font-family: var(--text-font);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 0 5px;
+}
+
+.navItemScroll{
+    font-family: var(--text-font);
+    text-decoration: none !important;
+    color: black !important;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 0 5px;
+}
+
+.activeItem{
+    color:var(--deep-blue);
+}
+
+.navTitle{
+    font-family: var(--title-font);
+    font-weight: 700;
+    font-size: 20px;
+    padding-right: 10px;
+    color:var(--aqua-marine) !important;
+}
+
+.navTitleScroll{
+    font-family: var(--title-font);
+    font-weight: 700;
+    font-size: 20px;
+    padding-right: 10px;
+    color:var(--deep-blue) !important;
+}
+
+.serviceCard{
+    margin: 2em;
+    box-shadow: 0 13px 25px -5px;
+    transition: all ease 200ms;
+    min-height: 480px;
+}
+
+
+.serviceCard:hover{
+    margin: 30px 15px;
+    transform: scale(1.02);
+    box-shadow: 0 13px 35px -5px;
+    cursor: pointer;
+}
+
+.serviceCard>img{
+    width: 100%;
+    height: 40%;
+}
+
+.serviceCard>h3{
+    padding-top: 5px;
+    color: var(--deep-blue);
+}
+
+.serviceCard>p{
+    text-align: justify;
+    padding: 10px;
+}
+
+.summaryBanner{
+    min-height: 300px;
+    background-image: url("../images/summary.jpg");
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    color: var(--light-green);
+}
+
+.summaryBannerOverlay{
+    background-color: rgba(0, 0, 0, 0.7);
+    min-height: 300px;
+    width: 100%;
+    left:0;
+    position: absolute;
+}

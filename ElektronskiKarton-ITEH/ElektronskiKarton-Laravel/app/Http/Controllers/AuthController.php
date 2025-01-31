@@ -49,7 +49,7 @@ class AuthController extends Controller
         ]);
     }
 
-    
+
     public function register(Request $request){
         $validatedUser = $request->validate([
             'name' => 'required|string|max:20',
@@ -68,11 +68,11 @@ class AuthController extends Controller
             'ulicaBroj' => 'required|string',
             'telefon' => 'required|string',
             'pol' => 'required|in:muski,zenski',
-            'bracniStatus' => 'required|in:u braku, nije u braku',
+            'bracniStatus' => 'required|in:u braku,nije u braku',
             'mesto_postanskiBroj' => 'required|integer|exists:mestos,postanskiBroj'
         ]);
 
         $pacijent = Pacijent::create([...$validatedPacijent,'user_id'=>$user->id]);
         return new PacijentResource($pacijent);
-    } 
+    }
 }

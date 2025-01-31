@@ -134,4 +134,9 @@ class DoktorController extends Controller
         return response()->json('Doktor je uspesno obrisan');
 
     }
+
+    public function getDoktorCount(){
+        $doctorCount = Doktor::count();
+        return response()->json(['doktor_count' => $doctorCount]);
+    }
 }
