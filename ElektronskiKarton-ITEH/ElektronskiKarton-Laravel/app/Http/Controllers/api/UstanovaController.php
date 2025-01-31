@@ -17,7 +17,7 @@ class UstanovaController extends Controller
     use CanLoadRelationships;
     private array $relations = ['mesto'];
 
-    public function index()
+    public function index(Request $request)
     {
 
         $query = $this->loadRelationships(Ustanova::query());
@@ -29,15 +29,21 @@ class UstanovaController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize('create', Ustanova::class);
+        if (Gate::allows('create', Ustanova::class)) {
 
-        $ustanova = Ustanova::create($request->validate([
-            'naziv' => 'required|string',
-            'ulicaBroj' => 'required|string',
-            'mesto_postanskiBroj' => 'required|integer|exists:mestos,postanskiBroj'
-        ]));
+            $validatedData = $request->validate([
+                'naziv' => 'required|string',
+                'ulicaBroj' => 'required|string',
+                'mesto_postanskiBroj' => 'required|integer|exists:mestos,postanskiBroj',
+            ]);
 
-        return new UstanovaResource($ustanova);
+
+            $ustanova = Ustanova::create($validatedData);
+
+            return new UstanovaResource($ustanova);
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za kreiranje ustanova.'], 403);
+        }
     }
 
     /**
@@ -46,9 +52,11 @@ class UstanovaController extends Controller
     public function show(string $id)
     {
         $ustanova = Ustanova::findOrFail($id);
-        Gate::authorize('view', $ustanova);
-
-        return new UstanovaResource($this->loadRelationships($ustanova));
+        if (Gate::allows('view', $ustanova)) {
+            return new UstanovaResource($this->loadRelationships($ustanova));
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za pregled ustanove.'], 403);
+        }
     }
 
     /**
@@ -57,14 +65,21 @@ class UstanovaController extends Controller
     public function update(Request $request, string $id)
     {
         $ustanova = Ustanova::findOrFail($id);
-        Gate::authorize('update', $ustanova);
-        $ustanova->update($request->validate([
-            'naziv' => 'required|string',
-            'ulicaBroj' => 'required|string',
-            'mesto_postanskiBroj' => 'required|integer|exists:mestos,postanskiBroj'
-        ]));
+        if (Gate::allows('update', $ustanova)) {
 
-        return new UstanovaResource($this->loadRelationships($ustanova));
+            $validatedData = $request->validate([
+                'naziv' => 'required|string',
+                'ulicaBroj' => 'required|string',
+                'mesto_postanskiBroj' => 'required|integer|exists:mestos,postanskiBroj',
+            ]);
+
+
+            $ustanova->update($validatedData);
+
+            return new UstanovaResource($this->loadRelationships($ustanova));
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za azuriranje ustanova.'], 403);
+        }
     }
 
     /**
@@ -73,15 +88,17 @@ class UstanovaController extends Controller
     public function destroy(string $id)
     {
         $ustanova = Ustanova::findOrFail($id);
-        Gate::authorize('delete', $ustanova);
+        if (Gate::authorize('delete', $ustanova)) {
 
-        $ustanova->delete();
+            $ustanova->delete();
 
-        return response()->json("Deleted successfully");
+            return response()->json("Deleted successfully");
+        }
     }
 
-    public function getUstanoveCount(){
+    public function getUstanoveCount()
+    {
         $ustanoveCount = Ustanova::count();
-        return response()->json(['ustanove_count' => $ustanoveCount]);
+        return response()->json(['ustonve_count' => $ustanoveCount]);
     }
 }

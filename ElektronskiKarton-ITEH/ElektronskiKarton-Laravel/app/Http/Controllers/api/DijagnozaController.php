@@ -10,71 +10,65 @@ use App\Http\Resources\Resource\DijagnozaResource;
 
 class DijagnozaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        Gate::authorize('viewAny', Dijagnoza::class);
-        $query = Dijagnoza::query();
-        return DijagnozaResource::collection($query->latest()->paginate());
+        if (Gate::allows('viewAny', Dijagnoza::class)) {
+            $naziv = $request->input('naziv');
+            $query = Dijagnoza::query()->when($naziv, fn($query, $naziv) => $query->withNaziv($naziv));
+            return DijagnozaResource::collection($query->latest()->paginate());
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za pregled dijagnoza.'], 403);
+        }
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        Gate::authorize('create', Dijagnoza::class);
-        $dijagnoza = Dijagnoza::create(
-            $request->validate([
-                'naziv' => 'required|string|max:255'
-            ])
-        );
+        if (Gate::allows('create', Dijagnoza::class)) {
+            $dijagnoza = Dijagnoza::create(
+                $request->validate([
+                    'naziv' => 'required|string|max:255'
+                ])
+            );
 
-        return new DijagnozaResource($dijagnoza);
+            return new DijagnozaResource($dijagnoza);
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za kreiranje dijagnoze.'], 403);
+        }
     }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-  
         $dijagnoza = Dijagnoza::findOrFail($id);
-        return new DijagnozaResource($dijagnoza);
+        if (Gate::allows('view', $dijagnoza)) {
+            return new DijagnozaResource($dijagnoza);
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za pregled dijagnoze.'], 403);
+        }
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $dijagnoza = Dijagnoza::findOrFail($id);
-        Gate::authorize('update', $dijagnoza);
+        if (Gate::allows('update', $dijagnoza)) {
 
-        $dijagnoza->update(
-            $request->validate(
-                [
-                    'naziv' => 'required|string|max:255'
-                ]
-            )
-        );
+            $dijagnoza->update(
+                $request->validate(
+                    [
+                        'naziv' => 'required|string|max:255'
+                    ]
+                )
+            );
 
-        return new DijagnozaResource($dijagnoza);
+            return new DijagnozaResource($dijagnoza);
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za azuriranje dijagnoze.'], 403);
+        }
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-       
-
         $dijagnoza = Dijagnoza::findOrFail($id);
-        Gate::authorize('delete', $dijagnoza);
-
-        $dijagnoza->delete();
-        return response()->json('Successfully deleted');
+        if (Gate::allows('delete', $dijagnoza)) {
+            $dijagnoza->delete();
+            return response()->json('Uspesno obrisano');
+        }else {
+            return response()->json(['message' => 'Pristup odbijen za brisanje dijagnoze.'], 403);
+        }
     }
 }

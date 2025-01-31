@@ -14,7 +14,7 @@ class KartonPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->role === 'sestra';
+         return $user->role === 'sestra';
     }
 
     /**
@@ -23,7 +23,7 @@ class KartonPolicy
     public function view(User $user, Karton $karton): bool
     {
         $pacijent_jmbg = $karton->pacijent_jmbg;
-        $pacijent = Pacijent::where('jmbg',$pacijent_jmbg)->firstOrFail();
+        $pacijent = Pacijent::where('jmbg', $pacijent_jmbg)->firstOrFail();
         return $user->role === 'doktor' || ($user->role === 'pacijent' && $user->id === $pacijent->user_id);
     }
 

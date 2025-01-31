@@ -16,9 +16,6 @@ use App\Http\Controllers\api\DijagnozaController;
 use App\Http\Controllers\api\PreduzeceController;
 use App\Http\Controllers\api\ZaposlenjeController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('dijagnoze', DijagnozaController::class);
@@ -26,15 +23,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('terapije', TerapijaController::class);
     Route::apiResource('sestre', SestraController::class);
     Route::apiResource('ustanove', UstanovaController::class);
+    //Route::put('/zaposlenja/{redniBroj}/{karton_id}', [ZaposlenjeController::class, 'update']);
     Route::apiResource('zaposlenja', ZaposlenjeController::class);
+
     Route::apiResource('preduzeca', PreduzeceController::class);
     Route::apiResource('mesta', MestoController::class);
     Route::apiResource('pacijenti', PacijentController::class);
     Route::apiResource('kartoni', KartonController::class);
-    Route::apiResource('pregledi', PregledController::class);
-    Route::get('pregledi/{karton_id}',[PregledController::class,'indexForKarton']);
-    Route::get('pregledi/{karton_id}/{rb}',[PregledController::class,'showForKarton']);
-
+    Route::get('pregledi/{karton_id}', [PregledController::class, 'indexForKarton']);
+    Route::get('pregledi/{karton_id}/{rb}', [PregledController::class, 'showForKarton']);
 });
 
 Route::get('/ustanoveCount', [UstanovaController::class, 'getUstanoveCount']);
@@ -43,6 +40,5 @@ Route::get('/pacijentCount',[PacijentController::class, 'getPacijentCount']);
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
-
 Route::post('/logout', [AuthController::class, 'logout'])
     ->middleware('auth:sanctum');

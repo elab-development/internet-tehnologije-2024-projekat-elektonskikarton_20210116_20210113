@@ -13,7 +13,7 @@ class DoktorPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->role==='admin' || $user->role==='sestra';
+        return true;
     }
 
     /**

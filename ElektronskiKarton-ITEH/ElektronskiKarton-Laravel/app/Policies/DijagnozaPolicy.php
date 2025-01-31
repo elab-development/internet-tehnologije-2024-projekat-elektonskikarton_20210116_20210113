@@ -21,7 +21,7 @@ class DijagnozaPolicy
      */
     public function view(User $user, Dijagnoza $dijagnoza): bool
     {
-        return true;
+        return $user->role === 'admin' || $user->role === 'doktor';
     }
 
     /**

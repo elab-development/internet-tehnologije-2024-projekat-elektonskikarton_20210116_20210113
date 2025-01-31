@@ -14,9 +14,13 @@ class Zaposlenje extends Model
     use HasFactory;
     protected $guarded = [];
 
+    protected $primaryKey = ['redniBroj', 'karton_id'];
+    public $incrementing = false;
+
+    
     public function preduzece(): BelongsTo
     {
-        return $this->belongsTo(Preduzece::class,'preduzece_registarskiBroj','registarskiBroj');
+        return $this->belongsTo(Preduzece::class, 'preduzece_registarskiBroj', 'registarskiBroj');
     }
 
     public function karton(): BelongsTo

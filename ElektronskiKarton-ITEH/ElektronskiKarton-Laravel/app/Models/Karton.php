@@ -2,6 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Pregled;
+use App\Models\Pacijent;
+use App\Models\Ustanova;
+use App\Models\Zaposlenje;
+use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -27,6 +33,11 @@ class Karton extends Model
 
     public function zaposlenjes(): HasMany{
         return $this->hasMany(Zaposlenje::class);
+    }
+
+    public function scopeWithBrojKnjizice(Builder $query, string $bk):Builder|QueryBuilder
+    {
+        return $query->where('brojKnjizice','like',$bk);
     }
 
 }
