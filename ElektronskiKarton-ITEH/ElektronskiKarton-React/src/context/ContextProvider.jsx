@@ -11,7 +11,9 @@ const StateContext = createContext({
 export const ContextProvider = ({ children }) => {
     const [user, _setUser] = useState({
         name: '',
-        email: ''
+        email: '',
+        role: '',
+        id: ''
     });
     const [token, _setToken] = useState(
         typeof window !== "undefined" ? localStorage.getItem('ACCESS_TOKEN') : null

@@ -76,6 +76,16 @@ class SestraController extends Controller
         }
     }
 
+    public function showWithId(string $user_id)
+    {
+        $sestra = Sestra::findOrFail($user_id);
+        if (Gate::allows('view', $sestra)) {
+            return new SestraResource($sestra);
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za pregled sestara.'], 403);
+        }
+    }
+
     /**
      * Update the specified resource in storage.
      */

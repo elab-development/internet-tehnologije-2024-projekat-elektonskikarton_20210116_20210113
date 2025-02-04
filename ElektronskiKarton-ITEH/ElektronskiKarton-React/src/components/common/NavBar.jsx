@@ -9,7 +9,7 @@ export default function NavBar() {
   const [navBarBackground, setNavBarBackground] = useState("navBackground");
   const [navBarItem, setNavBarItem] = useState("navItem");
   const [navBarTitle, setNavBarTitle] = useState("navTitle");
-  const {token, setUser, setToken} = useStateContext();
+  const { token, user, setUser, setToken } = useStateContext();
 
   const onScroll = () => {
     if (window.scrollY > 50) {
@@ -46,14 +46,38 @@ export default function NavBar() {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="ms-auto">
-          {!token ? (
-              < >
+            {!token ? (
+              <>
                 <NavLink to="/login" className={navBarItem}>Prijavi se</NavLink>
                 <NavLink to="/register" className={navBarItem}>Registruj se</NavLink>
               </>
             ) : (
               <>
+                {/* Prikazivanje specifičnih linkova prema ulozi korisnika */}
+                {user.role === 'pacijent' && (
+                  <>
+                    <NavLink to={`/pacijent/${user.id}`} className={navBarItem}>Moji podaci</NavLink>
+                    <NavLink to="/ustanova" className={navBarItem}>Ustanove</NavLink>
+                  </>
+                )}
+                {user.role === 'sestra' && (
+                  <>
+                    <NavLink to="/pacijenti" className={navBarItem}>Pacijenti</NavLink>
+                    <NavLink to="/kreiraj-karton" className={navBarItem}>Kreiraj karton</NavLink>
+                  </>
+                )}
+                {user.role === 'doktor' && (
+                  <>
+                    <NavLink to="/kreiraj-pregled" className={navBarItem}>Kreiraj pregled</NavLink>
+                  </>
+                )}
+                {user.role === 'admin' && (
+                  <>
+                    <NavLink to="/admin" className={navBarItem}>Admin Panel</NavLink>
+                  </>
+                )}
                 <NavLink onClick={handleLogout} className={navBarItem}>Odjavi se</NavLink>
+
               </>
             )}
           </Nav>

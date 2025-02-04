@@ -5,9 +5,9 @@ import router from "./router/router.jsx";
 import { ContextProvider } from "./context/ContextProvider";
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
+
     <ContextProvider>
       <RouterProvider router={router} />
     </ContextProvider>
-  </StrictMode>
+
 );

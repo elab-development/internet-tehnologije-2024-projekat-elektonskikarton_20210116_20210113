@@ -72,6 +72,16 @@ class PacijentController extends Controller
         }
     }
 
+    public function showWithId(string $user_id)
+    {
+        $pacijent = Pacijent::where('user_id', $user_id)->firstOrFail();
+        if (Gate::allows('view', $pacijent)) {
+            return new PacijentResource($this->loadRelationships($pacijent));
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za pregled pacijenta.'], 403);
+        }
+    }
+
     /**
      * Update the specified resource in storage.
      */

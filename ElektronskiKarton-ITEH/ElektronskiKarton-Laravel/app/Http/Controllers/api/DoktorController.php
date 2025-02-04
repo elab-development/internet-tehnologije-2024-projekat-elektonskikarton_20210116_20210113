@@ -87,6 +87,15 @@ class DoktorController extends Controller
         }
     }
 
+    public function showWithId(string $user_id)
+    {
+        $doktor = Doktor::findOrFail($user_id);
+        if (Gate::allows('view', $doktor)) {
+            return new DoktorResource($doktor);
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za pregled doktora.'], 403);
+        }
+    }
     /**
      * Update the specified resource in storage.
      */

@@ -99,6 +99,6 @@ class UstanovaController extends Controller
     public function getUstanoveCount()
     {
         $ustanoveCount = Ustanova::count();
-        return response()->json(['ustonve_count' => $ustanoveCount]);
+        return response()->json(['ustanove_count' => $ustanoveCount]);
     }
 }
