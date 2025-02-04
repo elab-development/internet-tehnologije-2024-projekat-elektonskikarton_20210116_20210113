@@ -93,4 +93,10 @@ class MestoController extends Controller
             return response()->json(['message' => 'Pristup odbijen za brisanje mesta.'], 403);
         }
     }
+
+    public function getMestaPB(){
+
+        $mestaPB = Mesto::select('postanskiBroj')->get();
+        return response()->json($mestaPB);
+    }
 }

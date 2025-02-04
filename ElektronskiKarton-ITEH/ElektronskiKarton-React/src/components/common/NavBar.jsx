@@ -3,12 +3,13 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { NavLink } from "react-router-dom";
+import { useStateContext } from "../../context/ContextProvider";
 
 export default function NavBar() {
   const [navBarBackground, setNavBarBackground] = useState("navBackground");
   const [navBarItem, setNavBarItem] = useState("navItem");
   const [navBarTitle, setNavBarTitle] = useState("navTitle");
-
+  const {token, setUser, setToken} = useStateContext();
 
   const onScroll = () => {
     if (window.scrollY > 50) {
@@ -20,6 +21,11 @@ export default function NavBar() {
       setNavBarItem("navItem");
       setNavBarTitle("navTitle");
     }
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    setToken(null);
   };
 
   useEffect(() => {
@@ -39,38 +45,17 @@ export default function NavBar() {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto text">
-            <NavLink
-              to="#"
-              className={navBarItem}
-              style={({ isActive }) => ({
-                color: isActive ? "#22577a" : "white",
-              })}
-            >
-              Lekari
-            </NavLink>
-            <NavLink
-              to="#"
-              className={navBarItem}
-              style={({ isActive }) => ({
-                color: isActive ? "#22577a" : "white",
-              })}
-            >
-              Lokacije
-            </NavLink>
-            <NavLink
-              to="#pricing"
-              className={navBarItem}
-              style={({ isActive }) => ({
-                color: isActive ? "#22577a" : "white",
-              })}
-            >
-              O nama
-            </NavLink>
-          </Nav>
-          <Nav>
-            <NavLink to="#deets" className={navBarItem}>Prijavi se</NavLink>
-            <NavLink to="#deets" className={navBarItem}>Registruj se</NavLink>
+          <Nav className="ms-auto">
+          {!token ? (
+              < >
+                <NavLink to="/login" className={navBarItem}>Prijavi se</NavLink>
+                <NavLink to="/register" className={navBarItem}>Registruj se</NavLink>
+              </>
+            ) : (
+              <>
+                <NavLink onClick={handleLogout} className={navBarItem}>Odjavi se</NavLink>
+              </>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>

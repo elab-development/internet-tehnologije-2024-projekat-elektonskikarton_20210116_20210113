@@ -1,11 +1,10 @@
-import {Outlet} from 'react-router-dom'
-import '../../assets/css/bootstrap.min.css'
+import { Navigate, Outlet } from "react-router-dom";
+import { useStateContext } from "../../context/ContextProvider";
+import "../../assets/css/bootstrap.min.css"
 
+export default function GuestRoute() {
+  const { token } = useStateContext();
+  console.log(token);
 
-export default function GuestLayout(){
-    return(
-        <div>
-            <Outlet></Outlet>
-        </div>
-    )
+  return !token ? <Outlet /> : <Navigate to="/dashboard" replace />;
 }

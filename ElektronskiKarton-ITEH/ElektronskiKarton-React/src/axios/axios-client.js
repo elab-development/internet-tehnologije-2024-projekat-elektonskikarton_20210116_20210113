@@ -1,12 +1,11 @@
 import axios from 'axios';
 
 const axiosClient = axios.create({
-  baseURL: 'http://localhost:8000/api/', // Postavi svoj backend URL
-  timeout: 10000, // Dodaj timeout (opcionalno)
+  baseURL: 'http://localhost:8000/api/', 
+  timeout: 10000, // 
   headers: { 'Content-Type': 'application/json' }
 });
 
-// Request Interceptor za dodavanje tokena
 axiosClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('ACCESS_TOKEN');
@@ -15,10 +14,9 @@ axiosClient.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error) // Rukovanje greškom prilikom kreiranja zahteva
+  (error) => Promise.reject(error)
 );
 
-// Response Interceptor za rukovanje odgovorima i greškama
 axiosClient.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -35,7 +33,7 @@ axiosClient.interceptors.response.use(
       console.error('Network or CORS error.');
     }
 
-    return Promise.reject(error); // Propusti grešku dalje
+    return Promise.reject(error); 
   }
 );
 

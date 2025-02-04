@@ -11,7 +11,7 @@ export default function TopBanner(){
                     <Row>
                         <Col lg={6} md={6} sm={12} className="topBannerText">
                             <h1 className="title">Efikasno upravljanje medicinskim kartonima</h1>
-                            <p>Bezbedno čuvajte, pretražujte i upravljajte elektronskim medicinskim podacima pacijenata – sve na jednom mestu, uz brzi pristup i maksimalnu privatnost.</p>
+                            <p className="text">Bezbedno čuvajte, pretražujte i upravljajte elektronskim medicinskim podacima pacijenata – sve na jednom mestu, uz brzi pristup i maksimalnu privatnost.</p>
                         </Col>
                         <Col lg={6} md={6} sm={12}></Col>
                     </Row>

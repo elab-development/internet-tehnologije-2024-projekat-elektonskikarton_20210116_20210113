@@ -171,3 +171,87 @@
     left:0;
     position: absolute;
 }
+
+.loginForm{
+    font-family: var(--title-font);
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin: 0 auto;
+    font-weight: 700;
+    background:  linear-gradient(135deg, var(--light-green), var(--green));
+    padding: 20px;
+    box-shadow: 0px 0px 10px black;
+}
+
+.loginForm>input{
+    border:none;
+    padding: 5px;
+    border-radius: 20px;
+    margin: 5px 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.loginForm>input:focus{
+    border:none;
+    padding: 5px;
+    border-radius: 20px;
+    margin: 5px 0;
+    box-shadow: 0 0 10px blue;
+    transform: scale(1.02);
+    outline: none;
+}
+
+.loginForm>button{
+    border: none;
+    margin-top: 20px;
+    border-radius: 20px;
+    padding: 5px;
+    color: white;
+    background-color: var(--deep-blue);
+}
+
+.loginForm>button:active{
+    border: none;
+    margin-top: 20px;
+    border-radius: 20px;
+    padding: 5px;
+    color: white;
+    background-color: var(--deep-blue);
+    transform: scale(1.02);
+}
+
+.errorBox{
+    font-family: var(--text-font);
+    padding: 3px;
+    color: red;
+    font-weight: 400;
+}
+
+.mainBanner{
+    background-image: url("../images/doctor.jpg");
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+}
+
+.guestBackground{
+    background-image: url("../images/bg1.jpg");
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
