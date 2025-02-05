@@ -5,6 +5,7 @@ import Pocetna from './../views/PocetnaPage';
 import LoginPage from './../views/LoginPage';
 import Dashboard from "../views/Dashboard";
 import Registracija from "../views/Registracija";
+import MojiPodaci from "../views/MojiPodaciPage";
 
 
 
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
                 path: "/dashboard",
                 element: <Dashboard></Dashboard>
             },
+            {
+                path: "/pacijent/:id",
+                element: <MojiPodaci></MojiPodaci>
+            }
         ]
     },
     
