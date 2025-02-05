@@ -90,15 +90,13 @@ class PacijentController extends Controller
         $pacijent = Pacijent::where('jmbg', $id)->firstOrFail();
 
         if (Gate::authorize('update', $pacijent)) {
-
             $validatedPacijent = $request->validate([
                 'imePrezimeNZZ' => 'string|max:100',
                 'ulicaBroj' => 'required|string',
                 'telefon' => 'required|string',
-                'bracniStatus' => 'required|in:u braku, nije u braku',
+                'bracniStatus' => 'required|in:u braku,nije u braku',
                 'mesto_postanskiBroj' => 'required|integer|exists:mestos,postanskiBroj'
             ]);
-
             $pacijent->update($validatedPacijent);
 
             return new PacijentResource($this->loadRelationships($pacijent));
