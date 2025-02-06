@@ -2,7 +2,6 @@ import { Fragment, useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import axiosClient from "./../../axios/axios-client";
-import axios from 'axios';
 
 export default function Karton() {
   const { id } = useParams();
@@ -22,8 +21,8 @@ export default function Karton() {
   const ucitajPodatkePregleda = async (redniBroj) => {
     try {
   
-      const response = await axios.get(`http://localhost:8000/api/pregledi/4/1?include=doktor,terapija,dijagnoza`);
-      console.log(response);
+      const response = await axiosClient.get(`pregledi/${karton.id}/${redniBroj}?include=doktor,terapija,dijagnoza`);
+      console.log(response.data.data);
       setSelectedPregled({
         doktor: response.data.data.doktor,
         dijagnoza: response.data.data.dijagnoza,
