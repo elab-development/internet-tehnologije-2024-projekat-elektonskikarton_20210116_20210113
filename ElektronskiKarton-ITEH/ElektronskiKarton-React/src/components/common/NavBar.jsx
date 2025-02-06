@@ -57,6 +57,7 @@ export default function NavBar() {
                 {user.role === 'pacijent' && (
                   <>
                     <NavLink to={`/pacijent/${user.id}`} className={navBarItem}>Moji podaci</NavLink>
+                    <NavLink to={`/karton/${user.id}`} className={navBarItem}>Karton</NavLink>
                     <NavLink to="/ustanova" className={navBarItem}>Ustanove</NavLink>
                   </>
                 )}

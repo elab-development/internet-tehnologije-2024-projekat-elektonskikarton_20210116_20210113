@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Models\Karton;
+use App\Models\Pacijent;
 use Illuminate\Http\Request;
 use App\Trait\CanLoadRelationships;
 use App\Http\Controllers\Controller;
@@ -15,7 +16,7 @@ class KartonController extends Controller
      * Display a listing of the resource.
      */
     use CanLoadRelationships;
-    private array $relations = ['pregleds', 'ustanova', 'zaposlenjes'];
+    private array $relations = ['pregleds', 'ustanova', 'zaposlenjes','pregleds.doktor','pregleds.terapija','pregleds.dijagnoza'];
     public function index(Request $request)
     {
         if (Gate::allows('viewAny', Karton::class)) {
@@ -56,6 +57,17 @@ class KartonController extends Controller
     public function show(string $id)
     {
         $karton = Karton::findOrFail($id);
+        if (Gate::allows('view', $karton)) {
+            return new KartonResource($this->loadRelationships($karton));
+        } else {
+            return response()->json(['message' => 'Pristup odbijen za pregled kartona.'], 403);
+        }
+    }
+
+    public function showWithId(string $id)
+    {
+        $pacijent = Pacijent::where('user_id', $id)->firstOrFail();
+        $karton = Karton::where('pacijent_jmbg', $pacijent->jmbg)->firstOrFail();
         if (Gate::allows('view', $karton)) {
             return new KartonResource($this->loadRelationships($karton));
         } else {

@@ -30,10 +30,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('mesta', MestoController::class);
     Route::apiResource('pacijenti', PacijentController::class);
     Route::apiResource('kartoni', KartonController::class);
+
     Route::get('pregledi/{karton_id}', [PregledController::class, 'indexForKarton']);
     Route::get('pregledi/{karton_id}/{rb}', [PregledController::class, 'showForKarton']);
-
     Route::get('pacijent/{user_id}', [PacijentController::class, 'showWithId']);
+    Route::get('karton/{user_id}', [KartonController::class, 'showWithId']);
     Route::get('sestra/{user_id}', [SestraController::class, 'showWithId']);
     Route::get('doktor/{user_id}', [DoktorController::class, 'showWithId']);
 
