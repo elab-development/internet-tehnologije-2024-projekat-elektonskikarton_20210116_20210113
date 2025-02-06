@@ -11,6 +11,7 @@
 
     --title-font: "Poppins", sans-serif;
     --text-font: "Roboto", sans-serif;
+    
 }
 .title{
     font-family: var(--title-font);
@@ -203,24 +204,6 @@
     outline: none;
 }
 
-.loginForm>button{
-    border: none;
-    margin-top: 20px;
-    border-radius: 20px;
-    padding: 5px;
-    color: white;
-    background-color: var(--deep-blue);
-}
-
-.loginForm>button:active{
-    border: none;
-    margin-top: 20px;
-    border-radius: 20px;
-    padding: 5px;
-    color: white;
-    background-color: var(--deep-blue);
-    transform: scale(1.02);
-}
 
 .errorBox{
     font-family: var(--text-font);
@@ -261,7 +244,27 @@
     padding: 10px;
     border-radius: 5px;
     border: 1px solid black;
-    color: var(--light-green)
+    color: var(--light-green);
+    margin: 50px 0;
+}
+
+.btn{
+    border: none;
+    margin-top: 20px;
+    border-radius: 20px;
+    padding: 5px;
+    color: white;
+    background-color: var(--deep-blue);
+}
+
+.btn:active{
+    border: none;
+    margin-top: 20px;
+    border-radius: 20px;
+    padding: 5px;
+    color: white;
+    background-color: var(--deep-blue);
+    transform: scale(1.02);
 }
 
 .pacijentPodaci{
@@ -285,4 +288,12 @@
     background-color: #ffffff;
     color: black;
     border-radius: 10px;
+}
+
+.pregled{
+    display: flex;
+    justify-content: space-evenly;
+    border: 2px solid white;
+    border-radius: 10px;
+    margin: 10px;
 }
