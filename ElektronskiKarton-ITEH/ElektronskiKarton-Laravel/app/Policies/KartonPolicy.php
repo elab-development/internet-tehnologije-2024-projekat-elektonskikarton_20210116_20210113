@@ -17,6 +17,10 @@ class KartonPolicy
          return $user->role === 'sestra';
     }
 
+    public function viewForAnyPatient(User $user, Karton $karton){
+        $pacijent = Pacijent::where('user_id', $user->id)->firstOrFail();
+        return $user->role === 'doktor' || ($user->role === 'pacijent' && $pacijent->jmbg === $karton->pacijent_jmbg);
+    }
     /**
      * Determine whether the user can view the model.
      */

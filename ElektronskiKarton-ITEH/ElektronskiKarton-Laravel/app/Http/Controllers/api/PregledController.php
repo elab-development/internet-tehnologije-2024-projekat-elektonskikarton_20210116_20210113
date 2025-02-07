@@ -19,6 +19,7 @@ class PregledController extends Controller
      */
    public function indexForKarton(int $karton_id)
     {
+
         $karton = Karton::findOrFail($karton_id);
         if (Gate::allows('viewForAnyPatient', $karton)) {
             $query = $this->loadRelationships(Pregled::where('karton_id', $karton_id));
