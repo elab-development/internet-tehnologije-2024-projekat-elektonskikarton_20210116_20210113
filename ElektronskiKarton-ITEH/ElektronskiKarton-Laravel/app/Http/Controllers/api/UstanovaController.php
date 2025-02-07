@@ -52,11 +52,8 @@ class UstanovaController extends Controller
     public function show(string $id)
     {
         $ustanova = Ustanova::findOrFail($id);
-        if (Gate::allows('view', $ustanova)) {
-            return new UstanovaResource($this->loadRelationships($ustanova));
-        } else {
-            return response()->json(['message' => 'Pristup odbijen za pregled ustanove.'], 403);
-        }
+        return new UstanovaResource($this->loadRelationships($ustanova));
+
     }
 
     /**

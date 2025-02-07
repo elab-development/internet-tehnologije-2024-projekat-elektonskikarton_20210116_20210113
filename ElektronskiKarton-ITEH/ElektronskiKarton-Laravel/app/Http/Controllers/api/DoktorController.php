@@ -81,7 +81,7 @@ class DoktorController extends Controller
     {
         $doktor = Doktor::findOrFail($id);
         if (Gate::allows('view', $doktor)) {
-            return new DoktorResource($doktor);
+            return new DoktorResource($this->loadRelationships($doktor));
         } else {
             return response()->json(['message' => 'Pristup odbijen za pregled doktora.'], 403);
         }

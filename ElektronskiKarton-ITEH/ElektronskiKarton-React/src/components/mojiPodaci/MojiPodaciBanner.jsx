@@ -94,7 +94,7 @@ export default function MojiPodaciBanner() {
             ) : (
               <p>Učitavanje podataka...</p>
             )}
-            <Button className="mt-3 align-self-center title " variant="primary" onClick={handleSubmit}         style={{ borderRadius: "30px" }}
+            <Button className="mt-3 align-self-center title " variant="primary" onClick={handleSubmit}         style={{ borderRadius: "30px"}}
             >
               Sačuvaj izmene
             </Button>

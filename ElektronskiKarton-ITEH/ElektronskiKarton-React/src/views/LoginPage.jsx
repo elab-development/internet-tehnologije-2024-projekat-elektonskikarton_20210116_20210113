@@ -54,7 +54,7 @@ export default function LoginPage() {
           />
           <div className="errorBox">{error}</div>
 
-          <button type="submit">Prijava</button>
+          <button type="submit" className="btn">Prijava</button>
           <div>
             <p className="pt-2">Nemaš nalog? <Link to="/register">Registruj se</Link></p>
           </div>

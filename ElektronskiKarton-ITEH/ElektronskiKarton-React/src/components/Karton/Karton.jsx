@@ -8,6 +8,17 @@ export default function Karton() {
   const [karton, setKarton] = useState({});
   const [pregledi, setPregledi] = useState([]);
   const [selectedPregled, setSelectedPregled] = useState(null);
+  const [btnActiveClasses, setBtnActiveClasses] = useState([]);
+
+  const toggleBtn = (index) => {
+    setBtnActiveClasses((prev) => {
+      // Kreiramo novi niz klasa
+      const newClasses = prev.map((_, i) => (i === index ? "btn-active" : "")); // Svi dugmadi su neaktivna osim onog na poziciji `index`
+      return newClasses;
+    });
+  };
+  
+  
 
   const prikaziPreglede = async () => {
     try {
@@ -20,13 +31,17 @@ export default function Karton() {
 
   const ucitajPodatkePregleda = async (redniBroj) => {
     try {
-  
+
       const response = await axiosClient.get(`pregledi/${karton.id}/${redniBroj}?include=doktor,terapija,dijagnoza`);
-      console.log(response.data.data);
+      const doktor = await axiosClient.get(`doktori/${response.data.data.doktor.id}?include=user`);
       setSelectedPregled({
-        doktor: response.data.data.doktor,
-        dijagnoza: response.data.data.dijagnoza,
-        terapija: response.data.data.terapija,
+        doktor: { naziv: doktor.data.data.user.name },
+        dijagnoza: { naziv: response.data.data.dijagnoza?.naziv },
+        terapija: {
+          naziv: response.data.data.terapija?.naziv,
+          opis: response.data.data.terapija?.opis,
+          trajanje: response.data.data.terapija?.trajanje
+        }
       });
     } catch (err) {
       console.log("Greška u pregledu", err);
@@ -53,13 +68,13 @@ export default function Karton() {
             <>
               {Object.entries(karton).map(([key, value], index) => (
                 <div className="mb-3" key={index}>
-                  <h1>{formatKeyLabel(key)}</h1>
-                  <p>{value}</p>
+                  <h1 className="title">{formatKeyLabel(key)}</h1>
+                  <p className="text">{value}</p>
                 </div>
               ))}
               {/* Dugmadi se prikazuju samo kada je karton učitan */}
               <div>
-                <button className="btn" onClick={prikaziPreglede}>Prikaži preglede</button>
+                <button className="btn w-100" onClick={prikaziPreglede}>Prikaži preglede</button>
               </div>
 
               {/* Prikaz pregleda */}
@@ -69,12 +84,16 @@ export default function Karton() {
                     <div key={index} className="pregled">
                       {Object.entries(pregled).map(([key, value], idx) => (
                         <div key={idx}>
-                          <h1>{formatKeyLabel(key)}</h1>
-                          <p>{value}</p>
+                          <h1 className="title">{formatKeyLabel(key)}</h1>
+                          <p className="text">{value}</p>
                         </div>
                       ))}
                       {/* Dugme za učitavanje dodatnih podataka za pregled */}
-                      <button className="btn" onClick={() => ucitajPodatkePregleda(pregled.redniBroj)}>
+                      <button className={`btn ${btnActiveClasses[index]}`}
+                        onClick={() => {
+                          ucitajPodatkePregleda(pregled.redniBroj);
+                          toggleBtn(index); // Pozivamo funkciju sa trenutnim indeksom
+                        }}>
                         Prikazi detalje pregleda
                       </button>
                     </div>
@@ -84,28 +103,35 @@ export default function Karton() {
 
               {/* Prikaz dodatnih podataka o pregledu */}
               {selectedPregled && (
-                <div>
-                  <h2>Doktor</h2>
-                  {Object.entries(selectedPregled.doktor).map(([key, value], index) => (
-                    <div key={index}>
-                      <h3>{formatKeyLabel(key)}</h3>
-                      <p>{value}</p>
-                    </div>
-                  ))}
-                  <h2>Dijagnoza</h2>
-                  {Object.entries(selectedPregled.dijagnoza).map(([key, value], index) => (
-                    <div key={index}>
-                      <h3>{formatKeyLabel(key)}</h3>
-                      <p>{value}</p>
-                    </div>
-                  ))}
-                  <h2>Terapija</h2>
-                  {Object.entries(selectedPregled.terapija).map(([key, value], index) => (
-                    <div key={index}>
-                      <h3>{formatKeyLabel(key)}</h3>
-                      <p>{value}</p>
-                    </div>
-                  ))}
+                <div className="pregledOpis">
+                  <div className="pregledStavka">
+                    <h2 className="title">Doktor</h2>
+                    {Object.entries(selectedPregled.doktor).map(([key, value], index) => (
+                      <div key={index}>
+                        <h3 className="text">{formatKeyLabel(key)}:</h3>
+                        <p className="text">{value}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="pregledStavka">
+                    <h2 className="title">Dijagnoza</h2>
+                    {Object.entries(selectedPregled.dijagnoza).map(([key, value], index) => (
+                      <div key={index}>
+                        <h3 className="text">{formatKeyLabel(key)}:</h3>
+                        <p className="text">{value}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="pregledStavka">
+                    <h2 className="title">Terapija</h2>
+                    {Object.entries(selectedPregled.terapija).map(([key, value], index) => (
+                      <div key={index}>
+                        <h3 className="text">{formatKeyLabel(key)}:</h3>
+                        <p className="text">{value}</p>
+                      </div>
+                    ))}
+                  </div>
+
                 </div>
               )}
             </>

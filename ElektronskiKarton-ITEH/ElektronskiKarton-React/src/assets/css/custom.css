@@ -257,6 +257,19 @@
     background-color: var(--deep-blue);
 }
 
+.btn-active{
+    background-color: var(--sea-blue);
+}
+
+.btn:hover{
+    border: none;
+    margin-top: 20px;
+    border-radius: 20px;
+    padding: 5px;
+    color: white;
+    background-color: var(--sea-blue);
+}
+
 .btn:active{
     border: none;
     margin-top: 20px;
@@ -297,3 +310,33 @@
     border-radius: 10px;
     margin: 10px;
 }
+
+.pregledOpis{
+    border: 2px solid white;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 5px;
+
+}
+
+.pregledStavka{
+    border: 2px solid white;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 5px;
+    background-color: var(--aqua-marine);
+    color: white;
+}
+
+.custom-card {
+    background-color: rgba(0, 0, 0, 0.1);  /* svetla pozadina */
+    border-radius: 10px;         /* zaokruženi ivici */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* senka za karticu */
+    padding: 20px;
+    margin: 10px 0;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .custom-card:hover {
+    transform: scale(1.05); /* povećanje kartice pri hover-u */
+  }

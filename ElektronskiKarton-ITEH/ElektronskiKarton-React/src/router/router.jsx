@@ -7,6 +7,7 @@ import Dashboard from "../views/Dashboard";
 import Registracija from "../views/Registracija";
 import MojiPodaci from "../views/MojiPodaciPage";
 import KartonPage from "../views/KartonPage";
+import UstanovePage from "../views/UstanovePage";
 
 
 
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
             {
                 path: "/register",
                 element: <Registracija></Registracija>
+            },
+            {
+                path: "/ustanove",
+                element: <UstanovePage></UstanovePage>
             }
             
         ]

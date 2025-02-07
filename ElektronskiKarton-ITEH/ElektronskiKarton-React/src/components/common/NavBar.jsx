@@ -48,6 +48,7 @@ export default function NavBar() {
           <Nav className="ms-auto">
             {!token ? (
               <>
+                <NavLink to="/ustanove" className={navBarItem}>Ustanove</NavLink>
                 <NavLink to="/login" className={navBarItem}>Prijavi se</NavLink>
                 <NavLink to="/register" className={navBarItem}>Registruj se</NavLink>
               </>
@@ -58,7 +59,6 @@ export default function NavBar() {
                   <>
                     <NavLink to={`/pacijent/${user.id}`} className={navBarItem}>Moji podaci</NavLink>
                     <NavLink to={`/karton/${user.id}`} className={navBarItem}>Karton</NavLink>
-                    <NavLink to="/ustanova" className={navBarItem}>Ustanove</NavLink>
                   </>
                 )}
                 {user.role === 'sestra' && (
