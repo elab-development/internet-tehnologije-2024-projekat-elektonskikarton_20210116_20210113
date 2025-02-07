@@ -17,7 +17,7 @@ class PregledController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function indexForKarton(int $karton_id)
+   public function indexForKarton(int $karton_id)
     {
         $karton = Karton::findOrFail($karton_id);
         if (Gate::allows('viewForAnyPatient', $karton)) {
@@ -27,6 +27,7 @@ class PregledController extends Controller
             return response()->json(['message' => 'Pristup odbijen za pregled pregleda.'], 403);
         }
     }
+ 
 
     /**
      * Store a newly created resource in storage.

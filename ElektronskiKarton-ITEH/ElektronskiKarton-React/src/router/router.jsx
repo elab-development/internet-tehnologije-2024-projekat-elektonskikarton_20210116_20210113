@@ -12,7 +12,7 @@ import KartonPage from "../views/KartonPage";
 
 const router = createBrowserRouter([
     {
-        path: "",
+        path: "/",
         element: <DefaultLayout></DefaultLayout>,
         children:[
             {
