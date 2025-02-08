@@ -1,7 +1,7 @@
 import { Fragment } from "react"
 import NavBar from "../components/common/NavBar"
-import Karton from "../components/karton/Karton"
 import Footer from "../components/common/Footer"
+import DodajDoktora from "../components/doktori/DodajDoktoraBanner"
 
 
 export default function KartonPage(){
@@ -10,7 +10,7 @@ export default function KartonPage(){
 
         <Fragment>
             <NavBar></NavBar>
-            <Karton></Karton>
+            <DodajDoktora></DodajDoktora>
             <Footer></Footer>
         </Fragment>
     )

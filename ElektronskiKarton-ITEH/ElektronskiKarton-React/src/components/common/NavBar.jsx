@@ -74,7 +74,8 @@ export default function NavBar() {
                 )}
                 {user.role === 'admin' && (
                   <>
-                    <NavLink to="/admin" className={navBarItem}>Admin Panel</NavLink>
+                    <NavLink to="/doktori" className={navBarItem}>Doktori</NavLink>
+                    <NavLink to="/sestre" className={navBarItem}>Sestre</NavLink>
                   </>
                 )}
                 <NavLink onClick={handleLogout} className={navBarItem}>Odjavi se</NavLink>

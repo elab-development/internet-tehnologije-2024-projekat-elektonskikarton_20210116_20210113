@@ -33,9 +33,11 @@ export const ContextProvider = ({ children }) => {
         if(newUser){
             localStorage.setItem('USER_NAME', newUser.name);
             localStorage.setItem('USER_EMAIL', newUser.email);
+            localStorage.setItem('USER_ROLE', newUser.role);
         }else{
             localStorage.removeItem('USER_NAME');
             localStorage.removeItem('USER_EMAIL');
+            localStorage.removeItem('USER_ROLE');
         }
     }
 

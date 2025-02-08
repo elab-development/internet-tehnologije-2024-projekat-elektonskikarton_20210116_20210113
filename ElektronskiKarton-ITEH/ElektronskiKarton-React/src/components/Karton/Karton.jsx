@@ -1,7 +1,7 @@
 import { Fragment, useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import axiosClient from "./../../axios/axios-client";
+import axiosClient from "../../axios/axios-client";
 
 export default function Karton() {
   const { id } = useParams();

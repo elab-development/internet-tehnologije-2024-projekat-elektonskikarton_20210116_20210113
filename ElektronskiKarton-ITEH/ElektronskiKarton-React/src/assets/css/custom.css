@@ -340,3 +340,16 @@
   .custom-card:hover {
     transform: scale(1.05); /* povećanje kartice pri hover-u */
   }
+
+  .kreirajKartonForma{
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: var(--deep-blue);
+    color: white;
+  }
+
+  .errorMessage{
+    color: red !important;
+  }
+
+ 

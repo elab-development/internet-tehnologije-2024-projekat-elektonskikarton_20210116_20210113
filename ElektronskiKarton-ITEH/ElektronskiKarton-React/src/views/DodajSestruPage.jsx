@@ -1,16 +1,16 @@
 import { Fragment } from "react"
 import NavBar from "../components/common/NavBar"
-import Karton from "../components/karton/Karton"
 import Footer from "../components/common/Footer"
+import DodajSestruBanner from "../components/sestre/DodajSestruBanner"
 
 
-export default function KartonPage(){
+export default function DodajSestruPage(){
 
     return(
 
         <Fragment>
             <NavBar></NavBar>
-            <Karton></Karton>
+            <DodajSestruBanner></DodajSestruBanner>
             <Footer></Footer>
         </Fragment>
     )

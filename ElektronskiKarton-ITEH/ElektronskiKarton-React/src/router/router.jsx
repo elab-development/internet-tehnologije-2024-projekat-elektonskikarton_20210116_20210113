@@ -8,8 +8,15 @@ import Registracija from "../views/Registracija";
 import MojiPodaci from "../views/MojiPodaciPage";
 import KartonPage from "../views/KartonPage";
 import UstanovePage from "../views/UstanovePage";
-
-
+import PacijentiPage from "../views/PacijentiPage";
+import KreirajKartonPage from "../views/KreirajKartonPage";
+import KreirajPregledPage from "../views/KreirajPregledPage";
+import DoktoriPage from "../views/DoktoriPage";
+import DodajDoktoraPage from "../views/DodajDoktoraPage";
+import AzurirajDoktoraPage from "../views/AzurirajDoktoraPage";
+import SestrePage from "../views/SestrePage";
+import DodajSestruPage from "../views/DodajSestruPage";
+import AzurirajSestruPage from "../views/AzurirajSestruPage";
 
 const router = createBrowserRouter([
     {
@@ -27,7 +34,43 @@ const router = createBrowserRouter([
             {
                 path: "/karton/:id",
                 element: <KartonPage></KartonPage>
-            }
+            },
+            {
+                path: "/pacijenti",
+                element: <PacijentiPage></PacijentiPage>
+            },
+            {
+                path: "/kreiraj-karton",
+                element: <KreirajKartonPage></KreirajKartonPage>
+            },
+            {
+                path: "/kreiraj-pregled",
+                element: <KreirajPregledPage></KreirajPregledPage>
+            },
+            {
+                path: "/doktori",
+                element: <DoktoriPage></DoktoriPage>
+            },
+            {
+                path: "/dodaj-doktora",
+                element: <DodajDoktoraPage></DodajDoktoraPage>
+            },
+            {
+                path: "azuriraj-doktora/:id",
+                element: <AzurirajDoktoraPage></AzurirajDoktoraPage>
+            },
+            {
+                path: "/sestre",
+                element: <SestrePage></SestrePage>
+            },
+            {
+                path: "/dodaj-sestru",
+                element: <DodajSestruPage></DodajSestruPage>
+            },
+            {
+                path: "azuriraj-sestru/:id",
+                element: <AzurirajSestruPage></AzurirajSestruPage>
+            },
         ]
     },
     
