@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import { useStateContext } from "../context/ContextProvider";
 import { useNavigate } from "react-router-dom";
 import axiosClient from "../axios/axios-client";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 export default function Registracija() {
   const [name, setName] = useState("");
@@ -107,8 +109,10 @@ export default function Registracija() {
 
   return (
     <Fragment>
-      <Container fluid={true} className="guestBackground">
-        <form className="loginForm" onSubmit={handleSubmit}>
+  <Container fluid={true} className="guestBackground">
+    <form className="loginForm" onSubmit={handleSubmit}>
+      <div className="formGrid">
+        <div className="formColumn">
           <label htmlFor="imePrezime">Ime i prezime</label>
           <input
             type="text"
@@ -159,7 +163,9 @@ export default function Registracija() {
             onChange={(e) => setJmbg(e.target.value)}
           />
 
-          <label htmlFor="imePrezimeNZZ">Ime i prezime nosioca zdravstvenog osiguranja</label>
+          <label htmlFor="imePrezimeNZZ">
+            Ime i prezime nosioca zdravstvenog osiguranja
+          </label>
           <input
             type="text"
             id="imePrezimeNZZ"
@@ -168,7 +174,9 @@ export default function Registracija() {
             value={imePrezimeNZZ}
             onChange={(e) => setImePrezimeNZZ(e.target.value)}
           />
+        </div>
 
+        <div className="formColumn">
           <label htmlFor="datumRodjenja">Datum rođenja</label>
           <input
             type="date"
@@ -201,7 +209,7 @@ export default function Registracija() {
 
           <label htmlFor="pol">Pol</label>
           <div>
-            <label>
+            <label className="pe-5">
               <input
                 type="radio"
                 name="pol"
@@ -249,17 +257,21 @@ export default function Registracija() {
               </option>
             ))}
           </select>
+        </div>
+      </div>
 
-          <div className="errorBox">{error}</div>
+      <div className="errorBox">{error}</div>
 
-          <button type="submit">Registracija</button>
-          <div>
-            <p className="pt-2">
-              Imaš nalog? <Link to="/login">Prijavi se</Link>
-            </p>
-          </div>
-        </form>
-      </Container>
-    </Fragment>
+      <button className="formButton" type="submit">Registracija</button>
+      <div>
+        <p className="pt-2">
+          Imaš nalog? <Link className="text-primary" to="/login">Prijavi se</Link>
+          <p className="pt-2">Nazad na početnu? <Link to="/pocetna">Odustani</Link></p>
+        </p>
+      </div>
+    </form>
+  </Container>
+</Fragment>
+
   );
 }

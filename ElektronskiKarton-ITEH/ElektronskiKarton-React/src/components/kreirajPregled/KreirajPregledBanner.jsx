@@ -103,7 +103,7 @@ export default function KreirajPregled() {
         <h2 className="mt-5">Kreiraj pregled</h2>
         <Form className="kreirajPregledForma" onSubmit={handleSubmit}>
           <Form.Group controlId="datum">
-            <Form.Label>Datum</Form.Label>
+            <Form.Label className="text-light">Datum</Form.Label>
             <Form.Control type="date" value={datum} readOnly />
             <Form.Control.Feedback type="invalid">
               {errors.datum}
@@ -111,7 +111,7 @@ export default function KreirajPregled() {
           </Form.Group>
 
           <Form.Group controlId="doktor">
-            <Form.Label>Doktor</Form.Label>
+            <Form.Label className="text-light">Doktor</Form.Label>
             <Form.Control
               as="select"
               value={doktor}
@@ -136,7 +136,7 @@ export default function KreirajPregled() {
           </Form.Group>
 
           <Form.Group controlId="sestra">
-            <Form.Label>Sestra</Form.Label>
+            <Form.Label className="text-light">Sestra</Form.Label>
             <Form.Control
               as="select"
               value={sestra}
@@ -161,7 +161,7 @@ export default function KreirajPregled() {
           </Form.Group>
 
           <Form.Group controlId="terapija">
-            <Form.Label>Terapija</Form.Label>
+            <Form.Label className="text-light">Terapija</Form.Label>
             <Form.Control
               as="select"
               value={terapija}
@@ -186,7 +186,7 @@ export default function KreirajPregled() {
           </Form.Group>
 
           <Form.Group controlId="dijagnoza">
-            <Form.Label>Dijagnoza</Form.Label>
+            <Form.Label className="text-light">Dijagnoza</Form.Label>
             <Form.Control
               as="select"
               value={dijagnoza}
@@ -211,7 +211,7 @@ export default function KreirajPregled() {
           </Form.Group>
 
           <Form.Group controlId="karton">
-            <Form.Label>Karton</Form.Label>
+            <Form.Label className="text-light">Karton</Form.Label>
             <Form.Control
               as="select"
               value={karton}
@@ -235,7 +235,7 @@ export default function KreirajPregled() {
             </Form.Control.Feedback>
           </Form.Group>
 
-          <Button variant="secondary" type="submit" className="mt-3">
+          <Button  variant="secondary" type="submit" className="bg-primary mt-3 w-100">
             Kreiraj pregled
           </Button>
         </Form>

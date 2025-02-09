@@ -18,10 +18,15 @@ class PacijentController extends Controller
     use CanLoadRelationships;
     private array $relations = ['user', 'karton', 'karton.pregled', 'karton.zaposlenje', 'mesto'];
 
-    public function index()
+    public function index(Request $request)
     {
         if (Gate::allows('viewAny', Pacijent::class)) {
-            $query = $this->loadRelationships(Pacijent::query());
+            $jmbg = $request->input("jmbg");
+
+            $pacijenti = Pacijent::query()
+                ->when($jmbg, fn($query, $jmbg) => $query->withJMBG($jmbg));
+
+            $query = $this->loadRelationships($pacijenti);
             return PacijentResource::collection($query->latest()->paginate());
         } else {
             return response()->json(['message' => 'Pristup odbijen za pregled pacijenta.'], 403);

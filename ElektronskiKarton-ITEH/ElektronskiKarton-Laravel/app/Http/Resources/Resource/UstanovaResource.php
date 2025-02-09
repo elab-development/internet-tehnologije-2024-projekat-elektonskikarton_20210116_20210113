@@ -15,6 +15,7 @@ class UstanovaResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'naziv' => $this->naziv,
             'ulicaBroj' => $this->ulicaBroj,
             'mesto' => new MestoResource($this->whenLoaded('mesto'))

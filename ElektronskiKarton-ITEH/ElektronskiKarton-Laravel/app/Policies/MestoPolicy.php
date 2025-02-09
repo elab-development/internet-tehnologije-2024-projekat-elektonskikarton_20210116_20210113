@@ -13,7 +13,7 @@ class MestoPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->role !== 'doktor';
+        return true;
     }
 
     /**

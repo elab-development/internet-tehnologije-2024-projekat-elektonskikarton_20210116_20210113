@@ -9,16 +9,15 @@ export default function Karton() {
   const [pregledi, setPregledi] = useState([]);
   const [selectedPregled, setSelectedPregled] = useState(null);
   const [btnActiveClasses, setBtnActiveClasses] = useState([]);
+  const [isPreglediVisible, setIsPreglediVisible] = useState(false); // Dodajemo stanje za vidljivost pregleda
 
   const toggleBtn = (index) => {
     setBtnActiveClasses((prev) => {
       // Kreiramo novi niz klasa
-      const newClasses = prev.map((_, i) => (i === index ? "btn-active" : "")); // Svi dugmadi su neaktivna osim onog na poziciji `index`
+      const newClasses = prev.map((_, i) => (i === index ? "formButton-active" : "")); // Svi dugmadi su neaktivna osim onog na poziciji `index`
       return newClasses;
     });
   };
-  
-  
 
   const prikaziPreglede = async () => {
     try {
@@ -31,7 +30,6 @@ export default function Karton() {
 
   const ucitajPodatkePregleda = async (redniBroj) => {
     try {
-
       const response = await axiosClient.get(`pregledi/${karton.id}/${redniBroj}?include=doktor,terapija,dijagnoza`);
       const doktor = await axiosClient.get(`doktori/${response.data.data.doktor.id}?include=user`);
       setSelectedPregled({
@@ -60,13 +58,23 @@ export default function Karton() {
     fetchData();
   }, [id]);
 
+  const togglePregledeVisibility = () => {
+    if (isPreglediVisible) {
+      setPregledi([]);
+      setSelectedPregled(null);
+    } else {
+      prikaziPreglede(); // Ako nisu otvoreni, učitavamo preglede
+    }
+    setIsPreglediVisible(!isPreglediVisible); // Menjamo vidljivost
+  };
+
   return (
     <Fragment>
       <Container fluid={true} className="mainBanner pt-5">
         <div className="title nameContainer">
           {karton && Object.keys(karton).length > 0 ? (
             <>
-              {Object.entries(karton).map(([key, value], index) => (
+              {Object.entries(karton).slice(1).map(([key, value], index) => (
                 <div className="mb-3" key={index}>
                   <h1 className="title">{formatKeyLabel(key)}</h1>
                   <p className="text">{value}</p>
@@ -74,11 +82,13 @@ export default function Karton() {
               ))}
               {/* Dugmadi se prikazuju samo kada je karton učitan */}
               <div>
-                <button className="btn w-100" onClick={prikaziPreglede}>Prikaži preglede</button>
+                <button className="formButton w-100" onClick={togglePregledeVisibility}>
+                  {isPreglediVisible ? "Zatvori preglede" : "Prikaži preglede"}
+                </button>
               </div>
 
               {/* Prikaz pregleda */}
-              {pregledi && pregledi.length > 0 && (
+              {isPreglediVisible && pregledi && pregledi.length > 0 && (
                 <div>
                   {pregledi.map((pregled, index) => (
                     <div key={index} className="pregled">
@@ -89,7 +99,7 @@ export default function Karton() {
                         </div>
                       ))}
                       {/* Dugme za učitavanje dodatnih podataka za pregled */}
-                      <button className={`btn ${btnActiveClasses[index]}`}
+                      <button className={`formButton ${btnActiveClasses[index]}`}
                         onClick={() => {
                           ucitajPodatkePregleda(pregled.redniBroj);
                           toggleBtn(index); // Pozivamo funkciju sa trenutnim indeksom
@@ -131,7 +141,6 @@ export default function Karton() {
                       </div>
                     ))}
                   </div>
-
                 </div>
               )}
             </>

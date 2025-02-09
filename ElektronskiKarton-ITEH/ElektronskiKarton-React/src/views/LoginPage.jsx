@@ -54,9 +54,10 @@ export default function LoginPage() {
           />
           <div className="errorBox">{error}</div>
 
-          <button type="submit" className="btn">Prijava</button>
+          <button type="submit" className="formButton">Prijava</button>
           <div>
             <p className="pt-2">Nemaš nalog? <Link to="/register">Registruj se</Link></p>
+            <p>Nazad na početnu? <Link to="/pocetna">Odustani</Link></p>
           </div>
         </form>
       </Container>

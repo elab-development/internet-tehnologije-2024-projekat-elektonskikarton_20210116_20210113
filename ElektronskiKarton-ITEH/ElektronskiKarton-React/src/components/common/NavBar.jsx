@@ -9,7 +9,7 @@ export default function NavBar() {
   const [navBarBackground, setNavBarBackground] = useState("navBackground");
   const [navBarItem, setNavBarItem] = useState("navItem");
   const [navBarTitle, setNavBarTitle] = useState("navTitle");
-  const { token, user, setUser, setToken } = useStateContext();
+  let { token, user, setUser, setToken } = useStateContext();
 
   const onScroll = () => {
     if (window.scrollY > 50) {
@@ -29,8 +29,17 @@ export default function NavBar() {
   };
 
   useEffect(() => {
-    window.addEventListener("scroll", onScroll);
-  });
+    // Logika za ažuriranje korisničkog stanja
+    if (user) {
+      console.log("Korisnik je: ", user);
+    }
+    window.addEventListener("scroll", onScroll);  
+  
+    return () => {
+      window.removeEventListener("scroll", onScroll); // Čišćenje event listenera kada komponenta bude uklonjena
+    };
+  }, [user]); // Ako se `user` promeni, `useEffect` se ponovo pokreće
+  
 
   return (
     <Navbar
@@ -40,7 +49,7 @@ export default function NavBar() {
       className={navBarBackground}
     >
       <Container className={navBarItem}>
-        <Navbar.Brand href="#home" className={navBarTitle}>
+        <Navbar.Brand href="/" className={navBarTitle}>
           Medical support
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -54,7 +63,6 @@ export default function NavBar() {
               </>
             ) : (
               <>
-                {/* Prikazivanje specifičnih linkova prema ulozi korisnika */}
                 {user.role === 'pacijent' && (
                   <>
                     <NavLink to={`/pacijent/${user.id}`} className={navBarItem}>Moji podaci</NavLink>

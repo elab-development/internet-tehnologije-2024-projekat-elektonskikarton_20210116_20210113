@@ -69,4 +69,5 @@ class AuthController extends Controller
         $pacijent = Pacijent::create([...$validatedPacijent,'user_id'=>$user->id]);
         return new PacijentResource($pacijent);
     }
+
 }

@@ -18,19 +18,16 @@ class MestoController extends Controller
     private array $relations = ['ustanovas'];
     public function index(Request $request)
     {
-        if (Gate::allows('viewAny', Mesto::class)) {
-            $naziv = $request->input('naziv');
-            $posBr = $request->input('postanskiBroj');
 
-            $mesta = Mesto::query()
-                ->when($naziv, fn($query, $naziv) => $query->withNaziv($naziv))
-                ->when($posBr, fn($query, $posBr) => $query->withPostanskiBroj($posBr));
+        $naziv = $request->input('naziv');
+        $posBr = $request->input('postanskiBroj');
 
-            $query = $this->loadRelationships($mesta);
-            return MestoResource::collection($query->latest()->paginate());
-        } else {
-            return response()->json(['message' => 'Pristup odbijen za pregled mesta.'], 403);
-        }
+        $mesta = Mesto::query()
+            ->when($naziv, fn($query, $naziv) => $query->withNaziv($naziv))
+            ->when($posBr, fn($query, $posBr) => $query->withPostanskiBroj($posBr));
+
+        $query = $this->loadRelationships($mesta);
+        return MestoResource::collection($query->latest()->paginate());
     }
 
     /**
@@ -94,7 +91,8 @@ class MestoController extends Controller
         }
     }
 
-    public function getMestaPB(){
+    public function getMestaPB()
+    {
 
         $mestaPB = Mesto::select('postanskiBroj')->get();
         return response()->json($mestaPB);

@@ -89,7 +89,7 @@ class DoktorController extends Controller
 
     public function showWithId(string $user_id)
     {
-        $doktor = Doktor::findOrFail($user_id);
+        $doktor = Doktor::where('user_id', $user_id)->firstOrFail();
         if (Gate::allows('view', $doktor)) {
             return new DoktorResource($doktor);
         } else {

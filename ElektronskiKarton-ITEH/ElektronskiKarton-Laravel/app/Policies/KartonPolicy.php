@@ -14,7 +14,7 @@ class KartonPolicy
      */
     public function viewAny(User $user): bool
     {
-         return $user->role === 'sestra';
+         return $user->role === 'sestra' || $user->role === 'doktor';
     }
 
     public function viewForAnyPatient(User $user, Karton $karton){

@@ -28,7 +28,7 @@ class PregledController extends Controller
             return response()->json(['message' => 'Pristup odbijen za pregled pregleda.'], 403);
         }
     }
- 
+
 
     /**
      * Store a newly created resource in storage.
@@ -38,11 +38,11 @@ class PregledController extends Controller
         if (Gate::allows('create', Pregled::class)) {
             $validatedData = $request->validate([
                 'datum' => 'required|date',
-                'doktor_id' => 'required|exists:doktors, id',
-                'sestra_id' => 'required|exists:sestras, id',
-                'terapija_id' => 'required|exists:terapijas, id',
-                'dijagnoza_id' => 'required|exists:dijagnozas, id',
-                'karton_id' => 'required|exists:karton, id'
+                'doktor_id' => 'required|exists:doktors,id',
+                'sestra_id' => 'required|exists:sestras,id',
+                'terapija_id' => 'required|exists:terapijas,id',
+                'dijagnoza_id' => 'required|exists:dijagnozas,id',
+                'karton_id' => 'required|exists:kartons,id'
             ]);
 
             $pregled = Pregled::create($validatedData);

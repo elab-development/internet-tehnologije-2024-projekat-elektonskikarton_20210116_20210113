@@ -78,7 +78,7 @@ class SestraController extends Controller
 
     public function showWithId(string $user_id)
     {
-        $sestra = Sestra::findOrFail($user_id);
+        $sestra = Sestra::where('user_id', $user_id)->firstOrFail();
         if (Gate::allows('view', $sestra)) {
             return new SestraResource($sestra);
         } else {

@@ -1,45 +1,59 @@
 /* eslint-disable react/prop-types */
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 const StateContext = createContext({
     user: null,
-    token: typeof window !== "undefined" ? localStorage.getItem('ACCESS_TOKEN') : null,
+    token: null,
     setUser: () => {},
     setToken: () => {}
 });
 
 export const ContextProvider = ({ children }) => {
-    const [user, _setUser] = useState({
-        name: '',
-        email: '',
-        role: '',
-        id: ''
-    });
-    const [token, _setToken] = useState(
+    // Pokušaj da učitaš korisničke podatke iz localStorage
+    const storedUser = typeof window !== "undefined" ? {
+        name: localStorage.getItem('USER_NAME'),
+        email: localStorage.getItem('USER_EMAIL'),
+        role: localStorage.getItem('USER_ROLE'),
+        id: localStorage.getItem('USER_ID'),
+    } : {};
+
+    // Početno stanje
+    const [user, setUserState] = useState(storedUser);
+    const [token, setTokenState] = useState(
         typeof window !== "undefined" ? localStorage.getItem('ACCESS_TOKEN') : null
     );
 
-    const setToken = (newToken) => {
-        _setToken(newToken); // Ažurira stanje tokena
-        if (newToken) {
-            localStorage.setItem('ACCESS_TOKEN', newToken); // Čuva token u localStorage
+    useEffect(() => {
+        // Kada se promeni user ili token, ažuriraj localStorage
+        if (user) {
+            localStorage.setItem('USER_NAME', user.name);
+            localStorage.setItem('USER_EMAIL', user.email);
+            localStorage.setItem('USER_ROLE', user.role);
+            localStorage.setItem('USER_ID', user.id);
         } else {
-            localStorage.removeItem('ACCESS_TOKEN'); // Uklanja token iz localStorage
-        }
-    };
-
-    const setUser = (newUser) => {
-        _setUser(newUser);
-        if(newUser){
-            localStorage.setItem('USER_NAME', newUser.name);
-            localStorage.setItem('USER_EMAIL', newUser.email);
-            localStorage.setItem('USER_ROLE', newUser.role);
-        }else{
+            // Ako nema korisnika, obriši podatke iz localStorage
             localStorage.removeItem('USER_NAME');
             localStorage.removeItem('USER_EMAIL');
             localStorage.removeItem('USER_ROLE');
+            localStorage.removeItem('USER_ID');
         }
-    }
+
+        if (token) {
+            localStorage.setItem('ACCESS_TOKEN', token);
+        } else {
+            localStorage.removeItem('ACCESS_TOKEN');
+        }
+    }, [user, token]); // Ažuriraj kad god se user ili token promene
+
+    // Funkcija za postavljanje tokena
+    const setToken = (newToken) => {
+        setTokenState(newToken);
+    };
+
+    // Funkcija za postavljanje korisničkih podataka
+    const setUser = (newUser) => {
+        setUserState(newUser);
+    };
 
     return (
         <StateContext.Provider value={{ user, token, setUser, setToken }}>

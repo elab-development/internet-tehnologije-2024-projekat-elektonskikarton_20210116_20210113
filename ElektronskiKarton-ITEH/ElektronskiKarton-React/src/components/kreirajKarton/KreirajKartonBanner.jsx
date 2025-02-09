@@ -136,7 +136,7 @@ export default function KreirajKartonBanner() {
             </Form.Control.Feedback>
           </Form.Group>
 
-          <Button variant="secondary" type="submit" className="mt-3">
+          <Button className="bg-primary mt-3 w-100" variant="secondary" type="submit">
             Kreiraj karton
           </Button>
         </Form>

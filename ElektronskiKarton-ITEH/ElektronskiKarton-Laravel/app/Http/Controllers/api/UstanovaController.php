@@ -19,8 +19,14 @@ class UstanovaController extends Controller
 
     public function index(Request $request)
     {
+        $mesto = $request->input("mesto");
+        $naziv = $request->input("naziv");
 
-        $query = $this->loadRelationships(Ustanova::query());
+        $ustanove = Ustanova::query()
+        ->when($mesto, fn($query,$mesto)=> $query->withMesto($mesto))
+        ->when($naziv, fn($query,$naziv)=> $query->withNaziv($naziv));
+
+        $query = $this->loadRelationships($ustanove);
         return UstanovaResource::collection($query->latest()->paginate());
     }
 

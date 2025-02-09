@@ -8,6 +8,8 @@ use App\Models\Karton;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Database\Eloquent\Builder;
 
 class Pacijent extends Model
 {
@@ -30,6 +32,11 @@ class Pacijent extends Model
     }
     public function user(): BelongsTo{
         return $this->belongsTo(User::class);
+    }
+
+    public function scopeWithJMBG(Builder $query, string $jmbg):Builder|QueryBuilder
+    {
+        return $query->where('jmbg','like',$jmbg);
     }
 
 }

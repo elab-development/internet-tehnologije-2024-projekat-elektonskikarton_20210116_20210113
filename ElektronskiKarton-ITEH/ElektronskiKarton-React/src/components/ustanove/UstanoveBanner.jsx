@@ -4,16 +4,15 @@ import axiosClient from "../../axios/axios-client";
 
 export default function UstanoveBanner() {
   const [ustanove, setUstanove] = useState([]);
-  const [searchNaziv, setSearchNaziv] = useState(""); // Stanje za pretragu po nazivu
-  const [searchMesto, setSearchMesto] = useState(""); // Stanje za pretragu po mestu
-  const [mesta, setMesta] = useState([]); // Stanje za lista mesta
-
-  // Učitavanje lista mesta sa API-ja
+  const [searchNaziv, setSearchNaziv] = useState(""); 
+  const [searchMesto, setSearchMesto] = useState(""); 
+  const [mesta, setMesta] = useState([]); 
+  
   useEffect(() => {
     const fetchMesta = async () => {
       try {
-        const response = await axiosClient.get("mesta"); // PUT YOUR API URL
-        setMesta(response.data); // Pretpostavljam da odgovor bude lista mesta
+        const response = await axiosClient.get("mesta"); 
+        setMesta(response.data.data); 
       } catch (error) {
         console.log("Došlo je do greške pri učitavanju mesta", error);
       }
@@ -50,43 +49,45 @@ export default function UstanoveBanner() {
   return (
     <Fragment>
       <Container fluid className="mainBanner pt-5">
-        <Form.Group className="mb-3" controlId="searchNaziv">
-          <Form.Label>Pretraga po Nazivu</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Unesite naziv"
-            value={searchNaziv}
-            onChange={(e) => setSearchNaziv(e.target.value)}
-          />
-        </Form.Group>
+        <div className="forme">
+          <Form.Group className="filterForma" controlId="searchNaziv">
+            <Form.Label className="title">Pretraga po Nazivu</Form.Label>
+            <Form.Control
+              className="formInput"
+              type="text"
+              placeholder="Unesite naziv"
+              value={searchNaziv}
+              onChange={(e) => setSearchNaziv(e.target.value)}
+            />
+          </Form.Group>
 
-        <Form.Group className="mb-3" controlId="searchMesto">
-          <Form.Label>Pretraga po Mestu</Form.Label>
-          <Form.Control
-            as="select"
-            value={searchMesto}
-            onChange={(e) => setSearchMesto(e.target.value)} 
-          >
-            <option value="">Izaberite mesto</option>
-            {mesta && mesta.length > 0 ? (
-              mesta.map((mesto) =>
-                Object.entries(mesto).map(([key, val]) => (
-                  <option key={key} value={val}>
-                    {val}
-                  </option>
-                ))
-              )
-            ) : (
-              <option value="">Nema mesta</option>
-            )}
-          </Form.Control>
-        </Form.Group>
-
-        <div>
+          <Form.Group className="mb-3" controlId="searchMesto">
+            <Form.Label className="title">Pretraga po Mestu</Form.Label>
+            <Form.Control
+              className="formSelect"
+              as="select"
+              value={searchMesto}
+              onChange={(e) => setSearchMesto(e.target.value)}
+            >
+              <option value="">Izaberite mesto</option>
+              {mesta && mesta.length > 0 ? (
+                mesta.map((mesto) =>
+                    <option key={mesto.postanskiBroj} value={mesto.postanskiBroj}>
+                      {mesto.naziv}
+                    </option>
+                  
+                )
+              ) : (
+                <option value="">Nema mesta</option>
+              )}
+            </Form.Control>
+          </Form.Group>
+        </div>
+        
           {ustanove && ustanove.length > 0 ? (
             ustanove.map((value, index) => (
               <div className="custom-card" key={`ustanova-${index}`}>
-                {Object.entries(value).map(([key, val]) => (
+                {Object.entries(value).slice(1).map(([key, val]) => (
                   <div key={`${key}-${val}`}>
                     <h1 className="title">{formatKeyLabel(key)}</h1>
                     <p className="text">{val}</p>
@@ -95,9 +96,9 @@ export default function UstanoveBanner() {
               </div>
             ))
           ) : (
-            <p>Učitavanje...</p>
+            <p className="alert-message">Nema mesta sa odabranim filterom</p>
           )}
-        </div>
+        
       </Container>
     </Fragment>
   );

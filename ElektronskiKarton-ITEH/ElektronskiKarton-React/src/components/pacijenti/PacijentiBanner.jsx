@@ -35,10 +35,10 @@ export default function UstanoveBanner() {
           />
         </Form.Group>
 
-        <div>
+        <div className="w-100">
           {pacijenti && pacijenti.length > 0 ? (
             pacijenti.map((value, index) => (
-              <div className="custom-card" key={`pacijent-${index}`}>
+              <div className="pacijent-card" key={`pacijent-${index}`}>
                 {Object.entries(value)
                   .filter(([key]) => podaci.includes(key)) // Filtriraj samo potrebne podatke
                   .map(([key, val]) => (
@@ -50,7 +50,7 @@ export default function UstanoveBanner() {
               </div>
             ))
           ) : (
-            <p>Učitavanje...</p>
+            <p className="alert-message">Nema mesta sa odabranim filterom</p>
           )}
         </div>
       </Container>

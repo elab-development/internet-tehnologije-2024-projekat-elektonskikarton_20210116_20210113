@@ -13,7 +13,7 @@ class PacijentPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return ($user->role === 'sestra');
     }
 
     /**

@@ -177,7 +177,7 @@
     font-family: var(--title-font);
     display: flex;
     flex-direction: column;
-    width: 300px;
+    min-width: 300px;
     margin: 0 auto;
     font-weight: 700;
     background:  linear-gradient(135deg, var(--light-green), var(--green));
@@ -248,31 +248,28 @@
     margin: 50px 0;
 }
 
-.btn{
+.formButton{
     border: none;
-    margin-top: 20px;
     border-radius: 20px;
     padding: 5px;
     color: white;
     background-color: var(--deep-blue);
 }
 
-.btn-active{
+.formButton-active{
     background-color: var(--sea-blue);
 }
 
-.btn:hover{
+.formButton:hover{
     border: none;
-    margin-top: 20px;
     border-radius: 20px;
     padding: 5px;
     color: white;
     background-color: var(--sea-blue);
 }
 
-.btn:active{
+.formButton:active{
     border: none;
-    margin-top: 20px;
     border-radius: 20px;
     padding: 5px;
     color: white;
@@ -287,7 +284,7 @@
     border: 2px solid white;
     padding: 5px;
     color: var(--light-green);
-    margin: 100px;
+    margin: 50px;
     min-width: 50%;
 }
 
@@ -309,6 +306,9 @@
     border: 2px solid white;
     border-radius: 10px;
     margin: 10px;
+    align-items: center;
+    padding: auto 10px;
+    gap: 20px;
 }
 
 .pregledOpis{
@@ -329,15 +329,38 @@
 }
 
 .custom-card {
-    background-color: rgba(0, 0, 0, 0.1);  /* svetla pozadina */
+    background-color: rgba(0, 0, 0, 0.3);  /* svetla pozadina */
     border-radius: 10px;         /* zaokruženi ivici */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* senka za karticu */
     padding: 20px;
     margin: 10px 0;
+    font-size: 20px;
+    width: 80%;
     transition: transform 0.3s ease-in-out;
+    margin: 10px 0;
   }
   
   .custom-card:hover {
+    transform: scale(1.05); /* povećanje kartice pri hover-u */
+  }
+
+  .pacijent-card{
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;         /* zaokruženi ivici */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* senka za karticu */
+    padding: 20px;
+    margin: 10px 0;
+    font-size: 20px;
+    width: 80%;
+    transition: transform 0.3s ease-in-out;
+    margin: 10px auto;
+    display: flex;
+    justify-content: space-evenly;
+    gap: 10px;
+    cursor: pointer;
+  }
+
+  .pacijent-card:hover {
     transform: scale(1.05); /* povećanje kartice pri hover-u */
   }
 
@@ -346,10 +369,115 @@
     border-radius: 10px;
     background-color: var(--deep-blue);
     color: white;
+    padding: 20px;
+    margin: 30px;
   }
 
   .errorMessage{
     color: red !important;
   }
 
+.forme{
+    display: flex;
+    background:  linear-gradient(135deg, var(--light-green), var(--green));
+    margin-top: 50px;
+    border-radius: 20px;
+    padding: 10px;
+    gap: 20px;
+    margin-bottom: 50px;
+}
+
+.formInput{
+    background-color: white;
+    border-radius: 10px;
+    font-family: var(--text-font);
+}
+
+.formInput:focus{
+    background-color: white;
+    border-color: #00b4d8;
+    box-shadow: 0 0 8px rgba(0, 180, 216, 0.5);
+}
+
+.formSelect{
+    background-color: white;
+    border-radius: 10px;
+    font-family: var(--text-font);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.formSelect:focus{
+    background-color: white;
+    border-color: #00b4d8;
+    box-shadow: 0 0 8px rgba(0, 180, 216, 0.5);
+}
  
+.alert-message{
+    font-family: var(--title-font);
+    background-color: rgba(0, 0, 0, 0.3);  /* svetla pozadina */
+    color: black;
+    padding: 20px;
+    border-radius: 20px;
+    
+}
+
+.formGrid{
+    display: flex;
+    gap: 10px;
+}
+
+.formColumn{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    gap: 5px;
+}
+
+.formColumn>input{
+    border:none;
+    padding: 5px;
+    border-radius: 20px;
+    margin: 5px 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.formColumn>input:focus{
+    border:none;
+    padding: 5px;
+    border-radius: 20px;
+    margin: 5px 0;
+    box-shadow: 0 0 10px blue;
+    transform: scale(1.02);
+    outline: none;
+}
+
+.formColumn>select{
+    background-color: white;
+    border-radius: 10px;
+    font-family: var(--text-font);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    padding: 5px;
+    outline: none;
+    border: none;
+}
+
+.kreirajPregledForma{
+    background-color: var(--deep-blue);
+    margin: 30px;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.azurirajForma{
+    background-color:  var(--deep-blue);
+    padding: 10px;
+    border-radius: 10px;
+    margin: 20px;
+    min-width: 500px;
+}
+
+
+
