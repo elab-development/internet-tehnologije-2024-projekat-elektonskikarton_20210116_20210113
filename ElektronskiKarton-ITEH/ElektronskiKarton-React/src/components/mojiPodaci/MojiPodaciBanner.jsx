@@ -6,9 +6,11 @@ import axiosClient from "../../axios/axios-client";
 export default function MojiPodaciBanner() {
   const { id } = useParams();
   const [pacijent, setPacijent] = useState({});
+  const [initialPacijent, setInitialPacijent] = useState({});
   const [errors, setErrors] = useState({});
   const [mesta, setMesta] = useState([]); // Držimo listu mesta
   const [loading, setLoading] = useState(true); // Oznaka za učitavanje mesta
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     // Učitavanje podataka za pacijenta
@@ -16,6 +18,7 @@ export default function MojiPodaciBanner() {
       try {
         const response = await axiosClient.get(`pacijent/${id}`);
         setPacijent(response.data.data);
+        setInitialPacijent(response.data.data); // Sačuvaj inicijalne podatke
       } catch (error) {
         console.log("Došlo je do greške", error);
       }
@@ -77,10 +80,17 @@ export default function MojiPodaciBanner() {
     try {
       await axiosClient.put(`pacijenti/${pacijent.jmbg}`, podaciZaSlanje); 
       alert("Podaci su uspešno izmenjeni!");
+      setIsEditing(false); // On successful save, exit editing mode
+      setInitialPacijent(pacijent); // Update initial state after save
     } catch (error) {
       console.error("Greška prilikom slanja podataka:", error);
       alert("Došlo je do greške prilikom čuvanja podataka.");
     }
+  };
+
+  const handleCancel = () => {
+    setPacijent(initialPacijent); // Resetuj na inicijalne podatke
+    setIsEditing(false); // Izađi iz režima uređivanja
   };
 
   return (
@@ -96,12 +106,15 @@ export default function MojiPodaciBanner() {
                   <Form.Group className="d-flex align-items-center gap-4">
                     <Form.Label className="title w-50">{formatKeyLabel(key)}</Form.Label>
                     {key === "bracniStatus" ? (
-                      <Form.Control
+                      <Form.Control 
                         as="select"
                         value={value}
                         onChange={(e) => handleInputChange(key, e.target.value)}
                         isInvalid={!!errors[key]}
-                        className="editableInput text w-50"
+                        className=" text w-50"
+                        disabled={!isEditing}
+                        style={{ backgroundColor: !isEditing ? "transparent" : "white", border: !isEditing ? "none" : "1px solid #ced4da", color: !isEditing ? "white" : "black" }}
+
                       >
                         <option value="u braku">U braku</option>
                         <option value="nije u braku">Nije u braku</option>
@@ -113,7 +126,9 @@ export default function MojiPodaciBanner() {
                         disabled
                         onChange={(e) => handleInputChange(key, e.target.value)}
                         isInvalid={!!errors[key]}
-                        className="editableInput text w-50"
+                        className="nonEditableInput text w-50"
+                        style={{ backgroundColor: !isEditing ? "transparent" : "white", border: !isEditing ? "none" : "1px solid #ced4da", color: !isEditing ? "white" : "black" }}
+
                       >
                         <option value="muski">Muški</option>
                         <option value="zenski">Ženski</option>
@@ -127,8 +142,10 @@ export default function MojiPodaciBanner() {
                           value={value}
                           onChange={(e) => handleInputChange(key, e.target.value)}
                           isInvalid={!!errors[key]}
-                          className="editableInput text w-50"
-                        >
+                          className=" text w-50"
+                          disabled={!isEditing}
+                          style={{ backgroundColor: !isEditing ? "transparent" : "white", border: !isEditing ? "none" : "1px solid #ced4da", color: !isEditing ? "white" : "black" }}
+                          >
                           {mesta.map((mesto, index) => (
                             <option key={index} value={mesto.postanskiBroj}>
                               {mesto.naziv}
@@ -141,9 +158,10 @@ export default function MojiPodaciBanner() {
                         type="text"
                         value={value}
                         onChange={(e) => handleInputChange(key, e.target.value)}
-                        readOnly={!["telefon", "ulicaBroj", "imePrezimeNZZ"].includes(key)}
+                        readOnly={!isEditing || !["telefon", "ulicaBroj", "imePrezimeNZZ"].includes(key)}
                         isInvalid={!!errors[key]}
-                        className={["telefon", "ulicaBroj", "imePrezimeNZZ"].includes(key) ? "editableInput text w-50" : "text w-50"}
+                        className={`text w-50 ${!isEditing || !["telefon", "ulicaBroj", "imePrezimeNZZ"].includes(key) ? "nonEditableInput" : ""}`}
+                        style={{ backgroundColor: !isEditing ? "transparent" : "white", border: !isEditing ? "none" : "1px solid #ced4da", color: !isEditing ? "white" : "black" }}
                       />
                     )}
                     <Form.Control.Feedback type="invalid">{errors[key]}</Form.Control.Feedback>
@@ -153,16 +171,26 @@ export default function MojiPodaciBanner() {
           ) : (
             <p>Učitavanje podataka...</p>
           )}
-          <Button className="mt-3 align-self-center title " variant="primary" onClick={handleSubmit} style={{ borderRadius: "30px" }}>
-            Sačuvaj izmene
-          </Button>
+          {isEditing ? (
+            <div className="d-flex justify-content-center gap-3">
+              <Button className="mt-3 title" variant="success" onClick={handleSubmit} style={{ borderRadius: "30px" }}>
+                Sačuvaj izmene
+              </Button>
+              <Button className="mt-3 title" variant="secondary" onClick={handleCancel} style={{ borderRadius: "30px" }}>
+                Odustani
+              </Button>
+            </div>
+          ) : (
+            <Button className="mt-3 align-self-center title" variant="primary" onClick={() => setIsEditing(true)} style={{ borderRadius: "30px" }}>
+              Omogući izmenu
+            </Button>
+          )}
         </div>
       </Container>
     </Fragment>
   );
 }
 
-// Helper funkcija za formatiranje ključnih reči
 function formatKeyLabel(key) {
   const labels = {
     imePrezimeNZZ: "Ime i Prezime NZZ",
@@ -173,3 +201,4 @@ function formatKeyLabel(key) {
   };
   return labels[key] || key.replace(/([A-Z])/g, " $1").charAt(0).toUpperCase() + key.slice(1);
 }
+

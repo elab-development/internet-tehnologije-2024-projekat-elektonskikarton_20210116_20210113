@@ -36,7 +36,6 @@ class UstanovaController extends Controller
     public function store(Request $request)
     {
         if (Gate::allows('create', Ustanova::class)) {
-
             $validatedData = $request->validate([
                 'naziv' => 'required|string',
                 'ulicaBroj' => 'required|string',

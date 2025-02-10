@@ -1,18 +1,18 @@
 import { Fragment, useState, useEffect } from "react";
-import { Container, Form } from "react-bootstrap";
+import {   Form } from "react-bootstrap";
 import axiosClient from "../../axios/axios-client";
 
 export default function UstanoveBanner() {
   const [ustanove, setUstanove] = useState([]);
-  const [searchNaziv, setSearchNaziv] = useState(""); 
-  const [searchMesto, setSearchMesto] = useState(""); 
-  const [mesta, setMesta] = useState([]); 
-  
+  const [searchNaziv, setSearchNaziv] = useState("");
+  const [searchMesto, setSearchMesto] = useState("");
+  const [mesta, setMesta] = useState([]);
+
   useEffect(() => {
     const fetchMesta = async () => {
       try {
-        const response = await axiosClient.get("mesta"); 
-        setMesta(response.data.data); 
+        const response = await axiosClient.get("mesta");
+        setMesta(response.data.data);
       } catch (error) {
         console.log("Došlo je do greške pri učitavanju mesta", error);
       }
@@ -25,7 +25,6 @@ export default function UstanoveBanner() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Kreiranje URL sa query parametrima
         let url = "ustanove";
         const searchParams = new URLSearchParams();
 
@@ -36,7 +35,7 @@ export default function UstanoveBanner() {
           url = `${url}?${searchParams.toString()}`;
         }
 
-        const response = await axiosClient.get(url); // Poziv API-ja sa parametrima u URL-u
+        const response = await axiosClient.get(url);
         setUstanove(response.data.data);
       } catch (error) {
         console.log("Došlo je do greške pri učitavanju ustanova", error);
@@ -44,62 +43,68 @@ export default function UstanoveBanner() {
     };
 
     fetchData();
-  }, [searchNaziv, searchMesto]); // Zavisi od oba parametra
+  }, [searchNaziv, searchMesto]);
 
   return (
     <Fragment>
-      <Container fluid className="mainBanner pt-5">
-        <div className="forme">
-          <Form.Group className="filterForma" controlId="searchNaziv">
-            <Form.Label className="title">Pretraga po Nazivu</Form.Label>
-            <Form.Control
-              className="formInput"
-              type="text"
-              placeholder="Unesite naziv"
-              value={searchNaziv}
-              onChange={(e) => setSearchNaziv(e.target.value)}
-            />
-          </Form.Group>
+      <div className="mainBanner">
+          <div className="forme">
+            <Form.Group className="filterForma" controlId="searchNaziv">
+              <Form.Label className="title">Pretraga po Nazivu</Form.Label>
+              <Form.Control
+                className="formInput"
+                type="text"
+                placeholder="Unesite naziv"
+                value={searchNaziv}
+                onChange={(e) => setSearchNaziv(e.target.value)}
+              />
+            </Form.Group>
 
-          <Form.Group className="mb-3" controlId="searchMesto">
-            <Form.Label className="title">Pretraga po Mestu</Form.Label>
-            <Form.Control
-              className="formSelect"
-              as="select"
-              value={searchMesto}
-              onChange={(e) => setSearchMesto(e.target.value)}
-            >
-              <option value="">Izaberite mesto</option>
-              {mesta && mesta.length > 0 ? (
-                mesta.map((mesto) =>
-                    <option key={mesto.postanskiBroj} value={mesto.postanskiBroj}>
+            <Form.Group className="mb-3" controlId="searchMesto">
+              <Form.Label className="title">Pretraga po Mestu</Form.Label>
+              <Form.Control
+                className="formSelect"
+                as="select"
+                value={searchMesto}
+                onChange={(e) => setSearchMesto(e.target.value)}
+              >
+                <option value="">Izaberite mesto</option>
+                {mesta && mesta.length > 0 ? (
+                  mesta.map((mesto) => (
+                    <option
+                      key={mesto.postanskiBroj}
+                      value={mesto.postanskiBroj}
+                    >
                       {mesto.naziv}
                     </option>
-                  
-                )
-              ) : (
-                <option value="">Nema mesta</option>
-              )}
-            </Form.Control>
-          </Form.Group>
-        </div>
-        
-          {ustanove && ustanove.length > 0 ? (
-            ustanove.map((value, index) => (
-              <div className="custom-card" key={`ustanova-${index}`}>
-                {Object.entries(value).slice(1).map(([key, val]) => (
-                  <div key={`${key}-${val}`}>
-                    <h1 className="title">{formatKeyLabel(key)}</h1>
-                    <p className="text">{val}</p>
-                  </div>
-                ))}
-              </div>
-            ))
-          ) : (
-            <p className="alert-message">Nema mesta sa odabranim filterom</p>
-          )}
-        
-      </Container>
+                  ))
+                ) : (
+                  <option value="">Nema mesta</option>
+                )}
+              </Form.Control>
+            </Form.Group>
+          </div>
+
+          {/* Prikazivanje ustanova unutar overlay-a */}
+          <div className="ustanoveContainer">
+            {ustanove && ustanove.length > 0 ? (
+              ustanove.map((value, index) => (
+                <div className="custom-card" key={`ustanova-${index}`}>
+                  {Object.entries(value)
+                    .slice(1)
+                    .map(([key, val]) => (
+                      <div key={`${key}-${val}`}>
+                        <h1 className="title">{formatKeyLabel(key)}</h1>
+                        <p className="text">{val}</p>
+                      </div>
+                    ))}
+                </div>
+              ))
+            ) : (
+              <p className="alert-message">Nema mesta sa odabranim filterom</p>
+            )}
+          </div>
+      </div>
     </Fragment>
   );
 }

@@ -49,7 +49,7 @@ export default function DoktoriBanner() {
   return (
     <Fragment>
       <Container fluid={true} className="mainBanner pt-5">
-        <h2>Lista doktora</h2>
+        <h2 >Lista doktora</h2>
 
         {/* Filter i dugme za dodavanje */}
         <div className="d-flex align-items-center mb-3 gap-3">

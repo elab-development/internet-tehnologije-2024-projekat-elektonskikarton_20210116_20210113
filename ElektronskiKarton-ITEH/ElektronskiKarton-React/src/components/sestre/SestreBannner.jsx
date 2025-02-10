@@ -59,13 +59,6 @@ export default function SestreBanner() {
                   <td>{sestra.user_id}</td>
                   <td>
                     <Button
-                      variant="warning"
-                      className="me-2"
-                      href={`/azuriraj-sestru/${sestra.user_id}`}
-                    >
-                      Ažuriraj
-                    </Button>
-                    <Button
                       variant="danger"
                       onClick={() => handleDelete(sestra.id)}
                     >

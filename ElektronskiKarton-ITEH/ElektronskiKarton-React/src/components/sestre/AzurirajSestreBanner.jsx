@@ -10,6 +10,7 @@ export default function AzurirajSestruBanner() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  // eslint-disable-next-line no-unused-vars
   const [userId, setUserId] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -45,6 +46,7 @@ export default function AzurirajSestruBanner() {
     }
 
     try {
+      // eslint-disable-next-line no-unused-vars
       const response = await axiosClient.put(`/sestre/${id}`, {
         name,
         email,

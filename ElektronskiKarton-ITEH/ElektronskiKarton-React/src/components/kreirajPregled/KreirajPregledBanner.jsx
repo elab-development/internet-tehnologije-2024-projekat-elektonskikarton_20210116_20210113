@@ -67,12 +67,12 @@ export default function KreirajPregled() {
     if (validateForm()) {
       try {
         const requestData = {
-          "datum": datum,
-          "doktor_id": parseInt(doktor),
-          "sestra_id": parseInt(sestra),
-          "terapija_id": parseInt(terapija),
-          "dijagnoza_id": parseInt(dijagnoza),
-          "karton_id": parseInt(karton),
+          datum: datum,
+          doktor_id: parseInt(doktor),
+          sestra_id: parseInt(sestra),
+          terapija_id: parseInt(terapija),
+          dijagnoza_id: parseInt(dijagnoza),
+          karton_id: parseInt(karton),
         };
         console.log(requestData);
         const response = await axiosClient.post("pregledi", requestData);
@@ -100,8 +100,9 @@ export default function KreirajPregled() {
   return (
     <Fragment>
       <Container fluid={true} className="mainBanner pt-5">
-        <h2 className="mt-5">Kreiraj pregled</h2>
         <Form className="kreirajPregledForma" onSubmit={handleSubmit}>
+          <h2 className=" text- ">Kreiraj pregled</h2>
+
           <Form.Group controlId="datum">
             <Form.Label className="text-light">Datum</Form.Label>
             <Form.Control type="date" value={datum} readOnly />
@@ -235,7 +236,11 @@ export default function KreirajPregled() {
             </Form.Control.Feedback>
           </Form.Group>
 
-          <Button  variant="secondary" type="submit" className="bg-primary mt-3 w-100">
+          <Button
+            variant="secondary"
+            type="submit"
+            className="bg-primary mt-3 w-100"
+          >
             Kreiraj pregled
           </Button>
         </Form>

@@ -72,8 +72,8 @@ export default function KreirajKartonBanner() {
   return (
     <Fragment>
       <Container fluid={true} className="mainBanner pt-5">
-        <h2 className="mt-5">Kreiraj karton</h2>
         <Form className="kreirajKartonForma" onSubmit={handleSubmit}>
+        <h2 className="text-primary">Kreiraj karton</h2>
           <Form.Group controlId="brojKnjizice">
             <Form.Label>Broj knjižice</Form.Label>
             <Form.Control

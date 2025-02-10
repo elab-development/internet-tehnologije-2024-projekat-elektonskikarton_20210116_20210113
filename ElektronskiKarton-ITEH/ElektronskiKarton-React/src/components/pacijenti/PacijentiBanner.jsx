@@ -25,7 +25,7 @@ export default function UstanoveBanner() {
     <Fragment>
       <Container fluid className="mainBanner pt-5">
         {/* Input za pretragu pacijenata */}
-        <Form.Group className="mb-3" controlId="searchPacijent">
+        <Form.Group className="mb-3 mt-5 forme" controlId="searchPacijent">
           <Form.Label>Pretraga pacijenata po JMBG-u</Form.Label>
           <Form.Control
             type="text"
@@ -50,7 +50,7 @@ export default function UstanoveBanner() {
               </div>
             ))
           ) : (
-            <p className="alert-message">Nema mesta sa odabranim filterom</p>
+            <p className="alert-message">Nema pacijenata sa odabranim filterom</p>
           )}
         </div>
       </Container>

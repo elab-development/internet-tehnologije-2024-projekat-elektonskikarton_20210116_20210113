@@ -48,7 +48,11 @@ export default function MainBanner() {
     <Fragment>
       <Container fluid={true} className="mainBanner">
         {/* Provera da li je bracniStatus dostupan pre prikaza */}
-        <div className="title nameContainer"  >Dorbodošli {user.name}</div>
+        <div className="title nameContainer"  >
+          <p>Dorbodošli {user.name}</p>
+          <p>Uloga: {user.role}</p>
+        </div>
+
       </Container>
     </Fragment>
   );

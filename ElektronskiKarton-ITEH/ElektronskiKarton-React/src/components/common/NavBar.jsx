@@ -54,7 +54,7 @@ export default function NavBar() {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="ms-auto">
+          <Nav className="ms-auto gap-2">
             {!token ? (
               <>
                 <NavLink to="/ustanove" className={navBarItem}>Ustanove</NavLink>
@@ -84,6 +84,7 @@ export default function NavBar() {
                   <>
                     <NavLink to="/doktori" className={navBarItem}>Doktori</NavLink>
                     <NavLink to="/sestre" className={navBarItem}>Sestre</NavLink>
+                    <NavLink to="/ustanove" className={navBarItem}>Ustanove</NavLink>
                   </>
                 )}
                 <NavLink onClick={handleLogout} className={navBarItem}>Odjavi se</NavLink>
