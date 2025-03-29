@@ -33,13 +33,12 @@ export default function NavBar() {
     if (user) {
       console.log("Korisnik je: ", user);
     }
-    window.addEventListener("scroll", onScroll);  
-  
+    window.addEventListener("scroll", onScroll);
+
     return () => {
       window.removeEventListener("scroll", onScroll); // Čišćenje event listenera kada komponenta bude uklonjena
     };
   }, [user]); // Ako se `user` promeni, `useEffect` se ponovo pokreće
-  
 
   return (
     <Navbar
@@ -48,47 +47,74 @@ export default function NavBar() {
       fixed="top"
       className={navBarBackground}
     >
+
       <Container className={navBarItem}>
-        <Navbar.Brand href="/" className={navBarTitle}>
-          Medical support
+        <Navbar.Brand
+          href={`${token != null ? "/pocetna" : "/dashboard"}`}
+          className={navBarTitle}
+        >
+          Medical support 
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="ms-auto gap-2">
+          <Nav className="ms-auto gap-3">
             {!token ? (
               <>
-                <NavLink to="/ustanove" className={navBarItem}>Ustanove</NavLink>
-                <NavLink to="/login" className={navBarItem}>Prijavi se</NavLink>
-                <NavLink to="/register" className={navBarItem}>Registruj se</NavLink>
+                <NavLink to="/ustanoveGuest" className={navBarItem}>
+                  Ustanove
+                </NavLink>
+                <NavLink to="/login" className={navBarItem}>
+                  Prijavi se
+                </NavLink>
+                <NavLink to="/register" className={navBarItem}>
+                  Registruj se
+                </NavLink>
               </>
             ) : (
               <>
-                {user.role === 'pacijent' && (
+                {user.role === "pacijent" && (
                   <>
-                    <NavLink to={`/pacijent/${user.id}`} className={navBarItem}>Moji podaci</NavLink>
-                    <NavLink to={`/karton/${user.id}`} className={navBarItem}>Karton</NavLink>
+                    <NavLink to={`/pacijent/${user.id}`} className={navBarItem}>
+                      Moji podaci
+                    </NavLink>
+                    <NavLink to={`/karton/${user.id}`} className={navBarItem}>
+                      Karton
+                    </NavLink>
                   </>
                 )}
-                {user.role === 'sestra' && (
+                {user.role === "sestra" && (
                   <>
-                    <NavLink to="/pacijenti" className={navBarItem}>Pacijenti</NavLink>
-                    <NavLink to="/kreiraj-karton" className={navBarItem}>Kreiraj karton</NavLink>
+                    <NavLink to="/pacijenti" className={navBarItem}>
+                      Pacijenti
+                    </NavLink>
+                    <NavLink to="/kreiraj-karton" className={navBarItem}>
+                      Kreiraj karton
+                    </NavLink>
                   </>
                 )}
-                {user.role === 'doktor' && (
+                {user.role === "doktor" && (
                   <>
-                    <NavLink to="/kreiraj-pregled" className={navBarItem}>Kreiraj pregled</NavLink>
+                    <NavLink to="/kreiraj-pregled" className={navBarItem}>
+                      Kreiraj pregled
+                    </NavLink>
                   </>
                 )}
-                {user.role === 'admin' && (
+                {user.role === "admin" && (
                   <>
-                    <NavLink to="/doktori" className={navBarItem}>Doktori</NavLink>
-                    <NavLink to="/sestre" className={navBarItem}>Sestre</NavLink>
-                    <NavLink to="/ustanove" className={navBarItem}>Ustanove</NavLink>
+                    <NavLink to="/doktori" className={navBarItem}>
+                      Doktori
+                    </NavLink>
+                    <NavLink to="/sestre" className={navBarItem}>
+                      Sestre
+                    </NavLink>
+                    <NavLink to="/ustanove" className={navBarItem}>
+                      Ustanove
+                    </NavLink>
                   </>
                 )}
-                <NavLink onClick={handleLogout} className={navBarItem}>Odjavi se</NavLink>
-
+                <NavLink onClick={handleLogout} className={navBarItem}>
+                  Odjavi se
+                </NavLink>
               </>
             )}
           </Nav>

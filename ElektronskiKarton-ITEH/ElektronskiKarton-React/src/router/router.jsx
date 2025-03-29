@@ -69,11 +69,11 @@ const router = createBrowserRouter([
                 element: <DodajSestruPage></DodajSestruPage>
             },
             {
-                path: "azuriraj-sestru/:id",
+                path: "/azuriraj-sestru/:id",
                 element: <AzurirajSestruPage></AzurirajSestruPage>
             },
             {
-                path: "ustanove",
+                path: "/ustanove",
                 element: <UstanoveAdminPage></UstanoveAdminPage>
             }
         ]
@@ -96,7 +96,7 @@ const router = createBrowserRouter([
                 element: <Registracija></Registracija>
             },
             {
-                path: "/ustanove",
+                path: "/ustanoveGuest",
                 element: <UstanovePage></UstanovePage>
             }
             

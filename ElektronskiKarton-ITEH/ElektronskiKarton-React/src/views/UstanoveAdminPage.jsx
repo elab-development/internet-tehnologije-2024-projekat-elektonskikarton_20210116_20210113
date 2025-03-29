@@ -1,6 +1,8 @@
 import { Fragment, useState, useEffect } from "react";
 import { Form } from "react-bootstrap";
 import axiosClient from "../axios/axios-client";
+import NavBar from "../components/common/NavBar";
+import Footer from "../components/common/Footer";
 
 export default function UstanovePage() {
   const [ustanove, setUstanove] = useState([]);
@@ -72,11 +74,13 @@ export default function UstanovePage() {
   };
 
   return (
+    <>
+    <NavBar></NavBar>
     <Fragment>
       <div className="mainBanner">
         <div className="forme">
-          <Form.Group className="filterForma" controlId="searchNaziv">
-            <Form.Label className="title">Pretraga po Nazivu</Form.Label>
+          <Form.Group className="filterForma " controlId="searchNaziv">
+            <Form.Label className="title ">Pretraga po Nazivu</Form.Label>
             <Form.Control
               className="formInput"
               type="text"
@@ -208,6 +212,8 @@ export default function UstanovePage() {
         </div>
       </div>
     </Fragment>
+    <Footer></Footer>
+    </>
   );
 }
 

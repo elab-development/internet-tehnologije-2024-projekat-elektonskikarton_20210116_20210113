@@ -101,7 +101,7 @@ export default function KreirajPregled() {
     <Fragment>
       <Container fluid={true} className="mainBanner pt-5">
         <Form className="kreirajPregledForma" onSubmit={handleSubmit}>
-          <h2 className=" text- ">Kreiraj pregled</h2>
+          <h2 className=" text-primary">Kreiraj pregled</h2>
 
           <Form.Group controlId="datum">
             <Form.Label className="text-light">Datum</Form.Label>

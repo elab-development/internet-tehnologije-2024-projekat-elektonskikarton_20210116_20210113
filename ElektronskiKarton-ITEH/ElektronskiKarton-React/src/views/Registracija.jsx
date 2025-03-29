@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { Fragment, useState, useEffect } from "react";
-import { Container } from "react-bootstrap";
+import { Col, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useStateContext } from "../context/ContextProvider";
 import { useNavigate } from "react-router-dom";
@@ -112,7 +112,7 @@ export default function Registracija() {
   <Container fluid={true} className="guestBackground">
     <form className="loginForm" onSubmit={handleSubmit}>
       <div className="formGrid">
-        <div className="formColumn">
+        <Col className="formColumn" lg={6} md ={12} sm={12}>
           <label htmlFor="imePrezime">Ime i prezime</label>
           <input
             type="text"
@@ -174,9 +174,9 @@ export default function Registracija() {
             value={imePrezimeNZZ}
             onChange={(e) => setImePrezimeNZZ(e.target.value)}
           />
-        </div>
+        </Col>
 
-        <div className="formColumn">
+        <Col className="formColumn" lg={6} md ={12} sm={12}>
           <label htmlFor="datumRodjenja">Datum rođenja</label>
           <input
             type="date"
@@ -257,7 +257,7 @@ export default function Registracija() {
               </option>
             ))}
           </select>
-        </div>
+        </Col>
       </div>
 
       <div className="errorBox">{error}</div>

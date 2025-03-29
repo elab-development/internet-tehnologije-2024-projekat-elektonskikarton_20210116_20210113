@@ -38,7 +38,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('karton/{user_id}', [KartonController::class, 'showWithId']);
     Route::get('sestra/{user_id}', [SestraController::class, 'showWithId']);
     Route::get('doktor/{user_id}', [DoktorController::class, 'showWithId']);
-
+    Route::get('ustanoveGuest', [UstanovaController::class, 'index']);
 });
 
 Route::get('/mesta', [MestoController::class, 'index']);
