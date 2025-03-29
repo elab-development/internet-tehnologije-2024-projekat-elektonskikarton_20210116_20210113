@@ -21,7 +21,6 @@ export default function UstanoveBanner() {
     fetchMesta();
   }, []);
 
-  // Učitavanje ustanova sa API-ja sa parametrima
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -85,7 +84,7 @@ export default function UstanoveBanner() {
             </Form.Group>
           </div>
 
-          {/* Prikazivanje ustanova unutar overlay-a */}
+          {}
           <div className="ustanoveContainer">
             {ustanove && ustanove.length > 0 ? (
               ustanove.map((value, index) => (

@@ -21,15 +21,15 @@ export default function Registracija() {
   const [pol, setPol] = useState("");
   const [bracniStatus, setBracniStatus] = useState("");
   const [mesto_postanskiBroj, setMestoPB] = useState("");
-  const [postanskiBrojevi, setPostanskiBrojevi] = useState([]); // For dropdown
+  const [postanskiBrojevi, setPostanskiBrojevi] = useState([]); 
   const [error, setError] = useState("");
   const { setUser } = useStateContext();
   const navigate = useNavigate();
 
-  // Fetch postal codes from the backend
+ 
   useEffect(() => {
     axiosClient
-      .get("/mestaPB") // Replace with your API endpoint
+      .get("/mestaPB") 
       .then((response) => {
         setPostanskiBrojevi(response.data);
       })
@@ -101,7 +101,7 @@ export default function Registracija() {
         mesto_postanskiBroj,
       });
       setUser(response.data);
-      navigate("/login"); // Redirect to home after successful registration
+      navigate("/login"); 
     } catch (err) {
       setError("Neuspešna registracija, proverite podatke");
     }

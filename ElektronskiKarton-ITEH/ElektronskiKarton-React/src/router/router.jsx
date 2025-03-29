@@ -19,6 +19,7 @@ import DodajSestruPage from "../views/DodajSestruPage";
 import AzurirajSestruPage from "../views/AzurirajSestruPage";
 import UstanoveAdminPage from "../views/UstanoveAdminPage";
 
+
 const router = createBrowserRouter([
     {
         path: "/",
@@ -73,7 +74,7 @@ const router = createBrowserRouter([
                 element: <AzurirajSestruPage></AzurirajSestruPage>
             },
             {
-                path: "ustanove",
+                path: "ustanoveAdmin",
                 element: <UstanoveAdminPage></UstanoveAdminPage>
             }
         ]
