@@ -2,6 +2,8 @@ import { Fragment, useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import axiosClient from "../../axios/axios-client";
+import Breadcrumb from 'react-bootstrap/Breadcrumb';
+
 
 export default function Karton() {
   const { id } = useParams();
@@ -75,6 +77,10 @@ export default function Karton() {
   return (
     <Fragment>
       <Container fluid={true} className="mainBanner pt-5">
+      <Breadcrumb className="breadcrumb">
+                <Breadcrumb.Item href="dashboard">Početna</Breadcrumb.Item>
+                <Breadcrumb.Item active>Karton</Breadcrumb.Item>
+        </Breadcrumb>
         <div className="title nameContainer">
           {karton && Object.keys(karton).length > 0 ? (
             <>

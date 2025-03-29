@@ -27,7 +27,7 @@ class UstanovaController extends Controller
         ->when($naziv, fn($query,$naziv)=> $query->withNaziv($naziv));
 
         $query = $this->loadRelationships($ustanove);
-        return UstanovaResource::collection($query->latest()->paginate());
+        return UstanovaResource::collection($query->latest()->paginate(3));
     }
 
     /**

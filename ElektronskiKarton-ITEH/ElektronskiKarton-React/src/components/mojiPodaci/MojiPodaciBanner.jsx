@@ -2,6 +2,8 @@ import { Container, Button, Form } from "react-bootstrap";
 import { Fragment, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axiosClient from "../../axios/axios-client";
+import Breadcrumb from 'react-bootstrap/Breadcrumb';
+
 
 export default function MojiPodaciBanner() {
   const { id } = useParams();
@@ -96,6 +98,10 @@ export default function MojiPodaciBanner() {
   return (
     <Fragment>
       <Container fluid className="mainBanner pt-5">
+        <Breadcrumb className="breadcrumb">
+                <Breadcrumb.Item href="dashboard">Početna</Breadcrumb.Item>
+                <Breadcrumb.Item active>Moji podaci</Breadcrumb.Item>
+        </Breadcrumb>
         <div className="d-flex flex-column p-4 pacijentPodaci">
           <h1 className="text-center mb-4 title">Lični podaci</h1>
           {pacijent && Object.keys(pacijent).length > 0 ? (
