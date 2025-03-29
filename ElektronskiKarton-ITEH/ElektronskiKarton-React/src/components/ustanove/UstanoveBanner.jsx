@@ -25,7 +25,7 @@ export default function UstanoveBanner() {
     fetchMesta();
   }, []);
 
-  // Učitavanje ustanova sa API-ja sa parametrima i paginacijom
+  // Učitavanje ustanova sa API-ja sa parametrima
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -102,46 +102,25 @@ export default function UstanoveBanner() {
           </Form.Group>
         </div>
 
-        {/* Prikazivanje ustanova unutar overlay-a */}
-        <div className="ustanoveContainer">
-          {ustanove && ustanove.length > 0 ? (
-            ustanove.map((value, index) => (
-              <div className="custom-card" key={`ustanova-${index}`}>
-                {Object.entries(value)
-                  .slice(1)
-                  .map(([key, val]) => (
-                    <div key={`${key}-${val}`}>
-                      <h1 className="title">{formatKeyLabel(key)}</h1>
-                      <p className="text">{val}</p>
-                    </div>
-                  ))}
-              </div>
-            ))
-          ) : (
-            <p className="alert-message">Nema mesta sa odabranim filterom</p>
-          )}
-        </div>
-
-        {/* Pagination Controls */}
-        <div className="pagination-controls">
-          <button
-            className="pagination-button"
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-          >
-            Prethodna
-          </button>
-          <span className="pagination-info">
-            Strana {currentPage} od {totalPages}
-          </span>
-          <button
-            className="pagination-button"
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          >
-            Sledeća
-          </button>
-        </div>
+          {/* Prikazivanje ustanova unutar overlay-a */}
+          <div className="ustanoveContainer">
+            {ustanove && ustanove.length > 0 ? (
+              ustanove.map((value, index) => (
+                <div className="custom-card" key={`ustanova-${index}`}>
+                  {Object.entries(value)
+                    .slice(1)
+                    .map(([key, val]) => (
+                      <div key={`${key}-${val}`}>
+                        <h1 className="title">{formatKeyLabel(key)}</h1>
+                        <p className="text">{val}</p>
+                      </div>
+                    ))}
+                </div>
+              ))
+            ) : (
+              <p className="alert-message">Nema mesta sa odabranim filterom</p>
+            )}
+          </div>
       </div>
     </Fragment>
   );

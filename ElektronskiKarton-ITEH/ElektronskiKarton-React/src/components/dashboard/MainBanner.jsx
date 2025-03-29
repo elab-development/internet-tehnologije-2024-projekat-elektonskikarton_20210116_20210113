@@ -6,8 +6,7 @@ import axiosClient from "../../axios/axios-client";
 
 export default function MainBanner() {
   const { user } = useStateContext();
-  const [podaci, setPodaci] = useState(null); // State za bracniStatus
-
+  const [podaci, setPodaci] = useState(null); 
   const fetchDataForRole = async (user) => {
     try {
       let response;
@@ -30,7 +29,7 @@ export default function MainBanner() {
       }
 
       if (response && response.data) {
-        setPodaci(response.data.data); // Postavljanje podataka u state
+        setPodaci(response.data.data); 
       }
     } catch (error) {
       console.error("Greška pri dobijanju podataka:", error);
@@ -38,16 +37,16 @@ export default function MainBanner() {
   };
 
   useEffect(() => {
-    // Provera da li postoji user pre poziva fetch funkcije
+    
     if (user && user.role && user.id) {
       fetchDataForRole(user);
     }
-  }, [user]); // Poziva se kad god se `user` menja
+  }, [user]); 
 
   return (
     <Fragment>
       <Container fluid={true} className="mainBanner">
-        {/* Provera da li je bracniStatus dostupan pre prikaza */}
+        {}
         <div className="title nameContainer"  >
           <p>Dorbodošli {user.name}</p>
           <p>Uloga: {user.role}</p>
