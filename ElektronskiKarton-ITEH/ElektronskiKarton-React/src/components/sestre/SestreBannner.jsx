@@ -12,7 +12,7 @@ export default function SestreBanner() {
 
   const fetchSestre = async () => {
     try {
-      const response = await axiosClient.get("sestre");
+      const response = await axiosClient.get("sestre?include=user");
       setSestre(response.data.data);
     } catch (error) {
       console.error("Došlo je do greške prilikom učitavanja sestara.", error);
@@ -35,7 +35,6 @@ export default function SestreBanner() {
       <Container fluid={true} className="mainBanner  pt-5">
         <h2>Lista medicinskih sestara</h2>
 
-        {/* Dugme za dodavanje */}
         <div className="d-flex align-items-center mb-3">
           <Button variant="success" href="/dodaj-sestru">
             Dodaj sestru
@@ -48,6 +47,7 @@ export default function SestreBanner() {
             <tr>
               <th>#</th>
               <th>ID Korisnika</th>
+              <th>Ime i prezime</th>
               <th>Akcije</th>
             </tr>
           </thead>
@@ -56,6 +56,7 @@ export default function SestreBanner() {
               sestre.map((sestra, index) => (
                 <tr key={sestra.id}>
                   <td>{index + 1}</td>
+                  <td>{sestra.user.name}</td>
                   <td>{sestra.user_id}</td>
                   <td>
                     <Button

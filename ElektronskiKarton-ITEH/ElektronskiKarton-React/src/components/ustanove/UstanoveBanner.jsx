@@ -8,8 +8,8 @@ export default function UstanoveBanner() {
   const [searchNaziv, setSearchNaziv] = useState("");
   const [searchMesto, setSearchMesto] = useState("");
   const [mesta, setMesta] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1); // Track current page
-  const [totalPages, setTotalPages] = useState(1); // Track total pages
+  const [currentPage, setCurrentPage] = useState(1); 
+  const [totalPages, setTotalPages] = useState(1); 
 
   useEffect(() => {
     const fetchMesta = async () => {
@@ -25,7 +25,7 @@ export default function UstanoveBanner() {
     fetchMesta();
   }, []);
 
-  // Učitavanje ustanova sa API-ja sa parametrima
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -37,7 +37,7 @@ export default function UstanoveBanner() {
 
         // Adding pagination params to the URL
         searchParams.append("page", currentPage);
-        searchParams.append("limit", 10); // Adjust limit based on how many items per page you want
+        searchParams.append("limit", 10); 
 
         if (searchParams.toString()) {
           url = `${url}?${searchParams.toString()}`;
@@ -45,7 +45,7 @@ export default function UstanoveBanner() {
 
         const response = await axiosClient.get(url);
         setUstanove(response.data.data);
-        setTotalPages(response.data.meta.last_page); // Assuming the API returns totalPages
+        setTotalPages(response.data.meta.last_page); 
       } catch (error) {
         console.log("Došlo je do greške pri učitavanju ustanova", error);
       }
@@ -54,7 +54,6 @@ export default function UstanoveBanner() {
     fetchData();
   }, [searchNaziv, searchMesto, currentPage]);
 
-  // Handle page change
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
@@ -102,7 +101,6 @@ export default function UstanoveBanner() {
           </Form.Group>
         </div>
 
-          {/* Prikazivanje ustanova unutar overlay-a */}
           <div className="ustanoveContainer">
             {ustanove && ustanove.length > 0 ? (
               ustanove.map((value, index) => (

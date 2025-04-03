@@ -3,11 +3,10 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Slider from 'react-slick';
 
-// Import slick-carousel CSS
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css"; 
 
-// Komponenta koja prikazuje kartice sa člancima u carousel-u
+
 const ArticleCards = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,7 +16,7 @@ const ArticleCards = () => {
   useEffect(() => {
     axios.get('https://doaj.org/api/v2/search/articles/medicine')
       .then(response => {
-        setArticles(response.data.results);  // Postavljamo članke
+        setArticles(response.data.results);  
         setLoading(false);
       })
       .catch(error => {
@@ -26,8 +25,8 @@ const ArticleCards = () => {
       });
   }, []);
 
-  if (loading) return <div>Loading...</div>; // Prikazivanje loading stanja
-  if (error) return <div>{error}</div>; // Prikazivanje greške
+  if (loading) return <div>Loading...</div>; 
+  if (error) return <div>{error}</div>; 
 
   // Slick settings for carousel
   const settings = {

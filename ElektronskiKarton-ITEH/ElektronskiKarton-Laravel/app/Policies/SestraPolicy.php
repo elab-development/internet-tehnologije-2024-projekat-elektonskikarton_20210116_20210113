@@ -13,7 +13,8 @@ class SestraPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->role==='admin' || $user->role === 'doktor';
+
+        return $user->role === 'admin' || $user->role === 'doktor';
     }
 
     /**
@@ -21,7 +22,7 @@ class SestraPolicy
      */
     public function view(User $user, Sestra $sestra): bool
     {
-        return $user->role==='admin';
+        return $user->role === 'admin';
     }
 
     /**
@@ -29,7 +30,7 @@ class SestraPolicy
      */
     public function create(User $user): bool
     {
-        return $user->role==='admin';
+        return $user->role === 'admin';
     }
 
     /**
@@ -37,7 +38,7 @@ class SestraPolicy
      */
     public function update(User $user, Sestra $sestra): bool
     {
-        return $user->role==='sestra' || $user->role==='admin';
+        return $user->role === 'sestra' || $user->role === 'admin';
     }
 
     /**
@@ -45,7 +46,7 @@ class SestraPolicy
      */
     public function delete(User $user, Sestra $sestra): bool
     {
-        return $user->role==='admin';
+        return $user->role === 'admin';
     }
 
     /**

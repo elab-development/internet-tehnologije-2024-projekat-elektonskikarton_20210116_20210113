@@ -14,9 +14,10 @@ export default function DoktoriBanner() {
   const fetchDoktori = async (specijalizacija = "") => {
     try {
       const response = await axiosClient.get(
-        `doktori${specijalizacija ? `?specijalizacija=${specijalizacija}` : ""}`
+        `doktori${specijalizacija ? `?specijalizacija=${specijalizacija}&include=user` : "?include=user"}`
       );
       setDoktori(response.data.data);
+      console.log(response.data.data);
     } catch (error) {
       console.error("Došlo je do greške prilikom učitavanja doktora.", error);
     }
@@ -74,6 +75,7 @@ export default function DoktoriBanner() {
           <thead>
             <tr>
               <th>#</th>
+              <th>Ime i prezime</th>
               <th>Specijalizacija</th>
               <th>Akcije</th>
             </tr>
@@ -83,6 +85,7 @@ export default function DoktoriBanner() {
               doktori.map((doktor, index) => (
                 <tr key={doktor.id}>
                   <td>{index + 1}</td>
+                 <td>{doktor.user.name}</td>
                   <td>{doktor.specijalizacija}</td>
                   <td>
                     <Button

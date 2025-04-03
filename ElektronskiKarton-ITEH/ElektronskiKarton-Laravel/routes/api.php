@@ -25,11 +25,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('ustanove', UstanovaController::class);
     //Route::put('/zaposlenja/{redniBroj}/{karton_id}', [ZaposlenjeController::class, 'update']);
     Route::apiResource('zaposlenja', ZaposlenjeController::class);
-    Route::apiResource('sestre', SestraController::class);
     Route::apiResource('preduzeca', PreduzeceController::class);
     Route::apiResource('mesta', MestoController::class);
     Route::apiResource('pacijenti', PacijentController::class);
     Route::apiResource('kartoni', KartonController::class);
+    Route::apiResource('sestre', SestraController::class);
+
     Route::apiResource('pregledi', PregledController::class);
 
     Route::get('pregledi/{karton_id}', [PregledController::class, 'indexForKarton']);
@@ -43,9 +44,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 Route::get('/mesta', [MestoController::class, 'index']);
 Route::get('/ustanoveCount', [UstanovaController::class, 'getUstanoveCount']);
-Route::get('/doktorCount',[DoktorController::class, 'getDoktorCount']);
-Route::get('/pacijentCount',[PacijentController::class, 'getPacijentCount']);
-Route::get('/mestaPB',[MestoController::class, 'getMestaPB']);
+Route::get('/doktorCount', [DoktorController::class, 'getDoktorCount']);
+Route::get('/pacijentCount', [PacijentController::class, 'getPacijentCount']);
+Route::get('/mestaPB', [MestoController::class, 'getMestaPB']);
 Route::apiResource('ustanove', UstanovaController::class);
 
 

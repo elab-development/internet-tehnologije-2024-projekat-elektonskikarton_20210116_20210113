@@ -27,14 +27,16 @@ export default function KreirajPregled() {
           dijagnozaResponse,
           kartonResponse,
         ] = await Promise.all([
-          axiosClient.get("doktori"),
-          axiosClient.get("sestre"),
+          axiosClient.get("doktori?include=user"),
+          axiosClient.get("sestre?include=user"),
           axiosClient.get("terapije"),
           axiosClient.get("dijagnoze"),
           axiosClient.get("kartoni"),
         ]);
         setDoktorList(doktorResponse.data.data);
+       
         setSestraList(sestraResponse.data.data);
+        console.log(sestraResponse.data.data);
         setTerapijaList(terapijaResponse.data.data);
         setDijagnozaList(dijagnozaResponse.data.data);
         setKartonList(kartonResponse.data.data);
@@ -124,7 +126,7 @@ export default function KreirajPregled() {
               {doktorList.length > 0 ? (
                 doktorList.map((value) => (
                   <option key={value.id} value={value.id}>
-                    {value.id}
+                    {value.user.name}
                   </option>
                 ))
               ) : (
@@ -149,7 +151,7 @@ export default function KreirajPregled() {
               {sestraList.length > 0 ? (
                 sestraList.map((value) => (
                   <option key={value.id} value={value.id}>
-                    {value.id}
+                    {value.user.name}
                   </option>
                 ))
               ) : (

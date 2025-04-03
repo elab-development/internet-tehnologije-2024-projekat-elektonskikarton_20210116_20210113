@@ -10,28 +10,27 @@ export default function MojiPodaciBanner() {
   const [pacijent, setPacijent] = useState({});
   const [initialPacijent, setInitialPacijent] = useState({});
   const [errors, setErrors] = useState({});
-  const [mesta, setMesta] = useState([]); // Držimo listu mesta
-  const [loading, setLoading] = useState(true); // Oznaka za učitavanje mesta
+  const [mesta, setMesta] = useState([]); 
+  const [loading, setLoading] = useState(true); 
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    // Učitavanje podataka za pacijenta
+   
     const fetchData = async () => {
       try {
         const response = await axiosClient.get(`pacijent/${id}`);
         setPacijent(response.data.data);
-        setInitialPacijent(response.data.data); // Sačuvaj inicijalne podatke
+        setInitialPacijent(response.data.data);
       } catch (error) {
         console.log("Došlo je do greške", error);
       }
     };
 
-    // Učitavanje mesta
     const fetchMesta = async () => {
       try {
-        const response = await axiosClient.get('mesta'); // Pretpostavljam da postoji API endpoint za mesta
+        const response = await axiosClient.get('mesta'); 
         setMesta(response.data.data);
-        setLoading(false); // Kada se učitaju mesta, postavi loading na false
+        setLoading(false);
       } catch (error) {
         console.log("Greška pri učitavanju mesta", error);
         setLoading(false);
@@ -82,8 +81,8 @@ export default function MojiPodaciBanner() {
     try {
       await axiosClient.put(`pacijenti/${pacijent.jmbg}`, podaciZaSlanje); 
       alert("Podaci su uspešno izmenjeni!");
-      setIsEditing(false); // On successful save, exit editing mode
-      setInitialPacijent(pacijent); // Update initial state after save
+      setIsEditing(false); 
+      setInitialPacijent(pacijent); 
     } catch (error) {
       console.error("Greška prilikom slanja podataka:", error);
       alert("Došlo je do greške prilikom čuvanja podataka.");
@@ -91,8 +90,8 @@ export default function MojiPodaciBanner() {
   };
 
   const handleCancel = () => {
-    setPacijent(initialPacijent); // Resetuj na inicijalne podatke
-    setIsEditing(false); // Izađi iz režima uređivanja
+    setPacijent(initialPacijent); 
+    setIsEditing(false); 
   };
 
   return (

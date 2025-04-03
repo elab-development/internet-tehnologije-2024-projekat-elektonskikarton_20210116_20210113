@@ -21,8 +21,10 @@ class SestraController extends Controller
     public function index()
     {
         $sestre = Sestra::query();
-        if (Gate::allows('viewAny', Sestra::class)) {
-            return SestraResource::collection($sestre->latest()->paginate());
+         if (Gate::allows('viewAny', Sestra::class)) {
+        $query = $this->loadRelationships($sestre);
+
+        return SestraResource::collection($query->latest()->paginate());
         } else {
             return response()->json(['message' => 'Pristup odbijen za pregled sestara.'], 403);
         }

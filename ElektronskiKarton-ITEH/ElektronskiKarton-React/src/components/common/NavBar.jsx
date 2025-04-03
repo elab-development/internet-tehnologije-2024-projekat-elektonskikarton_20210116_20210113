@@ -29,16 +29,16 @@ export default function NavBar() {
   };
 
   useEffect(() => {
-    // Logika za ažuriranje korisničkog stanja
+   
     if (user) {
       console.log("Korisnik je: ", user);
     }
     window.addEventListener("scroll", onScroll);
 
     return () => {
-      window.removeEventListener("scroll", onScroll); // Čišćenje event listenera kada komponenta bude uklonjena
+      window.removeEventListener("scroll", onScroll); 
     };
-  }, [user]); // Ako se `user` promeni, `useEffect` se ponovo pokreće
+  }, [user]); 
 
   return (
     <Navbar

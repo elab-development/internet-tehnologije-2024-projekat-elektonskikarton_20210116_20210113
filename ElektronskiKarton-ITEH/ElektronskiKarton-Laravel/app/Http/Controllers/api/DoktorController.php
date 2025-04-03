@@ -26,7 +26,7 @@ class DoktorController extends Controller
             $doktori = Doktor::query()->when($spec, fn($query, $spec) => $query->withSpecijalizacija($spec));
             $query = $this->loadRelationships($doktori);
 
-            return DijagnozaResource::collection($query->latest()->paginate());
+            return DoktorResource::collection($query->latest()->paginate());
         } else {
             return response()->json(['message' => 'Pristup odbijen za pregled doktora.'], 403);
         }

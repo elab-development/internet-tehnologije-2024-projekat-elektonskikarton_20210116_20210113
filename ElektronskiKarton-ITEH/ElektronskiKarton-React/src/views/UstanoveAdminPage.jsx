@@ -78,7 +78,7 @@ export default function UstanovePage() {
     <NavBar></NavBar>
     <Fragment>
       <div className="mainBanner">
-        <div className="forme">
+        <div className="forme mt-5">
           <Form.Group className="filterForma " controlId="searchNaziv">
             <Form.Label className="title ">Pretraga po Nazivu</Form.Label>
             <Form.Control
